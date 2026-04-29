@@ -13,43 +13,20 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.DEFAULT_PYTHON }}
-          cache: 'pip'
-
-      - name: Install build tools
-        run: pip install build
-
-      - name: Build package
-        run: python -m build
-
-      - name: Generate checksums
-        run: |
-          cd dist
-          sha256sum * > checksums.txt
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
-          files: dist/*
           generate_release_notes: true
 
   docker:
+    needs: release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
