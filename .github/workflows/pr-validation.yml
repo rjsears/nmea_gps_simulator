@@ -1,0 +1,54 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# pr-validation.yml
+#
+# Part of the "NMEA GPS Simulator" suite
+# Version 1.0.0 - April 10th, 2026
+#
+# Richard J. Sears
+# richardjsears@protonmail.com
+# https://github.com/rjsears
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  validate-pr:
+    name: Validate Pull Request
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check PR description
+        if: github.event.pull_request.body == ''
+        run: |
+          echo "Error: PR description is empty"
+          exit 1
+
+      - name: Check file sizes
+        run: |
+          if find . -path ./.git -prune -o -type f -size +10M -print | grep -q .; then
+            echo "Error: Files larger than 10MB found"
+            exit 1
+          fi
+
+  labeler:
+    name: Label PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/labeler@v5

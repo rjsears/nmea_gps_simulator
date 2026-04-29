@@ -1,0 +1,170 @@
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+ * globals.css
+ *
+ * Part of the "NMEA GPS Simulator" suite
+ * Version 1.0.0 - April 10th, 2026
+ *
+ * Richard J. Sears
+ * richardjsears@protonmail.com
+ * https://github.com/rjsears
+ * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  :root {
+    --background: 249 250 251;
+    --foreground: 17 24 39;
+    --card: 255 255 255;
+    --card-foreground: 17 24 39;
+    --primary: 37 99 235;
+    --primary-foreground: 255 255 255;
+    --secondary: 243 244 246;
+    --secondary-foreground: 17 24 39;
+    --muted: 243 244 246;
+    --muted-foreground: 107 114 128;
+    --accent: 243 244 246;
+    --accent-foreground: 17 24 39;
+    --destructive: 220 38 38;
+    --destructive-foreground: 255 255 255;
+    --border: 229 231 235;
+    --input: 229 231 235;
+    --ring: 37 99 235;
+  }
+
+  .dark {
+    --background: 17 24 39;
+    --foreground: 249 250 251;
+    --card: 31 41 55;
+    --card-foreground: 249 250 251;
+    --primary: 59 130 246;
+    --primary-foreground: 255 255 255;
+    --secondary: 55 65 81;
+    --secondary-foreground: 249 250 251;
+    --muted: 55 65 81;
+    --muted-foreground: 156 163 175;
+    --accent: 55 65 81;
+    --accent-foreground: 249 250 251;
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --border: 75 85 99;
+    --input: 75 85 99;
+    --ring: 59 130 246;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-gray-200 dark:border-gray-700;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white;
+  }
+
+  .btn-success {
+    @apply bg-green-600 hover:bg-green-700 text-white;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+           placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           dark:bg-gray-700 dark:text-white;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700;
+  }
+
+  .select {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           dark:bg-gray-700 dark:text-white appearance-none cursor-pointer;
+  }
+}
+
+/* Custom scrollbar */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
+}
+
+/* Disabled state styling */
+.disabled, [disabled] {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Grayed out but still visible */
+.grayed-out {
+  @apply opacity-40;
+}
+
+/* Slider styling */
+input[type="range"] {
+  @apply w-full h-2 bg-gray-300 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  @apply appearance-none w-4 h-4 bg-blue-500 rounded-full cursor-pointer;
+}
+
+/* Status indicator */
+.status-indicator {
+  @apply w-3 h-3 rounded-full;
+}
+
+.status-indicator.connected {
+  @apply bg-green-500;
+}
+
+.status-indicator.disconnected {
+  @apply bg-red-500;
+}
+
+.status-indicator.warning {
+  @apply bg-yellow-500;
+}

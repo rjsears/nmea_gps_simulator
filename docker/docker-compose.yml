@@ -1,0 +1,78 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# docker-compose.yml
+#
+# Part of the "NMEA GPS Simulator" suite
+# Version 1.0.0 - April 10th, 2026
+#
+# Richard J. Sears
+# richardjsears@protonmail.com
+# https://github.com/rjsears
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+services:
+  gps-emulator:
+    image: rjsears/gps-emulator:latest
+    pull_policy: always
+    container_name: nmea-gps-emulator
+    restart: unless-stopped
+    privileged: true  # Required for USB device access
+
+    ports:
+      - "80:80"
+      - "12000:12000/udp"
+      - "12000:12000/tcp"
+      - "49002:49002/udp"  # Garmin Pilot/ ForeFlight XGPS
+
+    volumes:
+      - /dev:/dev  # USB device access
+
+    environment:
+      # Authentication
+      - USERNAME=admin
+      - PASSWORD=changeme
+      - BYPASS_AUTH=true
+
+      # Gradual Change Rates
+      - ALTITUDE_RATE_FT_PER_2SEC=1000
+      - AIRSPEED_RATE_KTS_PER_SEC=30
+      - HEADING_RATE_DEG_PER_SEC=3
+
+      # Default Position (KCRQ)
+      - DEFAULT_LAT=33.1283
+      - DEFAULT_LON=-117.2803
+      - DEFAULT_ALT_FT=0
+      - DEFAULT_AIRSPEED_KTS=0
+      - DEFAULT_HEADING=360
+
+      # Serial Port
+      - SERIAL_BAUDRATE=115200
+
+      # ForeFlight/EFB (leave empty to show placeholder)
+      - FOREFLIGHT_SIM_NAME=
+
+      # Timezone
+      - TZ=America/Los_Angeles
+
+      # ---- Auto-Start Configuration (Optional) ----
+      # Uncomment and configure to auto-start the emulator on container launch.
+      # To disable auto-start: leave AUTO_START_MODE empty or omit it entirely.
+      # Do NOT set to "false" - that will cause an error.
+      #
+      - AUTO_START_MODE=  # Options: rebroadcaster, sender, receiver, standalone
+      - AUTO_START_LISTEN_PORT=12000
+      - AUTO_START_PROTOCOL=udp
+      #
+      # EFB Output (ForeFlight/Garmin Pilot)
+      - AUTO_START_EFB_ENABLED=true
+      - AUTO_START_EFB_BROADCAST=false
+      - AUTO_START_EFB_TARGET_IPS=10.200.40.198,10.200.40.125
+      - AUTO_START_EFB_SIM_NAME=CL350
+      #
+      # USB Serial Output
+      - AUTO_START_USB_ENABLED=false
+      - AUTO_START_USB_DEVICE=/dev/ttyUSB0
+      #
+      # UDP Retransmit (rebroadcaster only)
+      - AUTO_START_UDP_RETRANSMIT=false
+      - AUTO_START_UDP_RETRANSMIT_IP=192.168.1.100
+      - AUTO_START_UDP_RETRANSMIT_PORT=12001

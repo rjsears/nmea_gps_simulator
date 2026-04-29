@@ -1,0 +1,63 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# .gitignore
+#
+# Part of the "NMEA GPS Simulator" suite
+# Version 1.0.0 - April 10th, 2026
+#
+# Richard J. Sears
+# richardjsears@protonmail.com
+# https://github.com/rjsears
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+# IDE
+.idea/
+.vscode/
+.kiro/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+*.egg-info/
+.ruff_cache/
+python/
+dist/
+.mypy_cache/
+
+# Pytest
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+terraform.tfvars
+
+# Environment
+.env
+
+# Custom
+*.zip
+notes/
+
+# Node.js
+node_modules/
+
+#Certain Docs
+
+docs
+docs/
+docs/superpowers/
+
+
+#Local Build/Run Files
+run_local.sh
+build_local.sh
+
+#PreCommit File
+.pre-commit-config.yaml

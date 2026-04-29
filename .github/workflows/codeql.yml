@@ -1,0 +1,44 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# codeql.yml
+#
+# Part of the "NMEA GPS Simulator" suite
+# Version 1.0.0 - April 10th, 2026
+#
+# Richard J. Sears
+# richardjsears@protonmail.com
+# https://github.com/rjsears
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1'
+
+permissions:
+  security-events: write
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: [python, javascript]
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4

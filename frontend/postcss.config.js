@@ -1,0 +1,17 @@
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+// postcss.config.js
+//
+// Part of the "NMEA GPS Simulator" suite
+// Version 1.0.0 - April 10th, 2026
+//
+// Richard J. Sears
+// richardjsears@protonmail.com
+// https://github.com/rjsears
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
