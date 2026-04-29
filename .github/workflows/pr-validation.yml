@@ -51,4 +51,4 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/labeler@v5
+      - uses: actions/labeler@v6
