@@ -32,6 +32,12 @@ A Dockerized NMEA GPS simulator with web interface for testing any application t
 <em>"In aviation, accuracy isn't optional - it's everything."</em>
 </p>
 
+<p align="center">
+  <a href="https://youtu.be/me8h58O2c_w">
+    <img src="images/video_thumbnail.png" alt="Watch the demo video" width="600">
+  </a>
+</p>
+
 ---
 
 ## Table of Contents
