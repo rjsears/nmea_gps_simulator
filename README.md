@@ -33,7 +33,7 @@ A Dockerized NMEA GPS simulator with web interface for testing any application t
 </p>
 
 <p align="center">
-  <a href="https://youtu.be/me8h58O2c_w">
+  <a href="https://youtu.be/me8h58O2c_w" target="_blank">
     <img src="images/video_thumbnail.png" alt="Watch the demo video" width="600">
   </a>
 </p>
