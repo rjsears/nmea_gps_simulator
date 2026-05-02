@@ -1078,6 +1078,52 @@ When a simulator is online (green status), clicking anywhere on its card will op
 
 > **Note:** The click-to-map feature is only available for online simulators. Offline simulator cards (gray status) are not clickable.
 
+### Health Monitoring
+
+The Fleet Dashboard includes built-in diagnostics to help troubleshoot connectivity issues between the dashboard, emulators, and simulators.
+
+<p align="center">
+<strong>Health View - All Systems Operational</strong><br>
+<img src="images/fleet_dashboard_health_ok.png" alt="Fleet Dashboard - Health OK" width="800">
+</p>
+
+<p align="center">
+<strong>Health View - Issue Detected</strong><br>
+<img src="images/fleet_dashboard_health_issue.png" alt="Fleet Dashboard - Health Issue" width="800">
+</p>
+
+#### How It Works
+
+Click the **Health** button (🩺) in the header to toggle health view. Each card displays a 4-node diagnostic chain:
+
+```
+📊 Dashboard  →  🖥️ Emulator  →  ✈️ Simulator  →  🛰️ GPS Data
+```
+
+| Node | What It Checks |
+|------|----------------|
+| Dashboard → Emulator | Heartbeat received within last 3 seconds |
+| Emulator → Simulator | ICMP ping from emulator to simulator |
+| Simulator → GPS Data | GPS packets arriving at dashboard |
+
+When an issue is detected, the failing node shows a red X and a guidance message appears with troubleshooting steps.
+
+#### Emulator Configuration
+
+To enable health monitoring, add `SIMULATOR_IP` to each emulator's docker-compose.yml:
+
+```yaml
+environment:
+  - AUTO_START_MODE=rebroadcaster
+  - AUTO_START_UDP_RETRANSMIT=true
+  - AUTO_START_UDP_RETRANSMIT_IP=10.200.40.3
+  - AUTO_START_UDP_RETRANSMIT_PORT=12001
+  # Health Monitoring
+  - SIMULATOR_IP=192.168.100.130   # IP of the flight simulator to ping
+```
+
+The emulator sends heartbeat packets every second with the ping status, allowing the dashboard to show exactly where connectivity breaks down.
+
 ---
 
 ## Contributing
