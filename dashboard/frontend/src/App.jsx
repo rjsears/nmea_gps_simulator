@@ -14,6 +14,12 @@ const MoonIcon = () => (
   </svg>
 )
 
+const HealthIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M22 12h-4l-3 9L9 3l-3 9H2" />
+  </svg>
+)
+
 function App() {
   const [simulators, setSimulators] = useState([])
   const [connected, setConnected] = useState(false)
@@ -28,6 +34,7 @@ function App() {
     return 'system'
   })
   const [isDark, setIsDark] = useState(false)
+  const [showHealth, setShowHealth] = useState(false)
 
   const toggleTheme = () => {
     setTheme(isDark ? 'light' : 'dark')
@@ -132,6 +139,18 @@ function App() {
               </div>
             </div>
             <div className="flex items-center space-x-3">
+              {/* Health toggle */}
+              <button
+                onClick={() => setShowHealth(!showHealth)}
+                className={`p-2 rounded-lg transition-colors ${
+                  showHealth
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
+                title={showHealth ? 'Show position data' : 'Show health status'}
+              >
+                <HealthIcon />
+              </button>
               {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
@@ -166,7 +185,7 @@ function App() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {simulators.map((sim) => (
-              <SimulatorCard key={sim.port} simulator={sim} />
+              <SimulatorCard key={sim.port} simulator={sim} showHealth={showHealth} />
             ))}
           </div>
         )}
