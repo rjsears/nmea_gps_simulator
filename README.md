@@ -50,6 +50,7 @@ A Dockerized NMEA GPS simulator with web interface for testing any application t
 - [Web Interface](#web-interface)
 - [NMEA Sentences](#nmea-sentences)
 - [Network Protocol](#network-protocol)
+- [Fleet Dashboard](#fleet-dashboard)
 - [Building from Source](#building-from-source)
 - [Project Structure](#project-structure)
 - [API Reference](#api-reference)
@@ -962,6 +963,67 @@ nmea_gps_simulator/
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/health` | GET | Health check (returns `{"status": "healthy"}`) |
+
+---
+
+## Fleet Dashboard
+
+The **Fleet Dashboard** is a separate Docker container that provides real-time monitoring of multiple GPS simulators from a single web interface. It's designed for flight training centers and simulation facilities that need to track multiple aircraft positions simultaneously.
+
+<p align="center">
+<img src="images/fleet_dashboard.png" alt="Fleet Dashboard" width="800">
+</p>
+
+### Features
+
+- **Real-time monitoring** of up to 20 simulators simultaneously
+- **Position tracking** with latitude, longitude, altitude, airspeed, and heading
+- **Nearest airport** calculation from 4,000+ airports database
+- **Online/Offline status** indicators (green = receiving data, gray = offline)
+- **Click to map** - Click any simulator card to open Google Maps at that location
+- **Same styling** as the main GPS emulator interface
+
+### Quick Start
+
+```yaml
+# docker-compose.yml
+services:
+  dashboard:
+    image: rjsears/fleet-dashboard:latest
+    pull_policy: always
+    container_name: fleet-dashboard
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - HOST=0.0.0.0
+      - PORT=80
+      # Configure your simulators (name:port)
+      - SIM_1_NAME=CJ3
+      - SIM_1_PORT=12001
+      - SIM_2_NAME=Ultra
+      - SIM_2_PORT=12002
+      - SIM_3_NAME=CL350
+      - SIM_3_PORT=12003
+```
+
+### How It Works
+
+1. Each GPS emulator sends UDP packets to the dashboard using **UDP Retransmit**
+2. The dashboard listens on separate ports for each simulator (12001, 12002, etc.)
+3. Port number identifies which simulator the data belongs to
+4. Dashboard displays all simulators in a grid with live updates
+
+### Emulator Configuration
+
+Enable UDP retransmit in each emulator's docker-compose.yml:
+
+```yaml
+environment:
+  - AUTO_START_MODE=rebroadcaster
+  - AUTO_START_UDP_RETRANSMIT=true
+  - AUTO_START_UDP_RETRANSMIT_IP=10.200.40.3   # Dashboard IP
+  - AUTO_START_UDP_RETRANSMIT_PORT=12001        # Unique port per simulator
+```
 
 ---
 
