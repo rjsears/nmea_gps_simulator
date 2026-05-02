@@ -77,27 +77,43 @@ export default function Dashboard() {
   // This prevents race conditions where status polling overwrites user input before API completes
   useEffect(() => {
     if (status && localState) {
-      setLocalState(prev => ({
-        ...prev,
-        // Don't sync config from server - user's local state is authoritative
-        // Only sync is_running and target values
-        gps: {
-          ...prev.gps,
-          is_running: status.gps?.is_running ?? prev.gps.is_running,
-          // Sync target values so other browsers see slider changes
-          target_altitude_ft: status.gps?.target_altitude_ft ?? prev.gps.target_altitude_ft,
-          target_speed_kts: status.gps?.target_speed_kts ?? prev.gps.target_speed_kts,
-          target_heading: status.gps?.target_heading ?? prev.gps.target_heading,
-          // Sync airport selection for multi-browser support
-          airport_icao: status.gps?.airport_icao ?? prev.gps.airport_icao,
-        },
-      }))
+      setLocalState(prev => {
+        if (!prev) return prev
+        const newIsRunning = status.gps?.is_running ?? prev.gps.is_running
+        const newTargetAlt = status.gps?.target_altitude_ft ?? prev.gps.target_altitude_ft
+        const newTargetSpd = status.gps?.target_speed_kts ?? prev.gps.target_speed_kts
+        const newTargetHdg = status.gps?.target_heading ?? prev.gps.target_heading
+        const newAirportIcao = status.gps?.airport_icao ?? prev.gps.airport_icao
+
+        // Only create new object if something changed
+        if (
+          newIsRunning === prev.gps.is_running &&
+          newTargetAlt === prev.gps.target_altitude_ft &&
+          newTargetSpd === prev.gps.target_speed_kts &&
+          newTargetHdg === prev.gps.target_heading &&
+          newAirportIcao === prev.gps.airport_icao
+        ) {
+          return prev // Return same reference - no re-render
+        }
+
+        return {
+          ...prev,
+          gps: {
+            ...prev.gps,
+            is_running: newIsRunning,
+            target_altitude_ft: newTargetAlt,
+            target_speed_kts: newTargetSpd,
+            target_heading: newTargetHdg,
+            airport_icao: newAirportIcao,
+          },
+        }
+      })
       // Update airportSelected if emulator started externally or airport set from another browser
-      if ((status.gps?.is_running && !localState?.gps?.is_running) || status.gps?.airport_icao) {
+      if (status.gps?.airport_icao && !airportSelected) {
         setAirportSelected(true)
       }
     }
-  }, [status])
+  }, [status, airportSelected])
 
   const isRunning = localState?.gps?.is_running || false
 
@@ -278,7 +294,6 @@ export default function Dashboard() {
   const canStart = hasModeSelected && !needsAirport && !needsSerial && !needsStandaloneConfig && !needsStandaloneSerial && !needsSenderConfig && !needsSenderSerial && !needsSimName && !needsEfbTargetIps && !needsEfbSubOption && !needsRebroadcastConfig && !needsRebroadcastSerial && !needsRebroadcastUdpIp
 
   // Debug logging
-  console.log('Validation:', { hasModeSelected, needsAirport, needsSerial, needsStandaloneConfig, needsStandaloneSerial, needsSenderConfig, needsSenderSerial, needsSimName, needsEfbTargetIps, needsEfbSubOption, needsRebroadcastConfig, canStart, airportSelected, modes: localState?.modes })
 
   // Determine why button is disabled
   const getDisabledReason = () => {
