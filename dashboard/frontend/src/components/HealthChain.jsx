@@ -1,24 +1,29 @@
 function HealthChain({ simulator }) {
   const { emulator_online, sim_reachable, is_online } = simulator
 
+  // Smart gating: if GPS data is flowing, everything is implicitly OK
+  const allImplicitlyOk = is_online
+
   // Determine status of each node
   const dashboardOk = true // Always true if we're rendering
-  const emulatorOk = emulator_online
-  const simulatorOk = emulatorOk && sim_reachable
+  const emulatorOk = allImplicitlyOk || emulator_online
+  const simulatorOk = allImplicitlyOk || (emulatorOk && sim_reachable)
   const gpsDataOk = is_online
 
-  // Find first failure point
+  // Find first failure point (only if not implicitly OK)
   let failurePoint = null
   let failureMessage = ''
-  if (!emulatorOk) {
-    failurePoint = 'emulator'
-    failureMessage = 'Is the emulator container running?'
-  } else if (!simulatorOk) {
-    failurePoint = 'simulator'
-    failureMessage = 'Is the simulator powered on? If yes, possible network issue.'
-  } else if (!gpsDataOk) {
-    failurePoint = 'gps'
-    failureMessage = 'GPS software on simulator may have crashed. Restart the GPS application.'
+  if (!allImplicitlyOk) {
+    if (!emulator_online) {
+      failurePoint = 'emulator'
+      failureMessage = 'Is the emulator container running?'
+    } else if (!sim_reachable) {
+      failurePoint = 'simulator'
+      failureMessage = 'Is the simulator powered on? If yes, possible network issue.'
+    } else if (!is_online) {
+      failurePoint = 'gps'
+      failureMessage = 'GPS software on simulator may have crashed. Restart the GPS application.'
+    }
   }
 
   const allOk = !failurePoint
@@ -44,7 +49,7 @@ function HealthChain({ simulator }) {
         <div className={`w-12 h-12 ${bgColor} border-2 ${borderColor} rounded-lg flex items-center justify-center text-2xl relative`}>
           {icon}
           {isFailed && (
-            <span className="absolute inset-0 flex items-center justify-content text-4xl text-gray-400 font-thin opacity-80">
+            <span className="absolute inset-0 flex items-center justify-center text-4xl text-gray-400 font-thin opacity-80">
               ✕
             </span>
           )}

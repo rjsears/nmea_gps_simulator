@@ -225,14 +225,6 @@ class RebroadcasterRunner:
         self._simulator_ip = simulator_ip
         self._start_time = time.time()
 
-        # Start heartbeat thread if UDP retransmit is enabled
-        if rebroadcast_udp and rebroadcast_udp_ip:
-            self._heartbeat_thread = threading.Thread(
-                target=self._send_heartbeat, daemon=True
-            )
-            self._heartbeat_thread.start()
-            logger.info(f"Heartbeat thread started, simulator_ip={simulator_ip}")
-
         # Create and start network receiver
         self._receiver = NetworkReceiver(
             port=port,
@@ -241,6 +233,16 @@ class RebroadcasterRunner:
         )
         self._receiver.start()
         self._running = True
+
+        # Start heartbeat thread if UDP retransmit is enabled
+        # Must be after self._running = True or the thread exits immediately
+        if rebroadcast_udp and rebroadcast_udp_ip:
+            self._heartbeat_thread = threading.Thread(
+                target=self._send_heartbeat, daemon=True
+            )
+            self._heartbeat_thread.start()
+            logger.info(f"Heartbeat thread started, simulator_ip={simulator_ip}")
+
         logger.info("Rebroadcaster started")
 
     def stop(self) -> None:
