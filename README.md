@@ -1016,7 +1016,7 @@ The Fleet Dashboard operates as a central aggregation point for all your GPS sim
 │  CJ3 Emulator   │ ───────────────── │                 │
 └─────────────────┘                   │                 │
                                       │  Fleet          │     WebSocket     ┌─────────────┐
-┌─────────────────┐     UDP:12002     │  Dashboard      │ ─────────────────  │  Browser    │
+┌─────────────────┐     UDP:12002     │  Dashboard      │ ───────────────── │  Browser    │
 │  Ultra Emulator │ ───────────────── │  Container      │                   └─────────────┘
 └─────────────────┘                   │                 │
                                       │                 │
