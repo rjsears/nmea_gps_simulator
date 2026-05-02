@@ -81,9 +81,7 @@ class RebroadcasterRunner:
 
     def _send_heartbeat(self) -> None:
         """Send heartbeat packets to dashboard every 1 second."""
-        logger.info("Heartbeat thread loop starting")
         while self._running:
-            logger.info(f"Heartbeat loop: socket={self._udp_socket is not None}, ip={self._udp_retransmit_ip}")
             if self._udp_socket and self._udp_retransmit_ip:
                 try:
                     import json
@@ -91,9 +89,7 @@ class RebroadcasterRunner:
 
                     sim_reachable = False
                     if self._simulator_ip:
-                        logger.info(f"Pinging {self._simulator_ip}")
                         sim_reachable = self._ping_host(self._simulator_ip)
-                        logger.info(f"Ping result: {sim_reachable}")
 
                     receiving_udp = (
                         (time.time() - self._last_packet_time) < 5.0
@@ -112,7 +108,7 @@ class RebroadcasterRunner:
                     self._udp_socket.sendto(
                         payload, (self._udp_retransmit_ip, self._udp_retransmit_port)
                     )
-                    logger.info(f"Heartbeat SENT to {self._udp_retransmit_ip}:{self._udp_retransmit_port}")
+                    logger.debug(f"Heartbeat sent: {heartbeat}")
                 except Exception as e:
                     logger.error(f"Heartbeat send failed: {e}")
             time.sleep(1.0)
