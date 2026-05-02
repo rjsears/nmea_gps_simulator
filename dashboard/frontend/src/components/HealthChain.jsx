@@ -70,11 +70,7 @@ function HealthChain({ simulator }) {
     }
     return (
       <div className="flex-1 flex items-center">
-        <div className={`h-1 w-full ${bgColor} relative`}>
-          {ok && !isAfterFailure && (
-            <span className="absolute -top-2 left-1/2 transform -translate-x-1/2 text-green-500 text-sm">✓</span>
-          )}
-        </div>
+        <div className={`h-px w-full ${bgColor}`} />
       </div>
     )
   }
@@ -96,8 +92,8 @@ function HealthChain({ simulator }) {
       </div>
 
       {allOk ? (
-        <div className="text-center mt-4 text-green-600 dark:text-green-400 font-medium">
-          ✓ All systems operational
+        <div className="mt-4 p-3 bg-green-100 dark:bg-green-900/30 rounded-lg text-sm text-green-800 dark:text-green-200 text-center font-medium">
+          All systems operational
         </div>
       ) : (
         <div className="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg text-sm text-yellow-800 dark:text-yellow-200">
