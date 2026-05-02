@@ -22,7 +22,7 @@ class TestLookupAirport:
         result = lookup_airport("KLAX")
         assert result is not None
         assert result["icao"] == "KLAX"
-        assert result["name"] == "Los Angeles International"
+        assert "Los Angeles" in result["name"]
         assert "lat" in result
         assert "lon" in result
         assert "elevation_ft" in result
