@@ -17,6 +17,7 @@ from functools import lru_cache
 @dataclass
 class SimConfig:
     """Configuration for a single simulator."""
+
     name: str
     port: int
 
@@ -24,6 +25,7 @@ class SimConfig:
 @dataclass
 class Settings:
     """Application settings."""
+
     host: str
     port: int
     simulators: list[SimConfig]
@@ -52,7 +54,9 @@ def parse_simulator_config() -> list[SimConfig]:
             if ":" in entry:
                 name, port_str = entry.split(":", 1)
                 try:
-                    simulators.append(SimConfig(name=name.strip(), port=int(port_str.strip())))
+                    simulators.append(
+                        SimConfig(name=name.strip(), port=int(port_str.strip()))
+                    )
                 except ValueError:
                     pass
 

@@ -91,7 +91,11 @@ class RebroadcasterRunner:
                     if self._simulator_ip:
                         sim_reachable = self._ping_host(self._simulator_ip)
 
-                    receiving_udp = (time.time() - self._last_packet_time) < 5.0 if self._last_packet_time > 0 else False
+                    receiving_udp = (
+                        (time.time() - self._last_packet_time) < 5.0
+                        if self._last_packet_time > 0
+                        else False
+                    )
 
                     heartbeat = {
                         "type": "heartbeat",
@@ -223,7 +227,9 @@ class RebroadcasterRunner:
 
         # Start heartbeat thread if UDP retransmit is enabled
         if rebroadcast_udp and rebroadcast_udp_ip:
-            self._heartbeat_thread = threading.Thread(target=self._send_heartbeat, daemon=True)
+            self._heartbeat_thread = threading.Thread(
+                target=self._send_heartbeat, daemon=True
+            )
             self._heartbeat_thread.start()
             logger.info(f"Heartbeat thread started, simulator_ip={simulator_ip}")
 

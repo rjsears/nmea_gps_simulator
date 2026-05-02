@@ -13,7 +13,6 @@
 import asyncio
 import json
 import logging
-import os
 import socket
 import threading
 import time
@@ -112,7 +111,9 @@ class SimulatorState:
                 "packet_count": self.packet_count,
                 "last_update": self.last_update,
                 "closest_airport": self.closest_airport,
-                "airport_distance_nm": round(self.airport_distance_nm, 1) if self.airport_distance_nm else None,
+                "airport_distance_nm": round(self.airport_distance_nm, 1)
+                if self.airport_distance_nm
+                else None,
                 # Health data
                 "emulator_online": self.emulator_online,
                 "sim_reachable": self.sim_reachable,
@@ -270,7 +271,9 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         # Send initial state
         state = fleet_monitor.get_all_states()
-        await websocket.send_text(json.dumps({"type": "fleet_state", "simulators": state}))
+        await websocket.send_text(
+            json.dumps({"type": "fleet_state", "simulators": state})
+        )
 
         # Keep connection alive
         while True:
@@ -280,13 +283,17 @@ async def websocket_endpoint(websocket: WebSocket):
                 break
     finally:
         websocket_connections.discard(websocket)
-        logger.info(f"WebSocket client disconnected. Total: {len(websocket_connections)}")
+        logger.info(
+            f"WebSocket client disconnected. Total: {len(websocket_connections)}"
+        )
 
 
 # Serve static files (frontend build)
 frontend_build = Path(__file__).parent.parent / "frontend" / "dist"
 if frontend_build.exists():
-    app.mount("/assets", StaticFiles(directory=frontend_build / "assets"), name="assets")
+    app.mount(
+        "/assets", StaticFiles(directory=frontend_build / "assets"), name="assets"
+    )
 
     @app.get("/{full_path:path}")
     async def serve_frontend(full_path: str):
