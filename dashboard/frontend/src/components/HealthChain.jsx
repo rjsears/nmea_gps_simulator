@@ -45,13 +45,12 @@ function HealthChain({ simulator }) {
     }
 
     return (
-      <div className="text-center">
+      <div className="flex flex-col items-center">
         <div className={`w-12 h-12 ${bgColor} border-2 ${borderColor} rounded-lg flex items-center justify-center text-2xl relative`}>
-          {icon}
-          {isFailed && (
-            <span className="absolute inset-0 flex items-center justify-center text-4xl text-gray-400 font-thin opacity-80">
-              ✕
-            </span>
+          {isFailed ? (
+            <span className="text-3xl text-red-500 dark:text-red-400 font-bold">X</span>
+          ) : (
+            icon
           )}
         </div>
         <div className={`text-xs mt-1 font-medium ${isFailed ? 'text-red-600 dark:text-red-400 font-bold' : textColor}`}>
@@ -69,9 +68,7 @@ function HealthChain({ simulator }) {
       bgColor = 'bg-red-500'
     }
     return (
-      <div className="flex-1 flex items-center">
-        <div className={`h-px w-full ${bgColor}`} />
-      </div>
+      <div className={`h-0.5 w-full ${bgColor}`} />
     )
   }
 
@@ -81,14 +78,29 @@ function HealthChain({ simulator }) {
 
   return (
     <div className="p-4">
-      <div className="flex items-center justify-between gap-2 px-2">
-        <NodeBox icon="📊" label="Dashboard" status={dashboardOk} isFailed={false} isAfterFailure={false} />
-        <Connector ok={emulatorOk} isAfterFailure={false} />
-        <NodeBox icon="🖥️" label="Emulator" status={emulatorOk} isFailed={failurePoint === 'emulator'} isAfterFailure={false} />
-        <Connector ok={simulatorOk} isAfterFailure={afterEmulator} />
-        <NodeBox icon="✈️" label="Simulator" status={simulatorOk} isFailed={failurePoint === 'simulator'} isAfterFailure={afterEmulator} />
-        <Connector ok={gpsDataOk} isAfterFailure={afterSimulator} />
-        <NodeBox icon="🛰️" label="GPS Data" status={gpsDataOk} isFailed={failurePoint === 'gps'} isAfterFailure={afterSimulator} />
+      {/* Boxes row with connectors aligned to box centers */}
+      <div className="flex items-start">
+        <div className="flex-1 flex justify-center">
+          <NodeBox icon="📊" label="Dashboard" status={dashboardOk} isFailed={false} isAfterFailure={false} />
+        </div>
+        <div className="flex-1 flex items-center h-12">
+          <Connector ok={emulatorOk} isAfterFailure={false} />
+        </div>
+        <div className="flex-1 flex justify-center">
+          <NodeBox icon="🖥️" label="Emulator" status={emulatorOk} isFailed={failurePoint === 'emulator'} isAfterFailure={false} />
+        </div>
+        <div className="flex-1 flex items-center h-12">
+          <Connector ok={simulatorOk} isAfterFailure={afterEmulator} />
+        </div>
+        <div className="flex-1 flex justify-center">
+          <NodeBox icon="✈️" label="Simulator" status={simulatorOk} isFailed={failurePoint === 'simulator'} isAfterFailure={afterEmulator} />
+        </div>
+        <div className="flex-1 flex items-center h-12">
+          <Connector ok={gpsDataOk} isAfterFailure={afterSimulator} />
+        </div>
+        <div className="flex-1 flex justify-center">
+          <NodeBox icon="🛰️" label="GPS Data" status={gpsDataOk} isFailed={failurePoint === 'gps'} isAfterFailure={afterSimulator} />
+        </div>
       </div>
 
       {allOk ? (
