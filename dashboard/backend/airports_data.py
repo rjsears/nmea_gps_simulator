@@ -1,19 +1,14 @@
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-# airports.py
+# airports_data.py
 #
-# Part of the "NMEA GPS Simulator" suite
-# Version 1.0.0 - April 10th, 2026
+# Airport database - auto-generated from main emulator
+# DO NOT EDIT - regenerate from backend/airports.py
 #
 # Richard J. Sears
-# richardjsears@protonmail.com
-# https://github.com/rjsears
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-"""Airport database with coordinates for US, Canada, and Europe."""
+"""Airport database with ICAO codes and coordinates."""
 
-# Airport database with ICAO codes and coordinates
-# Format: ICAO -> (name, lat, lon, elevation_ft)
-# Total: 3992 airports (US: 3895, Canada: 35, Europe: 62)
 AIRPORTS = {
     # ============================================
     # UNITED STATES (3895 airports)
@@ -4056,77 +4051,3 @@ AIRPORTS = {
     "BIKF": ("Keflavik International", 63.9850, -22.6056, 171),
 }
 
-
-def lookup_airport(icao: str) -> dict | None:
-    """Look up airport by ICAO code.
-
-    Args:
-        icao: ICAO airport code (e.g., "KCRQ", "KLAX", "EGLL")
-
-    Returns:
-        Dict with name, lat, lon, elevation_ft or None if not found
-    """
-    icao = icao.upper().strip()
-    if icao in AIRPORTS:
-        name, lat, lon, elev = AIRPORTS[icao]
-        return {
-            "icao": icao,
-            "name": name,
-            "lat": lat,
-            "lon": lon,
-            "elevation_ft": elev,
-        }
-    return None
-
-
-def search_airports(query: str, limit: int = 10) -> list[dict]:
-    """Search airports by ICAO code or name.
-
-    Args:
-        query: Search string (matches ICAO code or airport name)
-        limit: Maximum results to return
-
-    Returns:
-        List of matching airports
-    """
-    query = query.upper().strip()
-    results = []
-
-    for icao, (name, lat, lon, elev) in AIRPORTS.items():
-        if query in icao or query in name.upper():
-            results.append(
-                {
-                    "icao": icao,
-                    "name": name,
-                    "lat": lat,
-                    "lon": lon,
-                    "elevation_ft": elev,
-                }
-            )
-            if len(results) >= limit:
-                break
-
-    # Sort by ICAO code
-    results.sort(key=lambda x: x["icao"])
-    return results
-
-
-def list_all_airports() -> list[dict]:
-    """Get list of all airports.
-
-    Returns:
-        List of all airports sorted by ICAO code
-    """
-    results = []
-    for icao, (name, lat, lon, elev) in AIRPORTS.items():
-        results.append(
-            {
-                "icao": icao,
-                "name": name,
-                "lat": lat,
-                "lon": lon,
-                "elevation_ft": elev,
-            }
-        )
-    results.sort(key=lambda x: x["icao"])
-    return results

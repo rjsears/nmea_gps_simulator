@@ -1,0 +1,30 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# docker-compose.yml
+#
+# Fleet Dashboard
+#
+# Richard J. Sears
+# richardjsears@protonmail.com
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+services:
+  dashboard:
+    image: rjsears/fleet-dashboard:latest
+    container_name: fleet-dashboard
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      # Server configuration
+      - HOST=0.0.0.0
+      - PORT=8080
+
+      # Simulator configuration (name:port pairs)
+      # Each emulator should send UDP to this dashboard's IP on its assigned port
+      - SIMULATORS=CL350:12001,Ultra:12002,CJ3:12003,PC-12:12004,King Air:12005,Citation X:12006
+
+      # Alternative: use individual variables
+      # - SIM_1_NAME=CL350
+      # - SIM_1_PORT=12001
+      # - SIM_2_NAME=Ultra
+      # - SIM_2_PORT=12002
+      # etc.

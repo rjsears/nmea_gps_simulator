@@ -72,7 +72,10 @@ services:
       - AUTO_START_USB_ENABLED=false
       - AUTO_START_USB_DEVICE=/dev/ttyUSB0
       #
-      # UDP Retransmit (rebroadcaster only)
+      # UDP Retransmit to Fleet Dashboard (rebroadcaster only)
+      # Set these to send GPS data to the Fleet Dashboard for monitoring.
+      # Each simulator should use a unique port (12001, 12002, etc.)
+      # The Dashboard identifies each sim by its port number.
       - AUTO_START_UDP_RETRANSMIT=false
-      - AUTO_START_UDP_RETRANSMIT_IP=192.168.1.100
-      - AUTO_START_UDP_RETRANSMIT_PORT=12001
+      - AUTO_START_UDP_RETRANSMIT_IP=10.200.40.3   # Fleet Dashboard IP
+      - AUTO_START_UDP_RETRANSMIT_PORT=12001        # Unique port per sim (CL350=12001, Ultra=12002, etc.)
