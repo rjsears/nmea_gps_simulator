@@ -28,10 +28,11 @@ function HealthChain({ simulator }) {
 
   const allOk = !failurePoint
 
-  const NodeBox = ({ icon, label, status, isFailed, isAfterFailure }) => {
+  const NodeBox = ({ icon, label, isFailed, isAfterFailure }) => {
     let bgColor, borderColor, textColor
     if (isFailed) {
-      bgColor = 'bg-red-100 dark:bg-red-900/30'
+      // Failed: gray interior like after-failure, but bright red border
+      bgColor = 'bg-gray-100 dark:bg-gray-700'
       borderColor = 'border-red-500'
       textColor = 'text-red-600 dark:text-red-400'
     } else if (isAfterFailure) {
@@ -45,16 +46,11 @@ function HealthChain({ simulator }) {
     }
 
     return (
-      <div className="text-center">
-        <div className={`w-12 h-12 ${bgColor} border-2 ${borderColor} rounded-lg flex items-center justify-center text-2xl relative`}>
+      <div className="flex flex-col items-center">
+        <div className={`w-12 h-12 ${bgColor} border-2 ${borderColor} rounded-lg flex items-center justify-center text-2xl`}>
           {icon}
-          {isFailed && (
-            <span className="absolute inset-0 flex items-center justify-center text-4xl text-gray-500 dark:text-gray-400 font-thin z-10">
-              ✕
-            </span>
-          )}
         </div>
-        <div className={`text-xs mt-1 font-medium ${isFailed ? 'text-red-600 dark:text-red-400 font-bold' : textColor}`}>
+        <div className={`text-xs mt-1 font-medium ${textColor}`}>
           {label}
         </div>
       </div>
@@ -68,9 +64,11 @@ function HealthChain({ simulator }) {
     } else if (!ok) {
       bgColor = 'bg-red-500'
     }
+    // mt-6 positions line at center of h-12 box, mb-5 matches label height below
     return (
-      <div className="flex items-center pb-5 px-1">
-        <div className={`h-0.5 w-8 ${bgColor}`} />
+      <div className="flex flex-col">
+        <div className={`h-0.5 w-6 mt-6 ${bgColor}`} />
+        <div className="h-5" />
       </div>
     )
   }
@@ -81,22 +79,14 @@ function HealthChain({ simulator }) {
 
   return (
     <div className="p-4">
-      <div className="flex items-start">
-        <div className="flex-1 flex justify-center">
-          <NodeBox icon="📊" label="Dashboard" status={dashboardOk} isFailed={false} isAfterFailure={false} />
-        </div>
+      <div className="flex items-start justify-between">
+        <NodeBox icon="📊" label="Dashboard" isFailed={false} isAfterFailure={false} />
         <Connector ok={emulatorOk} isAfterFailure={false} />
-        <div className="flex-1 flex justify-center">
-          <NodeBox icon="🖥️" label="Emulator" status={emulatorOk} isFailed={failurePoint === 'emulator'} isAfterFailure={false} />
-        </div>
+        <NodeBox icon="🖥️" label="Emulator" isFailed={failurePoint === 'emulator'} isAfterFailure={false} />
         <Connector ok={simulatorOk} isAfterFailure={afterEmulator} />
-        <div className="flex-1 flex justify-center">
-          <NodeBox icon="✈️" label="Simulator" status={simulatorOk} isFailed={failurePoint === 'simulator'} isAfterFailure={afterEmulator} />
-        </div>
+        <NodeBox icon="✈️" label="Simulator" isFailed={failurePoint === 'simulator'} isAfterFailure={afterEmulator} />
         <Connector ok={gpsDataOk} isAfterFailure={afterSimulator} />
-        <div className="flex-1 flex justify-center">
-          <NodeBox icon="🛰️" label="GPS Data" status={gpsDataOk} isFailed={failurePoint === 'gps'} isAfterFailure={afterSimulator} />
-        </div>
+        <NodeBox icon="🛰️" label="GPS Data" isFailed={failurePoint === 'gps'} isAfterFailure={afterSimulator} />
       </div>
 
       {allOk ? (
