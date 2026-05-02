@@ -27,11 +27,18 @@ function SimulatorCard({ simulator }) {
     return `${hdg}° ${directions[index]}`
   }
 
+  const openGoogleMaps = () => {
+    if (is_online && lat && lon) {
+      window.open(`https://www.google.com/maps?q=${lat},${lon}`, '_blank')
+    }
+  }
+
   return (
     <div
+      onClick={openGoogleMaps}
       className={`rounded-xl shadow-lg overflow-hidden transition-all duration-300 ${
         is_online
-          ? 'bg-white border-2 border-green-400 status-online'
+          ? 'bg-white border-2 border-green-400 cursor-pointer hover:shadow-xl hover:scale-[1.02]'
           : 'bg-gray-100 border-2 border-gray-300 opacity-75'
       }`}
     >

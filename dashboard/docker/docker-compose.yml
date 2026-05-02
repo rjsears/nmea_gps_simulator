@@ -23,15 +23,15 @@ services:
 
       # Simulator configuration
       # Each emulator should send UDP to this dashboard's IP on its assigned port
-      - SIM_1_NAME=CL350
+      - SIM_1_NAME=CJ3
       - SIM_1_PORT=12001
       - SIM_2_NAME=Ultra
       - SIM_2_PORT=12002
-      - SIM_3_NAME=CJ3
+      - SIM_3_NAME=CJ1
       - SIM_3_PORT=12003
-      - SIM_4_NAME=PC-12
+      - SIM_4_NAME=CE560XL
       - SIM_4_PORT=12004
-      - SIM_5_NAME=King Air
+      - SIM_5_NAME=Classic CJ1
       - SIM_5_PORT=12005
-      - SIM_6_NAME=Citation X
+      - SIM_6_NAME=CL350
       - SIM_6_PORT=12006

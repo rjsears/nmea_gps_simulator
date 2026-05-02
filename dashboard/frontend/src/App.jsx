@@ -56,9 +56,20 @@ function App() {
   }, [])
 
   return (
-    <div className="min-h-screen animated-bg">
+    <div
+      className="min-h-screen relative"
+      style={{
+        backgroundImage: 'url(/map_background.gif)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Overlay for readability */}
+      <div className="absolute inset-0 bg-gray-100/80" style={{ backgroundAttachment: 'fixed' }} />
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header className="relative z-10 bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -89,7 +100,7 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {simulators.length === 0 ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
@@ -105,7 +116,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2">
+      <footer className="relative z-10 fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-xs text-gray-400">
             LOFT Fleet Dashboard v1.0.0 | {simulators.length} simulators configured
