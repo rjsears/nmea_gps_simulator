@@ -36,6 +36,25 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      emulator: ${{ steps.filter.outputs.emulator }}
+      dashboard: ${{ steps.filter.outputs.dashboard }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            emulator:
+              - 'backend/**'
+              - 'frontend/**'
+              - 'docker/**'
+              - 'requirements.txt'
+            dashboard:
+              - 'dashboard/**'
+
   lint:
     runs-on: ubuntu-latest
     steps:
