@@ -50,6 +50,19 @@ class SimulatorState:
         self.closest_airport: Optional[dict] = None
         self.airport_distance_nm: Optional[float] = None
         self._lock = threading.Lock()
+        # Health monitoring
+        self.emulator_connected: bool = False
+        self.sim_reachable: bool = False
+        self.receiving_udp: bool = False
+        self.last_heartbeat: Optional[float] = None
+        self.emulator_uptime: int = 0
+
+    @property
+    def emulator_online(self) -> bool:
+        """Check if emulator is online (received heartbeat within last 3 seconds)."""
+        if self.last_heartbeat is None:
+            return False
+        return (time.time() - self.last_heartbeat) < 3.0
 
     @property
     def is_online(self) -> bool:
@@ -75,6 +88,15 @@ class SimulatorState:
                 self.closest_airport = result["airport"]
                 self.airport_distance_nm = result["distance_nm"]
 
+    def update_heartbeat(self, data: dict) -> None:
+        """Update state from heartbeat packet."""
+        with self._lock:
+            self.emulator_connected = True
+            self.sim_reachable = data.get("sim_reachable", False)
+            self.receiving_udp = data.get("receiving_udp", False)
+            self.emulator_uptime = data.get("uptime_seconds", 0)
+            self.last_heartbeat = time.time()
+
     def to_dict(self) -> dict:
         """Convert state to dictionary for API response."""
         with self._lock:
@@ -91,6 +113,11 @@ class SimulatorState:
                 "last_update": self.last_update,
                 "closest_airport": self.closest_airport,
                 "airport_distance_nm": round(self.airport_distance_nm, 1) if self.airport_distance_nm else None,
+                # Health data
+                "emulator_online": self.emulator_online,
+                "sim_reachable": self.sim_reachable,
+                "receiving_udp": self.receiving_udp,
+                "emulator_uptime": self.emulator_uptime,
             }
 
 
@@ -150,8 +177,12 @@ class FleetMonitor:
                 packet = data.decode().strip()
                 try:
                     gps_data = json.loads(packet)
-                    sim.update(gps_data)
-                    logger.debug(f"Received packet for {sim.name}: {gps_data}")
+                    if gps_data.get("type") == "heartbeat":
+                        sim.update_heartbeat(gps_data)
+                        logger.debug(f"Received heartbeat for {sim.name}: {gps_data}")
+                    else:
+                        sim.update(gps_data)
+                        logger.debug(f"Received packet for {sim.name}: {gps_data}")
                 except json.JSONDecodeError:
                     logger.warning(f"Invalid JSON from {addr}: {packet[:50]}")
             except socket.timeout:
