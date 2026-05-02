@@ -64,3 +64,6 @@ build_local.sh
 
 # Git worktrees
 .worktrees/
+
+# Superpowers brainstorming
+.superpowers/
