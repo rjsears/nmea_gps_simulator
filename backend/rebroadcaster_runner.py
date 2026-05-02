@@ -13,8 +13,11 @@
 
 import asyncio
 import logging
+import platform
 import socket
+import subprocess
 import threading
+import time
 from typing import Optional
 
 from .network.receiver import NetworkReceiver
@@ -48,6 +51,10 @@ class RebroadcasterRunner:
         self._enabled_sentences: set[str] = set()
         self._udp_retransmit_ip: Optional[str] = None
         self._udp_retransmit_port: int = 12001
+        self._simulator_ip: Optional[str] = None
+        self._heartbeat_thread: Optional[threading.Thread] = None
+        self._start_time: float = 0
+        self._last_packet_time: float = 0
 
     @property
     def is_running(self) -> bool:
@@ -59,6 +66,49 @@ class RebroadcasterRunner:
             return self._receiver.state.is_connected
         return False
 
+    def _ping_host(self, ip: str) -> bool:
+        """Ping a host and return True if reachable."""
+        try:
+            param = "-n" if platform.system().lower() == "windows" else "-c"
+            result = subprocess.run(
+                ["ping", param, "1", "-W", "1", ip],
+                capture_output=True,
+                timeout=2,
+            )
+            return result.returncode == 0
+        except Exception:
+            return False
+
+    def _send_heartbeat(self) -> None:
+        """Send heartbeat packets to dashboard every 1 second."""
+        while self._running:
+            if self._udp_socket and self._udp_retransmit_ip:
+                try:
+                    import json
+                    import time
+
+                    sim_reachable = False
+                    if self._simulator_ip:
+                        sim_reachable = self._ping_host(self._simulator_ip)
+
+                    receiving_udp = (time.time() - self._last_packet_time) < 5.0 if self._last_packet_time > 0 else False
+
+                    heartbeat = {
+                        "type": "heartbeat",
+                        "sim_ip": self._simulator_ip or "",
+                        "sim_reachable": sim_reachable,
+                        "receiving_udp": receiving_udp,
+                        "uptime_seconds": int(time.time() - self._start_time),
+                    }
+                    payload = json.dumps(heartbeat).encode()
+                    self._udp_socket.sendto(
+                        payload, (self._udp_retransmit_ip, self._udp_retransmit_port)
+                    )
+                    logger.debug(f"Heartbeat sent: {heartbeat}")
+                except Exception as e:
+                    logger.error(f"Heartbeat send failed: {e}")
+            time.sleep(1.0)
+
     def set_ws_manager(self, ws_manager, event_loop):
         """Set the WebSocket manager for broadcasting output."""
         self._ws_manager = ws_manager
@@ -67,6 +117,7 @@ class RebroadcasterRunner:
     def start(
         self,
         port: int,
+        simulator_ip: Optional[str] = None,
         # USB output options
         rebroadcast_usb: bool = False,
         serial_device: Optional[str] = None,
@@ -87,6 +138,7 @@ class RebroadcasterRunner:
 
         Args:
             port: Network port to listen on
+            simulator_ip: IP address of the simulator (for health checks)
             rebroadcast_usb: Enable USB serial output
             serial_device: Serial device path for NMEA output
             baudrate: Serial baud rate
@@ -165,6 +217,16 @@ class RebroadcasterRunner:
                 f"UDP retransmit configured: {rebroadcast_udp_ip}:{rebroadcast_udp_port}"
             )
 
+        # Store simulator IP for health checks
+        self._simulator_ip = simulator_ip
+        self._start_time = time.time()
+
+        # Start heartbeat thread if UDP retransmit is enabled
+        if rebroadcast_udp and rebroadcast_udp_ip:
+            self._heartbeat_thread = threading.Thread(target=self._send_heartbeat, daemon=True)
+            self._heartbeat_thread.start()
+            logger.info(f"Heartbeat thread started, simulator_ip={simulator_ip}")
+
         # Create and start network receiver
         self._receiver = NetworkReceiver(
             port=port,
@@ -206,10 +268,13 @@ class RebroadcasterRunner:
         self._running = False
         self._serial_device = None
         self._udp_retransmit_ip = None
+        self._simulator_ip = None
+        self._heartbeat_thread = None
         logger.info("Rebroadcaster stopped")
 
     def _handle_packet(self, data: dict) -> None:
         """Handle received GPS packet - rebroadcast to all configured outputs."""
+        self._last_packet_time = time.time()
         if not self._engine:
             logger.warning("No engine configured, ignoring packet")
             return
