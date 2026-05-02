@@ -44,14 +44,16 @@ function SimulatorCard({ simulator, showHealth = false }) {
     }
   }
 
+  const isClickable = !showHealth && is_online && lat && lon
+
   return (
     <div
-      onClick={openGoogleMaps}
+      onClick={isClickable ? openGoogleMaps : undefined}
       className={`rounded-xl shadow-lg overflow-hidden transition-all duration-300 ${
         showHealth
           ? (healthStatus?.text === 'ALL OK'
-              ? 'bg-white dark:bg-gray-800 border-2 border-green-400 cursor-pointer hover:shadow-xl hover:scale-[1.02]'
-              : 'bg-white dark:bg-gray-800 border-2 border-red-400 cursor-pointer hover:shadow-xl hover:scale-[1.02]')
+              ? 'bg-white dark:bg-gray-800 border-2 border-green-400'
+              : 'bg-white dark:bg-gray-800 border-2 border-red-400')
           : is_online
             ? 'bg-white dark:bg-gray-800 border-2 border-green-400 cursor-pointer hover:shadow-xl hover:scale-[1.02]'
             : 'bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 opacity-75'

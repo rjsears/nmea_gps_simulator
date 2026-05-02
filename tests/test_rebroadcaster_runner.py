@@ -458,9 +458,11 @@ class TestRebroadcasterRunner:
         }
         runner._handle_packet(test_packet)
 
-        mock_socket.sendto.assert_called_once()
-        call_args = mock_socket.sendto.call_args
-        assert call_args[0][1] == ("192.168.1.200", 12001)
+        # Verify GPS packet was sent (heartbeat may also be sent)
+        import json
+
+        expected_payload = json.dumps(test_packet).encode()
+        mock_socket.sendto.assert_any_call(expected_payload, ("192.168.1.200", 12001))
 
         runner.stop()
 
