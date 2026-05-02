@@ -970,20 +970,64 @@ nmea_gps_simulator/
 
 The **Fleet Dashboard** is a separate Docker container that provides real-time monitoring of multiple GPS simulators from a single web interface. It's designed for flight training centers and simulation facilities that need to track multiple aircraft positions simultaneously.
 
+### What It's Good For
+
+- **Flight Training Centers** - Monitor all simulator aircraft positions from a central display
+- **Simulation Facilities** - Track multiple devices across different training bays
+- **Operations Centers** - Quick visual overview of which simulators are active vs. idle
+- **Instructor Stations** - See all student aircraft at a glance without switching between systems
+- **Maintenance & Support** - Quickly identify which simulators are online and transmitting data
+
+### Screenshots
+
 <p align="center">
-<img src="images/fleet_dashboard.png" alt="Fleet Dashboard" width="800">
+<strong>Simulators Online - Actively Receiving Position Data</strong><br>
+<img src="images/fleet_dashboard_online.png" alt="Fleet Dashboard - Online" width="800">
+</p>
+
+<p align="center">
+<strong>Simulators Offline - No Data Being Received</strong><br>
+<img src="images/fleet_dashboard_offline.png" alt="Fleet Dashboard - Offline" width="800">
 </p>
 
 ### Features
 
 - **Real-time monitoring** of up to 20 simulators simultaneously
 - **Position tracking** with latitude, longitude, altitude, airspeed, and heading
-- **Nearest airport** calculation from 4,000+ airports database
+- **Nearest airport** calculation from 4,000+ US airports database with distance in nautical miles
 - **Online/Offline status** indicators (green = receiving data, gray = offline)
-- **Click to map** - Click any simulator card to open Google Maps at that location
-- **Same styling** as the main GPS emulator interface
+- **Click to map** - Click any online simulator card to instantly open Google Maps at that aircraft's real-time location
+- **Dark mode support** - Toggle between light and dark themes, with preference saved automatically
+- **Responsive grid layout** - Cards automatically arrange based on screen size
+- **Same styling** as the main GPS emulator interface for a consistent look and feel
+
+### How It Works
+
+The Fleet Dashboard operates as a central aggregation point for all your GPS simulators:
+
+1. **Configure each emulator** to send UDP packets to the dashboard using the **UDP Retransmit** feature
+2. **Assign unique ports** - Each simulator sends to a different UDP port (e.g., 12001, 12002, 12003)
+3. **Dashboard listens** on all configured ports simultaneously and identifies each simulator by its port number
+4. **Real-time updates** - Position data is broadcast to all connected browsers via WebSocket every second
+5. **Automatic timeout** - If no packets are received from a simulator for 10 seconds, it's marked as offline
+
+```
+┌─────────────────┐     UDP:12001     ┌─────────────────┐
+│  CJ3 Emulator   │ ───────────────── │                 │
+└─────────────────┘                   │                 │
+                                      │  Fleet          │     WebSocket     ┌─────────────┐
+┌─────────────────┐     UDP:12002     │  Dashboard      │ ─────────────────  │  Browser    │
+│  Ultra Emulator │ ───────────────── │  Container      │                   └─────────────┘
+└─────────────────┘                   │                 │
+                                      │                 │
+┌─────────────────┐     UDP:12003     │                 │
+│  CL350 Emulator │ ───────────────── │                 │
+└─────────────────┘                   └─────────────────┘
+```
 
 ### Quick Start
+
+**1. Deploy the Fleet Dashboard container:**
 
 ```yaml
 # docker-compose.yml
@@ -997,23 +1041,22 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=80
-      # Configure your simulators (name:port)
+      # Configure your simulators (SIM_N_NAME and SIM_N_PORT)
       - SIM_1_NAME=CJ3
       - SIM_1_PORT=12001
       - SIM_2_NAME=Ultra
       - SIM_2_PORT=12002
       - SIM_3_NAME=CL350
       - SIM_3_PORT=12003
+      - SIM_4_NAME=PC12
+      - SIM_4_PORT=12004
+      - SIM_5_NAME=King Air
+      - SIM_5_PORT=12005
+      - SIM_6_NAME=Phenom
+      - SIM_6_PORT=12006
 ```
 
-### How It Works
-
-1. Each GPS emulator sends UDP packets to the dashboard using **UDP Retransmit**
-2. The dashboard listens on separate ports for each simulator (12001, 12002, etc.)
-3. Port number identifies which simulator the data belongs to
-4. Dashboard displays all simulators in a grid with live updates
-
-### Emulator Configuration
+**2. Configure each emulator to send data to the dashboard:**
 
 Enable UDP retransmit in each emulator's docker-compose.yml:
 
@@ -1021,9 +1064,19 @@ Enable UDP retransmit in each emulator's docker-compose.yml:
 environment:
   - AUTO_START_MODE=rebroadcaster
   - AUTO_START_UDP_RETRANSMIT=true
-  - AUTO_START_UDP_RETRANSMIT_IP=10.200.40.3   # Dashboard IP
-  - AUTO_START_UDP_RETRANSMIT_PORT=12001        # Unique port per simulator
+  - AUTO_START_UDP_RETRANSMIT_IP=10.200.40.3   # Dashboard server IP address
+  - AUTO_START_UDP_RETRANSMIT_PORT=12001        # Unique port per simulator (must match SIM_N_PORT)
 ```
+
+**3. Access the dashboard:**
+
+Open your browser to `http://<dashboard-server-ip>:80`
+
+### Interactive Map Feature
+
+When a simulator is online (green status), clicking anywhere on its card will open Google Maps in a new browser tab, centered on that aircraft's current position. This allows instructors to quickly see the real-world location being simulated and verify the aircraft's position relative to airports, waypoints, or other landmarks.
+
+> **Note:** The click-to-map feature is only available for online simulators. Offline simulator cards (gray status) are not clickable.
 
 ---
 
