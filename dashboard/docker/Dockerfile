@@ -34,8 +34,9 @@ COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 # Copy static assets
 COPY public/ ./frontend/dist/
 
-# Expose port
-EXPOSE 8080
+# Default port (can be overridden by PORT env var)
+ENV PORT=80
+EXPOSE 80
 
-# Run the application
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Run the application using shell form to expand $PORT
+CMD uvicorn backend.main:app --host 0.0.0.0 --port $PORT

@@ -14,10 +14,12 @@ services:
     container_name: fleet-dashboard
     restart: unless-stopped
     network_mode: host
+    security_opt:
+      - "apparmor:unconfined"
     environment:
       # Server configuration
       - HOST=0.0.0.0
-      - PORT=8080
+      - PORT=80
 
       # Simulator configuration
       # Each emulator should send UDP to this dashboard's IP on its assigned port
