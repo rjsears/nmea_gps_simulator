@@ -79,3 +79,7 @@ services:
       - AUTO_START_UDP_RETRANSMIT=false
       - AUTO_START_UDP_RETRANSMIT_IP=10.200.40.3   # Fleet Dashboard IP
       - AUTO_START_UDP_RETRANSMIT_PORT=12001        # Unique port per sim (CL350=12001, Ultra=12002, etc.)
+      #
+      # Health Monitoring (rebroadcaster only)
+      # IP of the flight simulator to ping for health checks.
+      - SIMULATOR_IP=                               # e.g., 10.200.50.10
