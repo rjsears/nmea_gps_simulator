@@ -1,5 +1,3 @@
-import { useMemo } from 'react'
-
 function SimulatorCard({ simulator }) {
   const {
     name,
@@ -38,8 +36,8 @@ function SimulatorCard({ simulator }) {
       onClick={openGoogleMaps}
       className={`rounded-xl shadow-lg overflow-hidden transition-all duration-300 ${
         is_online
-          ? 'bg-white border-2 border-green-400 cursor-pointer hover:shadow-xl hover:scale-[1.02]'
-          : 'bg-gray-100 border-2 border-gray-300 opacity-75'
+          ? 'bg-white dark:bg-gray-800 border-2 border-green-400 cursor-pointer hover:shadow-xl hover:scale-[1.02]'
+          : 'bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 opacity-75'
       }`}
     >
       {/* Header */}
@@ -47,7 +45,7 @@ function SimulatorCard({ simulator }) {
         className={`px-4 py-3 ${
           is_online
             ? 'bg-gradient-to-r from-green-500 to-green-600'
-            : 'bg-gradient-to-r from-gray-400 to-gray-500'
+            : 'bg-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700'
         }`}
       >
         <div className="flex items-center justify-between">
@@ -56,7 +54,7 @@ function SimulatorCard({ simulator }) {
             className={`px-3 py-1 rounded-full text-sm font-semibold ${
               is_online
                 ? 'bg-white text-green-600'
-                : 'bg-gray-200 text-gray-600'
+                : 'bg-gray-200 dark:bg-gray-500 text-gray-600 dark:text-gray-200'
             }`}
           >
             {is_online ? 'ONLINE' : 'OFFLINE'}
@@ -68,19 +66,19 @@ function SimulatorCard({ simulator }) {
       <div className="p-4 space-y-4">
         {/* Position Section */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-50 rounded-lg p-3">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+            <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
               Latitude
             </label>
-            <p className="text-lg font-semibold text-gray-900">
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">
               {is_online ? formatCoord(lat, true) : '---'}
             </p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-3">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+            <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
               Longitude
             </label>
-            <p className="text-lg font-semibold text-gray-900">
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">
               {is_online ? formatCoord(lon, false) : '---'}
             </p>
           </div>
@@ -88,60 +86,60 @@ function SimulatorCard({ simulator }) {
 
         {/* Flight Data Section */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="bg-blue-50 rounded-lg p-3 text-center">
-            <label className="text-xs font-medium text-blue-600 uppercase tracking-wide">
+          <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 text-center">
+            <label className="text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide">
               Altitude
             </label>
-            <p className="text-xl font-bold text-blue-900">
+            <p className="text-xl font-bold text-blue-900 dark:text-blue-100">
               {is_online ? altitude_ft.toLocaleString() : '---'}
             </p>
-            <span className="text-xs text-blue-600">ft MSL</span>
+            <span className="text-xs text-blue-600 dark:text-blue-400">ft MSL</span>
           </div>
-          <div className="bg-purple-50 rounded-lg p-3 text-center">
-            <label className="text-xs font-medium text-purple-600 uppercase tracking-wide">
+          <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-3 text-center">
+            <label className="text-xs font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wide">
               Airspeed
             </label>
-            <p className="text-xl font-bold text-purple-900">
+            <p className="text-xl font-bold text-purple-900 dark:text-purple-100">
               {is_online ? speed_kts : '---'}
             </p>
-            <span className="text-xs text-purple-600">kts</span>
+            <span className="text-xs text-purple-600 dark:text-purple-400">kts</span>
           </div>
-          <div className="bg-orange-50 rounded-lg p-3 text-center">
-            <label className="text-xs font-medium text-orange-600 uppercase tracking-wide">
+          <div className="bg-orange-50 dark:bg-orange-900/30 rounded-lg p-3 text-center">
+            <label className="text-xs font-medium text-orange-600 dark:text-orange-400 uppercase tracking-wide">
               Heading
             </label>
-            <p className="text-xl font-bold text-orange-900">
+            <p className="text-xl font-bold text-orange-900 dark:text-orange-100">
               {is_online ? formatHeading(heading) : '---'}
             </p>
           </div>
         </div>
 
         {/* Nearest Airport Section */}
-        <div className="bg-gradient-to-r from-primary-50 to-primary-100 rounded-lg p-3">
-          <label className="text-xs font-medium text-primary-600 uppercase tracking-wide">
+        <div className="bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/30 rounded-lg p-3">
+          <label className="text-xs font-medium text-primary-600 dark:text-primary-400 uppercase tracking-wide">
             Nearest Airport
           </label>
           {is_online && closest_airport ? (
             <div className="mt-1">
               <div className="flex items-center justify-between">
-                <span className="text-lg font-bold text-primary-900">
+                <span className="text-lg font-bold text-primary-900 dark:text-primary-100">
                   {closest_airport.icao}
                 </span>
-                <span className="text-lg font-semibold text-primary-700">
+                <span className="text-lg font-semibold text-primary-700 dark:text-primary-300">
                   {airport_distance_nm} NM
                 </span>
               </div>
-              <p className="text-sm text-primary-700 truncate">
+              <p className="text-sm text-primary-700 dark:text-primary-300 truncate">
                 {closest_airport.name}
               </p>
             </div>
           ) : (
-            <p className="text-lg font-semibold text-gray-400 mt-1">---</p>
+            <p className="text-lg font-semibold text-gray-400 dark:text-gray-500 mt-1">---</p>
           )}
         </div>
 
         {/* Packets Counter */}
-        <div className="flex items-center justify-between text-xs text-gray-400 pt-2 border-t border-gray-100">
+        <div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
           <span>Port: {simulator.port}</span>
           <span>Packets: {packet_count.toLocaleString()}</span>
         </div>
