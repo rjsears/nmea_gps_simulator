@@ -159,6 +159,7 @@ async def perform_auto_start(event_loop: asyncio.AbstractEventLoop) -> bool:
                 rebroadcast_udp=settings.auto_start_udp_retransmit,
                 rebroadcast_udp_ip=settings.auto_start_udp_retransmit_ip,
                 rebroadcast_udp_port=settings.auto_start_udp_retransmit_port,
+                simulator_ip=settings.simulator_ip,
             )
             state.is_running = True
             logger.info(
