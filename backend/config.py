@@ -75,6 +75,9 @@ class Settings(BaseSettings):
     auto_start_udp_retransmit_ip: Optional[str] = None
     auto_start_udp_retransmit_port: int = 12001
 
+    # Simulator IP for health check ping (used with dashboard)
+    simulator_ip: Optional[str] = None
+
 
 @lru_cache
 def get_settings() -> Settings:
