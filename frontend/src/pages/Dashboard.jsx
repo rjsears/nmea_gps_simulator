@@ -76,44 +76,40 @@ export default function Dashboard() {
   // Don't sync config (modes, network, serial, nmea) - user's local state is authoritative
   // This prevents race conditions where status polling overwrites user input before API completes
   useEffect(() => {
-    if (status && localState) {
-      setLocalState(prev => {
-        if (!prev) return prev
-        const newIsRunning = status.gps?.is_running ?? prev.gps.is_running
-        const newTargetAlt = status.gps?.target_altitude_ft ?? prev.gps.target_altitude_ft
-        const newTargetSpd = status.gps?.target_speed_kts ?? prev.gps.target_speed_kts
-        const newTargetHdg = status.gps?.target_heading ?? prev.gps.target_heading
-        const newAirportIcao = status.gps?.airport_icao ?? prev.gps.airport_icao
+    if (!status || !localState) return
 
-        // Only create new object if something changed
-        if (
-          newIsRunning === prev.gps.is_running &&
-          newTargetAlt === prev.gps.target_altitude_ft &&
-          newTargetSpd === prev.gps.target_speed_kts &&
-          newTargetHdg === prev.gps.target_heading &&
-          newAirportIcao === prev.gps.airport_icao
-        ) {
-          return prev // Return same reference - no re-render
-        }
+    setLocalState(prev => {
+      if (!prev) return prev
+      const newIsRunning = status.gps?.is_running ?? prev.gps.is_running
+      const newTargetAlt = status.gps?.target_altitude_ft ?? prev.gps.target_altitude_ft
+      const newTargetSpd = status.gps?.target_speed_kts ?? prev.gps.target_speed_kts
+      const newTargetHdg = status.gps?.target_heading ?? prev.gps.target_heading
+      const newAirportIcao = status.gps?.airport_icao ?? prev.gps.airport_icao
 
-        return {
-          ...prev,
-          gps: {
-            ...prev.gps,
-            is_running: newIsRunning,
-            target_altitude_ft: newTargetAlt,
-            target_speed_kts: newTargetSpd,
-            target_heading: newTargetHdg,
-            airport_icao: newAirportIcao,
-          },
-        }
-      })
-      // Update airportSelected if emulator started externally or airport set from another browser
-      if (status.gps?.airport_icao && !airportSelected) {
-        setAirportSelected(true)
+      // Only create new object if something changed
+      if (
+        newIsRunning === prev.gps.is_running &&
+        newTargetAlt === prev.gps.target_altitude_ft &&
+        newTargetSpd === prev.gps.target_speed_kts &&
+        newTargetHdg === prev.gps.target_heading &&
+        newAirportIcao === prev.gps.airport_icao
+      ) {
+        return prev // Return same reference - no re-render
       }
-    }
-  }, [status, airportSelected])
+
+      return {
+        ...prev,
+        gps: {
+          ...prev.gps,
+          is_running: newIsRunning,
+          target_altitude_ft: newTargetAlt,
+          target_speed_kts: newTargetSpd,
+          target_heading: newTargetHdg,
+          airport_icao: newAirportIcao,
+        },
+      }
+    })
+  }, [status])
 
   const isRunning = localState?.gps?.is_running || false
 
