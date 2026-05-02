@@ -66,8 +66,6 @@ function App() {
         backgroundAttachment: 'fixed'
       }}
     >
-      {/* Overlay for readability */}
-      <div className="absolute inset-0 bg-gray-100/80" style={{ backgroundAttachment: 'fixed' }} />
       {/* Header */}
       <header className="relative z-10 bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
