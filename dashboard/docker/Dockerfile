@@ -28,11 +28,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend
 COPY backend/ ./backend/
 
-# Copy frontend build
+# Copy frontend build (includes public/ assets)
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
-
-# Copy static assets
-COPY public/ ./frontend/dist/
 
 # Default port (can be overridden by PORT env var)
 ENV PORT=80

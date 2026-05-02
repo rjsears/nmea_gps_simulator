@@ -119,7 +119,7 @@ function App() {
       <footer className="relative z-10 fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-xs text-gray-400">
-            LOFT Fleet Dashboard v1.0.0 | {simulators.length} simulators configured
+            LOFT Fleet Dashboard v1.0.0 | richardjsears@protonmail.com | {simulators.length} simulators configured
           </p>
         </div>
       </footer>
