@@ -19,12 +19,20 @@ export default function PositionInput({ lat, lon, airportIcao, onChange, disable
   const [selectedAirport, setSelectedAirport] = useState(null)
   const [isSearching, setIsSearching] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
+  const [userIsEditing, setUserIsEditing] = useState(false)
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
+  const lastSyncedIcao = useRef(null)
 
   // Load airport info if airportIcao is provided (synced from server)
+  // Only sync if the ICAO changed externally (not from user typing)
   useEffect(() => {
+    // Skip if user is actively editing or we already synced this ICAO
+    if (userIsEditing || lastSyncedIcao.current === airportIcao) {
+      return
+    }
     if (airportIcao && !selectedAirport) {
+      lastSyncedIcao.current = airportIcao
       api.lookupAirport(airportIcao).then(response => {
         if (response?.airport) {
           setSelectedAirport(response.airport)
@@ -34,7 +42,7 @@ export default function PositionInput({ lat, lon, airportIcao, onChange, disable
         console.error('Failed to lookup airport:', err)
       })
     }
-  }, [airportIcao, selectedAirport])
+  }, [airportIcao, selectedAirport, userIsEditing])
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -75,6 +83,8 @@ export default function PositionInput({ lat, lon, airportIcao, onChange, disable
     setSelectedAirport(airport)
     setQuery(airport.icao)
     setShowDropdown(false)
+    setUserIsEditing(false)
+    lastSyncedIcao.current = airport.icao
     onChange({
       lat: airport.lat,
       lon: airport.lon,
@@ -86,6 +96,7 @@ export default function PositionInput({ lat, lon, airportIcao, onChange, disable
   const handleInputChange = (e) => {
     const value = e.target.value.toUpperCase()
     setQuery(value)
+    setUserIsEditing(true)
     if (value !== selectedAirport?.icao) {
       setSelectedAirport(null)
     }

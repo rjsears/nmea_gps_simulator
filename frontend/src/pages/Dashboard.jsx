@@ -9,7 +9,7 @@
 // https://github.com/rjsears
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Layout from '../components/Layout'
 import ModeSelector from '../components/ModeSelector'
 import PositionInput from '../components/PositionInput'
@@ -71,21 +71,8 @@ export default function Dashboard() {
     }
   }, [status, localState])
 
-  // Sync is_running from server on initial load (handles page refresh while running)
-  // After that, handleStart/handleStop manage the state directly
-  const initialSyncDone = useRef(false)
-  useEffect(() => {
-    if (status?.gps && localState && !initialSyncDone.current) {
-      initialSyncDone.current = true
-      const serverRunning = status.gps.is_running ?? false
-      if (serverRunning !== localState.gps.is_running) {
-        setLocalState(prev => ({
-          ...prev,
-          gps: { ...prev.gps, is_running: serverRunning },
-        }))
-      }
-    }
-  }, [status?.gps?.is_running, localState])
+  // No continuous sync - handleStart/handleStop manage is_running directly
+  // Initial state from server is handled in the initialization effect above
 
   const isRunning = localState?.gps?.is_running || false
 
