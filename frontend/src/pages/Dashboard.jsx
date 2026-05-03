@@ -9,7 +9,7 @@
 // https://github.com/rjsears
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Layout from '../components/Layout'
 import ModeSelector from '../components/ModeSelector'
 import PositionInput from '../components/PositionInput'
@@ -71,33 +71,21 @@ export default function Dashboard() {
     }
   }, [status, localState])
 
-  // Update local state from real-time status
-  // Sync only is_running and GPS target values from server
-  // Don't sync config (modes, network, serial, nmea) - user's local state is authoritative
-  // This prevents race conditions where status polling overwrites user input before API completes
+  // Sync is_running from server on initial load (handles page refresh while running)
+  // After that, handleStart/handleStop manage the state directly
+  const initialSyncDone = useRef(false)
   useEffect(() => {
-    if (status && localState) {
-      setLocalState(prev => ({
-        ...prev,
-        // Don't sync config from server - user's local state is authoritative
-        // Only sync is_running and target values
-        gps: {
-          ...prev.gps,
-          is_running: status.gps?.is_running ?? prev.gps.is_running,
-          // Sync target values so other browsers see slider changes
-          target_altitude_ft: status.gps?.target_altitude_ft ?? prev.gps.target_altitude_ft,
-          target_speed_kts: status.gps?.target_speed_kts ?? prev.gps.target_speed_kts,
-          target_heading: status.gps?.target_heading ?? prev.gps.target_heading,
-          // Sync airport selection for multi-browser support
-          airport_icao: status.gps?.airport_icao ?? prev.gps.airport_icao,
-        },
-      }))
-      // Update airportSelected if emulator started externally or airport set from another browser
-      if ((status.gps?.is_running && !localState?.gps?.is_running) || status.gps?.airport_icao) {
-        setAirportSelected(true)
+    if (status?.gps && localState && !initialSyncDone.current) {
+      initialSyncDone.current = true
+      const serverRunning = status.gps.is_running ?? false
+      if (serverRunning !== localState.gps.is_running) {
+        setLocalState(prev => ({
+          ...prev,
+          gps: { ...prev.gps, is_running: serverRunning },
+        }))
       }
     }
-  }, [status])
+  }, [status?.gps?.is_running, localState])
 
   const isRunning = localState?.gps?.is_running || false
 
@@ -195,6 +183,10 @@ export default function Dashboard() {
     try {
       await api.start()
       setApiError(null)
+      setLocalState(prev => ({
+        ...prev,
+        gps: { ...prev.gps, is_running: true },
+      }))
       refresh()
     } catch (err) {
       console.error('Failed to start:', err)
@@ -206,6 +198,10 @@ export default function Dashboard() {
     try {
       await api.stop()
       setApiError(null)
+      setLocalState(prev => ({
+        ...prev,
+        gps: { ...prev.gps, is_running: false },
+      }))
       refresh()
     } catch (err) {
       console.error('Failed to stop:', err)
