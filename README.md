@@ -1083,7 +1083,7 @@ When a simulator is online (green status), clicking anywhere on its card will op
 The Fleet Dashboard includes built-in diagnostics to help troubleshoot connectivity issues between the dashboard, emulators, and simulators.
 
 <p align="center">
-<strong>Health View - All Systems Operational</strong><br>
+<strong>Health View - Some Simulators Operational</strong><br>
 <img src="images/fleet_dashboard_health_ok.png" alt="Fleet Dashboard - Health OK" width="800">
 </p>
 
