@@ -105,7 +105,7 @@ The simulator runs as a Docker container with a modern web interface, making it 
 | **EFB Support** | Send XGPS data to ForeFlight and Garmin Pilot on UDP 49002 |
 | **Network Sync** | UDP or TCP unicast between sender and receiver instances |
 | **Multiple Input Formats** | JSON and CYGNUS format support for flight simulators |
-| **Airport Database** | Built-in airport database (250+ airports: US, Canada, Europe) with ICAO search |
+| **Airport Database** | Built-in airport database (3,992 airports: US, Canada, Europe) with ICAO search |
 | **Gradual Transitions** | Configurable rates for altitude, airspeed, and heading changes |
 | **Real-time Viewer** | Live NMEA output with pause/resume, clear, and message count |
 | **Dark/Light Mode** | System-aware theme with manual override |
@@ -866,7 +866,7 @@ nmea_gps_simulator/
 │   ├── rebroadcaster_runner.py  # Rebroadcaster mode runner
 │   ├── serial_manager.py        # Serial port management
 │   ├── websocket_manager.py     # WebSocket broadcasting
-│   ├── airports.py              # Airport database (250+ airports: US, Canada, Europe)
+│   ├── airports.py              # Airport database (3,992 airports: US, Canada, Europe)
 │   └── models.py                # Pydantic data models
 ├── frontend/                    # React frontend
 │   ├── src/
@@ -994,7 +994,7 @@ The **Fleet Dashboard** is a separate Docker container that provides real-time m
 
 - **Real-time monitoring** of up to 20 simulators simultaneously
 - **Position tracking** with latitude, longitude, altitude, airspeed, and heading
-- **Nearest airport** calculation from 4,000+ US airports database with distance in nautical miles
+- **Nearest airport** calculation from 3,992 airports database with distance in nautical miles
 - **Online/Offline status** indicators (green = receiving data, gray = offline)
 - **Click to map** - Click any online simulator card to instantly open Google Maps at that aircraft's real-time location
 - **Dark mode support** - Toggle between light and dark themes, with preference saved automatically
