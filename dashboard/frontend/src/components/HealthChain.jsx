@@ -1,5 +1,5 @@
 function HealthChain({ simulator }) {
-  const { emulator_online, sim_reachable, is_online } = simulator
+  const { emulator_online, sim_reachable, is_online, gps_system } = simulator
 
   // Smart gating: if GPS data is flowing, everything is implicitly OK
   const allImplicitlyOk = is_online
@@ -22,7 +22,11 @@ function HealthChain({ simulator }) {
       failureMessage = 'Is the simulator powered on? If yes, possible network issue.'
     } else if (!is_online) {
       failurePoint = 'gps'
-      failureMessage = 'GPS software on simulator may have crashed. Restart the GPS application.'
+      if (gps_system) {
+        failureMessage = `Not receiving GPS data. Start or Restart GPSConnect application on ${gps_system}.`
+      } else {
+        failureMessage = 'Not receiving GPS data. Start or Restart the GPSConnect application on the simulator.'
+      }
     }
   }
 

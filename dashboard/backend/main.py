@@ -36,9 +36,10 @@ logger = logging.getLogger(__name__)
 class SimulatorState:
     """State for a single simulator."""
 
-    def __init__(self, name: str, port: int):
+    def __init__(self, name: str, port: int, gps_system: str = ""):
         self.name = name
         self.port = port
+        self.gps_system = gps_system  # Which system runs the GPS software
         self.lat: float = 0.0
         self.lon: float = 0.0
         self.altitude_ft: float = 0.0
@@ -102,6 +103,7 @@ class SimulatorState:
             return {
                 "name": self.name,
                 "port": self.port,
+                "gps_system": self.gps_system,
                 "is_online": self.is_online,
                 "lat": round(self.lat, 6),
                 "lon": round(self.lon, 6),
@@ -134,7 +136,9 @@ class FleetMonitor:
     def configure(self, sims: list[SimConfig]) -> None:
         """Configure simulators to monitor."""
         for sim in sims:
-            self.simulators[sim.port] = SimulatorState(sim.name, sim.port)
+            self.simulators[sim.port] = SimulatorState(
+                sim.name, sim.port, sim.gps_system
+            )
         logger.info(f"Configured {len(sims)} simulators: {[s.name for s in sims]}")
 
     def start(self) -> None:

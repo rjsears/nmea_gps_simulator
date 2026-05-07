@@ -20,6 +20,7 @@ class SimConfig:
 
     name: str
     port: int
+    gps_system: str = ""  # Which system runs the GPS software (e.g., "Avionics 2")
 
 
 @dataclass
@@ -37,11 +38,13 @@ def parse_simulator_config() -> list[SimConfig]:
     Environment variables format:
         SIM_1_NAME=CL350
         SIM_1_PORT=12001
+        SIM_1_GPS_SYSTEM=Avionics
         SIM_2_NAME=Ultra
         SIM_2_PORT=12002
+        SIM_2_GPS_SYSTEM=Avionics 2
         ...
 
-    Or use a single variable:
+    Or use a single variable (without GPS system info):
         SIMULATORS=CL350:12001,Ultra:12002,CJ3:12003
     """
     simulators = []
@@ -60,14 +63,17 @@ def parse_simulator_config() -> list[SimConfig]:
                 except ValueError:
                     pass
 
-    # If no SIMULATORS var, try individual SIM_N_NAME/SIM_N_PORT
+    # If no SIMULATORS var, try individual SIM_N_NAME/SIM_N_PORT/SIM_N_GPS_SYSTEM
     if not simulators:
         for i in range(1, 20):  # Support up to 20 sims
             name = os.getenv(f"SIM_{i}_NAME")
             port_str = os.getenv(f"SIM_{i}_PORT")
+            gps_system = os.getenv(f"SIM_{i}_GPS_SYSTEM", "")
             if name and port_str:
                 try:
-                    simulators.append(SimConfig(name=name, port=int(port_str)))
+                    simulators.append(
+                        SimConfig(name=name, port=int(port_str), gps_system=gps_system)
+                    )
                 except ValueError:
                     pass
 

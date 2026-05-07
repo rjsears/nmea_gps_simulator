@@ -23,15 +23,22 @@ services:
 
       # Simulator configuration
       # Each emulator should send UDP to this dashboard's IP on its assigned port
+      # GPS_SYSTEM is shown when GPS data stops (tells tech which system to restart)
       - SIM_1_NAME=CJ3
       - SIM_1_PORT=12001
+      - SIM_1_GPS_SYSTEM=Avionics
       - SIM_2_NAME=Ultra
       - SIM_2_PORT=12002
+      - SIM_2_GPS_SYSTEM=Avionics 2
       - SIM_3_NAME=CJ1
       - SIM_3_PORT=12003
+      - SIM_3_GPS_SYSTEM=Avionics
       - SIM_4_NAME=CE560XL
       - SIM_4_PORT=12004
+      - SIM_4_GPS_SYSTEM=Avionics 2
       - SIM_5_NAME=Classic CJ1
       - SIM_5_PORT=12005
+      - SIM_5_GPS_SYSTEM=Avionics
       - SIM_6_NAME=CL350
       - SIM_6_PORT=12006
+      - SIM_6_GPS_SYSTEM=rehost
