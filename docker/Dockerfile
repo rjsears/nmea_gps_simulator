@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y \
     python3.11 \
     python3.11-venv \
     python3-pip \
+    iputils-ping \
     && rm -rf /var/lib/apt/lists/*
 
 # Set Python 3.11 as default
