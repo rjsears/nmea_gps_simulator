@@ -17,7 +17,7 @@ from ..auth import get_current_user
 from ..models import ModeConfig, NetworkConfig, NmeaConfig, SerialConfig
 from ..state import get_app_state
 
-router = APIRouter(prefix="/api/config", tags=["config"])
+router = APIRouter(prefix="/api/config", tags=["Configuration"])
 
 
 @router.post("/modes")

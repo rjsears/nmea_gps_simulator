@@ -26,7 +26,7 @@ from ..network.foreflight import parse_ip_list
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api", tags=["control"])
+router = APIRouter(prefix="/api", tags=["Control"])
 
 
 @router.get("/status", response_model=StatusResponse)

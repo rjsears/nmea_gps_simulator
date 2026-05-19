@@ -24,7 +24,7 @@ from ..auth import (
     SESSION_COOKIE_NAME,
 )
 
-router = APIRouter(prefix="/api/auth", tags=["auth"])
+router = APIRouter(prefix="/api/auth", tags=["Auth"])
 
 
 @router.post("/login", response_model=LoginResponse)

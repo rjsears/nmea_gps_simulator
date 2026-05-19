@@ -9,23 +9,34 @@ A Dockerized NMEA GPS simulator with web interface for testing any application t
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://rjsears.github.io/nmea_gps_simulator"><img src="https://img.shields.io/badge/docs-mkdocs--material-blue?style=plastic&logo=readthedocs" alt="Documentation"></a>
+  <a href="https://github.com/rjsears/nmea_gps_simulator/releases/latest"><img src="https://img.shields.io/github/v/release/rjsears/nmea_gps_simulator?style=plastic&label=release" alt="Latest Release"></a>
   <a href="https://github.com/rjsears/nmea_gps_simulator/commits/main"><img src="https://img.shields.io/github/last-commit/rjsears/nmea_gps_simulator?style=plastic" alt="Last Commit"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=plastic" alt="License: MIT"></a>
   <a href="https://github.com/rjsears/nmea_gps_simulator/issues"><img src="https://img.shields.io/github/issues/rjsears/nmea_gps_simulator?style=plastic" alt="Issues"></a>
-  <a href="https://codecov.io/gh/rjsears/nmea_gps_simulator"><img src="https://codecov.io/gh/rjsears/nmea_gps_simulator/graph/badge.svg" alt="codecov"></a><br>
+  <a href="https://github.com/rjsears/nmea_gps_simulator/pulls"><img src="https://img.shields.io/github/issues-pr/rjsears/nmea_gps_simulator?style=plastic&label=PRs" alt="Pull Requests"></a><br>
+  <a href="https://github.com/rjsears/nmea_gps_simulator/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/rjsears/nmea_gps_simulator/ci.yml?style=plastic&label=CI%2FCD" alt="CI/CD"></a>
+  <a href="https://codecov.io/gh/rjsears/nmea_gps_simulator"><img src="https://codecov.io/gh/rjsears/nmea_gps_simulator/graph/badge.svg" alt="codecov"></a>
   <img src="https://img.shields.io/badge/Maintained-Yes-brightgreen?style=plastic" alt="Maintained">
-  <img src="https://img.shields.io/github/actions/workflow/status/rjsears/nmea_gps_simulator/ci.yml?style=plastic&label=CI%2FCD" alt="CI/CD">
+  <a href="https://github.com/rjsears/nmea_gps_simulator/stargazers"><img src="https://img.shields.io/github/stars/rjsears/nmea_gps_simulator?style=plastic&label=Stars" alt="Stars"></a>
+  <a href="https://github.com/rjsears/nmea_gps_simulator/network/members"><img src="https://img.shields.io/github/forks/rjsears/nmea_gps_simulator?style=plastic&label=Forks" alt="Forks"></a><br>
   <img src="https://img.shields.io/badge/Python-3.11-blue?style=plastic&logo=python" alt="Python">
-  <img src="https://img.shields.io/badge/FastAPI-0.115-green?style=plastic&logo=fastapi" alt="FastAPI">
+  <img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=plastic&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Uvicorn-ASGI-499848?style=plastic" alt="Uvicorn">
+  <img src="https://img.shields.io/badge/Pydantic-v2-E92063?style=plastic&logo=pydantic&logoColor=white" alt="Pydantic"><br>
   <img src="https://img.shields.io/badge/React-18-61DAFB?style=plastic&logo=react" alt="React">
-  <img src="https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=plastic&logo=tailwindcss" alt="Tailwind"><br>
+  <img src="https://img.shields.io/badge/Vite-5-646CFF?style=plastic&logo=vite&logoColor=white" alt="Vite">
+  <img src="https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=plastic&logo=tailwindcss" alt="Tailwind">
+  <img src="https://img.shields.io/badge/Node.js-20-339933?style=plastic&logo=node.js&logoColor=white" alt="Node.js"><br>
   <img src="https://img.shields.io/badge/Docker-Containerized-2496ED?style=plastic&logo=docker&logoColor=white" alt="Docker">
   <img src="https://img.shields.io/badge/Linux-Supported-informational?style=plastic&logo=linux" alt="Linux">
   <img src="https://img.shields.io/badge/macOS-Intel%20%26%20Apple%20Silicon-informational?style=plastic&logo=apple" alt="macOS">
   <img src="https://img.shields.io/badge/Raspberry%20Pi-Tested-critical?style=plastic&logo=raspberrypi" alt="Raspberry Pi"><br>
-  <img src="https://img.shields.io/badge/NMEA-0183-blueviolet?style=plastic" alt="NMEA">
+  <img src="https://img.shields.io/badge/NMEA-0183-blueviolet?style=plastic" alt="NMEA 0183">
   <img src="https://img.shields.io/badge/EFB-ForeFlight%20%7C%20Garmin%20Pilot-orange?style=plastic" alt="EFB">
+  <img src="https://img.shields.io/badge/XGPS-UDP%2049002-orange?style=plastic" alt="XGPS">
   <img src="https://img.shields.io/badge/APRS-Compatible-yellow?style=plastic" alt="APRS">
+  <img src="https://img.shields.io/badge/Bad%20Elf-SBK--2500%20%7C%20Pro-lightgrey?style=plastic" alt="Bad Elf">
 </p>
 
 <p align="center">
@@ -38,30 +49,39 @@ A Dockerized NMEA GPS simulator with web interface for testing any application t
   </a>
 </p>
 
+<p align="center">
+  <strong><a href="https://rjsears.github.io/nmea_gps_simulator">View Full Documentation &rarr;</a></strong>
+</p>
+
 ---
 
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
+- [System and Network Architecture](#system-and-network-architecture)
 - [Operating Modes](#operating-modes)
+- [Hardware Requirements](#hardware-requirements)
 - [Quick Start](#quick-start)
 - [Configuration](#configuration)
   - [Auto-Start Configuration](#auto-start-configuration)
 - [Web Interface](#web-interface)
 - [NMEA Sentences](#nmea-sentences)
 - [Network Protocol](#network-protocol)
-- [Fleet Dashboard](#fleet-dashboard)
-- [Building from Source](#building-from-source)
+- [Development & Testing](#development--testing)
 - [Project Structure](#project-structure)
 - [API Reference](#api-reference)
+- [Fleet Dashboard](#fleet-dashboard)
+- [Troubleshooting](#troubleshooting)
+- [Security](#security)
 - [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 - [Author](#author)
 
 ---
 
 ## Overview
-
-# NMEA GPS Simulator
 
 **Real-time GPS simulation that behaves like the real thing.**
 
@@ -71,28 +91,33 @@ The **NMEA GPS Simulator** provides a flexible and powerful solution for generat
 
 From the comfort of your desk, you can simulate complex movement scenarios, feed GPS data to tablets and external devices, or integrate with existing systems over USB or network connections. Whether you're replacing legacy hardware, building new applications, or teaching navigation concepts in a classroom, this tool provides a reliable, hardware-free GPS data source.
 
-## Common Use Cases
-
-- **EFB Training:** Learn and explore Garmin Pilot or ForeFlight without the workload of flying  
-- **Flight Simulation Integration:** Replace discontinued hardware (e.g., Bad Elf Pro, Cygnus) with a modern, software-based solution  
-- **Classroom Instruction:** Simulate cross-country flights and track progress in real time  
-- **Software Development & Testing:** Generate consistent, realistic GPS data for validation and debugging  
-- **Amateur Radio / APRS:** Feed GPS data into TNCs and mapping software for experimentation  
-
---- 
-<img src="images/nmea_sim_gpss.jpeg" alt="NMEA GPS Simulator Banner">
+<p align="center">
+<img src="images/nmea_sim_gpss.jpeg" alt="NMEA GPS Simulator Screenshot">
 </p>
 
-The simulator runs as a Docker container with a modern web interface, making it easy to deploy on any Linux, OSX, or development machine. Position can be set manually or synced between multiple instances using the sender/receiver network modes.
+The simulator runs as a Docker container with a modern web interface, making it easy to deploy on any Linux, macOS, or development machine. Position can be set manually or synced between multiple instances using the sender/receiver network modes.
+
+### Common Use Cases
+
+| Use case | What it gets you |
+|----------|------------------|
+| **EFB Training** | Learn and explore Garmin Pilot or ForeFlight without the workload of flying. |
+| **Flight Simulation Integration** | Replace discontinued hardware (Bad Elf Pro, Cygnus) with a modern, software-based GPS source. |
+| **Classroom Instruction** | Simulate cross-country flights and track progress in real time. |
+| **Software Development & Testing** | Generate consistent, realistic GPS data for validation and debugging. |
+| **Amateur Radio / APRS** | Feed GPS data into TNCs and mapping software for experimentation. |
 
 ### Key Highlights
 
-- **Aviation-Focused**: Whole number values for heading (1-360), altitude, and airspeed - exactly as real GPS units report
-- **Realistic Transitions**: Gradual changes in altitude, speed, and heading - aircraft don't teleport! Configurable via docker-compose.yml
-- **USB Serial Output**: Direct output to serial devices like the Bad Elf SBK-2500 or Bad Elf Pro
-- **Network Sync**: Sender/Receiver modes for multi-instance deployments
-- **EFB Sync**: Ability to talk directly to Garmin Pilot or ForeFlight without the need for a GPS device
-- **Modern Stack**: React + FastAPI + Docker for reliability and ease of deployment
+| Capability | Detail |
+|------------|--------|
+| **Aviation-focused output** | Whole-number values for heading (1-360), altitude, and airspeed - exactly as real GPS units report. |
+| **Realistic transitions** | Gradual changes in altitude, speed, and heading - aircraft don't teleport. Configurable via `docker-compose.yml`. |
+| **USB serial output** | Direct output to serial devices like the Bad Elf SBK-2500 or Bad Elf Pro. |
+| **Network sync** | Sender/Receiver modes for multi-instance deployments. |
+| **EFB sync** | Talk directly to Garmin Pilot or ForeFlight (XGPS over UDP 49002) without a physical GPS device. |
+| **Modern stack** | React + FastAPI + Docker for reliability and ease of deployment. |
+| **Fleet Dashboard** | Optional companion container that monitors many simulators from one screen, with end-to-end health diagnostics. |
 
 ---
 
@@ -105,7 +130,7 @@ The simulator runs as a Docker container with a modern web interface, making it 
 | **EFB Support** | Send XGPS data to ForeFlight and Garmin Pilot on UDP 49002 |
 | **Network Sync** | UDP or TCP unicast between sender and receiver instances |
 | **Multiple Input Formats** | JSON and CYGNUS format support for flight simulators |
-| **Airport Database** | Built-in airport database (3,992 airports: US, Canada, Europe) with ICAO search |
+| **Airport Database** | Built-in airport database (4,003 airports: US, Canada, Europe, Pacific) with ICAO search |
 | **Gradual Transitions** | Configurable rates for altitude, airspeed, and heading changes |
 | **Real-time Viewer** | Live NMEA output with pause/resume, clear, and message count |
 | **Dark/Light Mode** | System-aware theme with manual override |
@@ -136,6 +161,56 @@ EFB target IPs support flexible formats:
 **Interactive Compass**
 
 The heading control includes an interactive SVG compass dial with drag-to-rotate functionality, cardinal directions (N/E/S/W), tick marks, and real-time heading display.
+
+---
+
+## System and Network Architecture
+
+The simulator runs as a single Docker container that exposes a web UI on port 80 and a small set of UDP/TCP ports for NMEA traffic and EFB integration. The optional **Fleet Dashboard** runs as a second container (typically on a different host) and aggregates UDP telemetry from many simulators.
+
+```
+                                     ┌──────────────────────────────────────────┐
+                                     │             NMEA GPS Simulator           │
+   ┌──────────────┐    HTTP/WS       │  ┌────────────────────────────────────┐  │
+   │   Browser    │◀───── :80 ──────▶│  │  FastAPI + React + WebSocket       │  │
+   └──────────────┘                  │  └────────────────────────────────────┘  │
+                                     │   │           │             │            │
+                                     │   │ NMEA      │ XGPS        │ NMEA       │
+                                     │   ▼ over USB  ▼ UDP :49002  ▼ TCP/UDP    │
+                                     │  ┌─────────┐  ┌──────────┐  ┌─────────┐  │
+                                     │  │ /dev/   │  │ ForeFlt /│  │ Sender  │  │
+                                     │  │ ttyUSB* │  │ Garmin   │  │ Receiver│  │
+                                     │  │ Bad Elf │  │ Pilot    │  │ :12000  │  │
+                                     │  └─────────┘  └──────────┘  └────┬────┘  │
+                                     └───────────────────────────────────┼──────┘
+                                                                         │ UDP retransmit
+                                                                         ▼
+                                                              ┌────────────────────┐
+                                                              │  Fleet Dashboard   │
+                                                              │  (separate host)   │
+                                                              │  :12001..N         │
+                                                              └────────────────────┘
+```
+
+### Components
+
+| Component | Container | Listening | Purpose |
+|-----------|-----------|-----------|---------|
+| **Web UI** | gps-emulator | TCP 80 | React SPA + REST API + WebSocket. Single point of operator control. |
+| **NMEA network port** | gps-emulator | UDP 12000, TCP 12000 | Sender/Receiver protocol. JSON or CYGNUS position payloads at 1 Hz. |
+| **XGPS port** | gps-emulator | UDP 49002 (outbound) | ForeFlight / Garmin Pilot EFB integration over the XGPS protocol. |
+| **Serial output** | gps-emulator | `/dev/ttyUSB*` / `/dev/tty.usbserial-*` | NMEA-0183 to a Bad Elf SBK-2500, Bad Elf Pro, or any USB-serial sink. |
+| **Fleet Dashboard** | fleet-dashboard | TCP 80, UDP 12001..N | Aggregates UDP telemetry + heartbeats from every emulator; broadcasts a combined fleet view to browsers over WebSocket. |
+
+### Data flow
+
+The "open protocol" design splits work between sender and receiver:
+
+1. The **sender** publishes a tiny JSON or CYGNUS position packet (~100-150 bytes, 1 Hz).
+2. The **receiver** decides which NMEA sentences to synthesize, and ships those out USB serial and/or EFB.
+3. The optional **rebroadcaster** is a receiver that additionally re-emits the position to one or more downstream targets (EFB targets, the Fleet Dashboard, etc.).
+
+The simulator never trusts the network for full NMEA - it always synthesizes sentences locally. This is what keeps bandwidth low, NMEA-sentence selection per-receiver, and the integration story open to any device that can `socket.send` JSON.
 
 ---
 
@@ -180,6 +255,41 @@ Available rebroadcast outputs:
 - **USB Serial** - Output NMEA to Bad Elf or other serial devices
 - **EFB Apps** - Send XGPS data to ForeFlight (broadcast/unicast) and/or Garmin Pilot (unicast) on UDP 49002
 - **UDP Retransmit** - Forward GPS data to another IP/port
+
+---
+
+## Hardware Requirements
+
+The simulator is software-only - the only hardware requirements come from the host machine and any optional USB serial peripheral. There is no GPS receiver, antenna, or specialty card needed.
+
+### Host machine
+
+| Role | Minimum | Recommended | Why |
+|------|---------|-------------|-----|
+| **CPU** | 1 core, 1 GHz | 2 cores, 1.5 GHz+ | NMEA generation and the React UI are both light. The container idles well under 5% CPU on a Raspberry Pi 4. |
+| **RAM** | 256 MB free | 512 MB free | The Python + Node runtime fits comfortably; headroom for the airport database keeps lookups instant. |
+| **Disk** | 500 MB free | 1 GB free | The Docker image is ~250 MB; the rest is for logs and pulled base layers. |
+| **OS** | Linux x86_64, macOS, Raspberry Pi OS | Any host with Docker 20.10+ | A multi-arch image is published, so x86_64 and arm64 hosts pull the same tag. |
+| **Network** | One Ethernet or Wi-Fi interface reachable from EFB clients | Dedicated wired LAN segment for the iPad/tablet running the EFB | UDP broadcast and unicast both need clean L2 paths; double-NAT and guest-WiFi isolation will block discovery. |
+
+The published image targets **`linux/amd64`** and **`linux/arm64`**. A Raspberry Pi 4/5 running Raspberry Pi OS 64-bit is a routinely-tested target.
+
+### Optional USB serial hardware
+
+| Device | Connection | Tested role |
+|--------|-----------|-------------|
+| **Bad Elf SBK-2500** | USB-A to RJ-45 (RS-232) | Drop-in GPS replacement for avionics that expect serial NMEA-0183 in. |
+| **Bad Elf Pro / Pro+** | USB-A to USB-C / Lightning | Pass-through to an iPad EFB; the simulator drives the host side. |
+| **Any FTDI/Prolific/CH340 USB-serial adapter** | USB-A to RS-232 / TTL | Generic NMEA-out for custom gear. |
+
+Other USB-serial bridges work as long as they enumerate as `/dev/ttyUSB*`, `/dev/ttyACM*` (Linux), or `/dev/tty.usbserial-*`, `/dev/cu.usbserial-*`, `/dev/tty.usbmodem-*`, `/dev/cu.usbmodem-*` (macOS). The container needs `--privileged` plus `-v /dev:/dev` to see them.
+
+### Optional EFB hardware
+
+| Device | Connection | Notes |
+|--------|-----------|-------|
+| **iPad / iPad mini** with ForeFlight | Same Wi-Fi or wired LAN as the emulator host | ForeFlight discovers XGPS via UDP broadcast on 49002, or you can target it by IP. |
+| **iPad / iPad mini** with Garmin Pilot | Same Wi-Fi or wired LAN as the emulator host | Garmin Pilot requires unicast - configure the iPad's IP under EFB target IPs. |
 
 ---
 
@@ -754,7 +864,7 @@ The open protocol design enables integration with:
 
 ---
 
-## Building from Source
+## Development & Testing
 
 ### Prerequisites
 
@@ -762,35 +872,61 @@ The open protocol design enables integration with:
 - Python 3.11+
 - Docker with buildx support
 
-### Development Setup
+### Local development setup
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/rjsears/nmea_gps_simulator.git
 cd nmea_gps_simulator
 ```
 
 2. Install frontend dependencies:
+
 ```bash
 cd frontend
 npm install
 ```
 
 3. Install backend dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Build the frontend:
+4. Build the frontend (the FastAPI app serves the built bundle from `backend/static/`):
+
 ```bash
 cd frontend
 npm run build
 ```
 
 5. Run the development server:
+
 ```bash
 python3 -m uvicorn backend.main:app --host 0.0.0.0 --port 8080
 ```
+
+### Tests, lint, format
+
+The Python backend uses **pytest** for tests and **ruff** for linting and formatting. A `.pre-commit-config.yaml` is included so you can wire these up locally.
+
+```bash
+# Run the full test suite (251 tests at last count)
+pytest tests/ -v
+
+# Run tests with coverage
+pytest tests/ --cov=backend --cov-report=term-missing
+
+# Lint
+ruff check backend/ dashboard/backend/ tests/
+
+# Format check / apply
+ruff format --check backend/ dashboard/backend/ tests/
+ruff format        backend/ dashboard/backend/ tests/
+```
+
+The same checks run in CI via `.github/workflows/ci.yml` on every push to `main` and every pull request.
 
 ### Building Docker Images
 
@@ -826,11 +962,19 @@ docker buildx build --platform linux/arm64 -t gps-emulator:local --load -f Docke
 
 Then update your `docker-compose.yml` to use `image: gps-emulator:local` instead of the pre-built image.
 
-### Running Tests
+### Building the documentation site
+
+The project documentation is published with **MkDocs Material**. The source lives under `docs/` and the build output goes to `site/` (gitignored).
 
 ```bash
-pytest tests/ -v
+# Live preview at http://127.0.0.1:8000
+python3 -m mkdocs serve
+
+# Static build (output: site/)
+python3 -m mkdocs build --strict --clean
 ```
+
+A new docs site is published to GitHub Pages at <https://rjsears.github.io/nmea_gps_simulator>.
 
 ---
 
@@ -866,7 +1010,7 @@ nmea_gps_simulator/
 │   ├── rebroadcaster_runner.py  # Rebroadcaster mode runner
 │   ├── serial_manager.py        # Serial port management
 │   ├── websocket_manager.py     # WebSocket broadcasting
-│   ├── airports.py              # Airport database (3,992 airports: US, Canada, Europe)
+│   ├── airports.py              # Airport database (4,003 airports: US, Canada, Europe, Pacific)
 │   └── models.py                # Pydantic data models
 ├── frontend/                    # React frontend
 │   ├── src/
@@ -903,7 +1047,22 @@ nmea_gps_simulator/
 │   ├── Dockerfile               # Multi-stage build (amd64 + arm64)
 │   ├── docker-compose.yml       # Example compose file
 │   └── docker-entrypoint.sh     # Container entrypoint
-├── tests/                       # Python tests (22 test files)
+├── dashboard/                   # Fleet Dashboard companion app
+│   ├── backend/                 # FastAPI app aggregating per-sim telemetry
+│   ├── frontend/                # React + Vite + Tailwind UI
+│   └── docker/                  # Dashboard Dockerfile + compose
+├── docs/                        # MkDocs Material source (published to GitHub Pages)
+│   ├── index.md
+│   ├── getting-started/         # Overview, architecture, hardware, quick start
+│   ├── manual/                  # Simulator user manual (per-tab pages)
+│   ├── dashboard-manual/        # Fleet Dashboard user manual
+│   ├── user-guides/             # Topic HOWTOs (auto-start, EFB, USB, etc.)
+│   ├── reference/               # API, env vars, protocols, security, troubleshooting
+│   ├── stylesheets/extra.css
+│   └── images/screenshots/      # Manual screenshots
+├── project_docs/                # Operator-only staging (gitignored)
+├── tests/                       # Python tests
+├── mkdocs.yml                   # MkDocs Material configuration
 ├── requirements.txt             # Python dependencies
 └── README.md
 ```
@@ -911,6 +1070,16 @@ nmea_gps_simulator/
 ---
 
 ## API Reference
+
+The simulator exposes a complete OpenAPI 3.x specification, served by the running container. Three views are available:
+
+- **Swagger UI** at `http://<host>/api/docs` - interactive "try it out" explorer
+- **ReDoc** at `http://<host>/api/redoc` - clean read-only reference layout
+- **Raw OpenAPI JSON** at `http://<host>/api/openapi.json` - machine-readable spec for client generators and Postman
+
+The **Fleet Dashboard** container exposes the same three URLs on its own host:port.
+
+The tables below summarize the top-level endpoint groups; the live Swagger UI is authoritative.
 
 ### Authentication
 
@@ -994,7 +1163,7 @@ The **Fleet Dashboard** is a separate Docker container that provides real-time m
 
 - **Real-time monitoring** of up to 20 simulators simultaneously
 - **Position tracking** with latitude, longitude, altitude, airspeed, and heading
-- **Nearest airport** calculation from 3,992 airports database with distance in nautical miles
+- **Nearest airport** calculation from 4,003 airports database with distance in nautical miles
 - **Online/Offline status** indicators (green = receiving data, gray = offline)
 - **Click to map** - Click any online simulator card to instantly open Google Maps at that aircraft's real-time location
 - **Dark mode support** - Toggle between light and dark themes, with preference saved automatically
@@ -1126,6 +1295,41 @@ The emulator sends heartbeat packets every second with the ping status, allowing
 
 ---
 
+## Troubleshooting
+
+The full troubleshooting matrix lives at [reference/troubleshooting](https://rjsears.github.io/nmea_gps_simulator/reference/troubleshooting/) in the docs site. The most common symptoms:
+
+| Symptom | First thing to check | Fix |
+|---------|---------------------|-----|
+| Web UI won't load on `http://<host>` | Container is running and port 80 isn't already bound by another service | `docker compose ps`; `docker compose logs gps-emulator`; pick a different host port if needed |
+| Login screen blocks access during testing | Auth is enabled but you want to bypass it | Set `BYPASS_AUTH=true` in `docker-compose.yml` and restart |
+| Started but no NMEA output to the EFB iPad | The iPad isn't on the same L2 segment, or the host isn't reachable on UDP 49002 | Confirm both devices are on the same Wi-Fi/LAN (no AP isolation), then verify `AUTO_START_EFB_TARGET_IPS` lists the iPad's IP. ForeFlight wants broadcast, Garmin Pilot wants unicast. |
+| USB serial output never appears on the Bad Elf | `/dev` not mounted, or device path is wrong | Make sure the compose file has `privileged: true` and `volumes: - /dev:/dev`. Inside the container, run `ls /dev/tty*` to confirm the device path. |
+| Sender→Receiver pair shows no traffic | Wrong protocol on one side, or NAT/firewall between the two hosts | Both sides must agree on UDP vs TCP. Try a quick `nc`-based smoke test (see the [Network Protocol](#network-protocol) examples). |
+| Fleet Dashboard card stays gray | The emulator isn't retransmitting to the dashboard, or the dashboard isn't listening on the matching port | Confirm `AUTO_START_UDP_RETRANSMIT=true` and that `AUTO_START_UDP_RETRANSMIT_PORT` matches the `SIM_N_PORT` on the dashboard side. |
+| `tcpdump` shows "bad udp cksum" on the receiving host | TX checksum offload on the sending host's NIC | `sudo ethtool -K <iface> tx off`. Make it persistent in your network config or you'll lose it on reboot. |
+| `mkdocs build` fails with "Doc file ... contains a link to X, but the target X is not found" | A link target was moved or renamed | Search the doc tree for the broken target and update or remove the link. Add an `exclude_docs` entry if the source file is operator-only and shouldn't be published. |
+
+---
+
+## Security
+
+The default deployment is designed for a **trusted internal network** (a flight training facility's lab LAN, a developer's workstation, etc.). It is not hardened for direct exposure to the public internet.
+
+| Mechanism | Default | Production guidance |
+|-----------|---------|---------------------|
+| **Web UI authentication** | Cookie-based session login, controlled by `USERNAME` / `PASSWORD` | Set both to non-default values and rotate periodically. |
+| **`BYPASS_AUTH`** | `true` in the example compose file | Set to `false` for any deployment outside a closed lab. The example default is for ease of first run. |
+| **Default credentials** | `admin` / `changeme` | Change both before exposing the UI to anyone but yourself. |
+| **API surface** | All `/api/*` endpoints require a valid session unless `BYPASS_AUTH=true` | Treat the `/api/control` endpoint as privileged - it can start/stop NMEA output to connected hardware. |
+| **NMEA network ports** | UDP/TCP 12000 open inside the container | These accept JSON / CYGNUS position packets with no authentication. Do not expose them to untrusted networks. |
+| **EFB port** | UDP 49002 outbound (XGPS) | Outbound only; no listener. |
+| **Container privileges** | `privileged: true` + `-v /dev:/dev` | Required for USB serial. Necessary, but means the container can see all host devices - keep the image you run trusted. |
+
+A more complete hardening checklist (TLS termination, reverse proxy, network segmentation) lives at [reference/security](https://rjsears.github.io/nmea_gps_simulator/reference/security/) in the docs site.
+
+---
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
@@ -1142,13 +1346,27 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 - **Issues:** [GitHub Issues](https://github.com/rjsears/nmea_gps_simulator/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/rjsears/nmea_gps_simulator/discussions)
+- **Documentation:** [rjsears.github.io/nmea_gps_simulator](https://rjsears.github.io/nmea_gps_simulator)
 
 ---
 
-## Special Thanks
+## License
 
-* **My amazing and loving family!** My family puts up with all my coding and automation projects and encourages me in everything. Without them, my projects would not be possible.
-* **My brother James**, who is a continual source of inspiration to me and others. Everyone should have a brother as awesome as mine!
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for the full text.
+
+In short: you can use, copy, modify, and distribute this software, including for commercial purposes, as long as the original copyright notice and the MIT permission notice are preserved.
+
+---
+
+## Acknowledgments
+
+- **My amazing and loving family.** My family puts up with all my coding and automation projects and encourages me in everything. Without them, my projects would not be possible.
+- **My brother James**, who is a continual source of inspiration to me and others. Everyone should have a brother as awesome as mine.
+- **Project FastAPI** for an HTTP framework that is genuinely a pleasure to build APIs against.
+- **The MkDocs and Material for MkDocs teams** for the documentation toolchain this project's docs site is built on.
+- **Bad Elf** for hardware that has been a reliable downstream target throughout development.
+
+---
 
 ## Author
 

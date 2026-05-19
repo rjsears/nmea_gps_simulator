@@ -19,7 +19,7 @@ from ..airports import lookup_airport, search_airports, list_all_airports
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/airports", tags=["airports"])
+router = APIRouter(prefix="/api/airports", tags=["Airports"])
 
 
 @router.get("/lookup/{icao}")

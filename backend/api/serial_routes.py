@@ -21,7 +21,7 @@ from ..state import get_app_state
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/serial", tags=["serial"])
+router = APIRouter(prefix="/api/serial", tags=["Serial"])
 
 
 class SelectDeviceRequest(BaseModel):

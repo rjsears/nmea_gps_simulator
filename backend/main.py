@@ -18,8 +18,9 @@ import sys
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from fastapi.openapi.docs import get_redoc_html
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 from .api import (
     auth_router,
@@ -69,9 +70,17 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="NMEA GPS Emulator",
-    description="NMEA GPS emulator for Bad Elf SBK-2500 testing",
+    title="NMEA GPS Simulator API",
+    description=(
+        "REST + WebSocket API for the NMEA GPS Simulator. "
+        "Provides authentication, mode control, runtime configuration, "
+        "serial-port management, airport lookup, and real-time NMEA "
+        "broadcast over a WebSocket."
+    ),
     version="1.0.0",
+    docs_url="/api/docs",
+    redoc_url=None,
+    openapi_url="/api/openapi.json",
     lifespan=lifespan,
 )
 
@@ -90,6 +99,21 @@ async def health_check():
     return {"status": "healthy"}
 
 
+@app.get("/api/redoc", include_in_schema=False)
+async def redoc_html() -> HTMLResponse:
+    """ReDoc UI served from a pinned CDN.
+
+    FastAPI's default ReDoc mount uses an `@next` CDN tag that periodically
+    returns 404. Serving ReDoc through this custom route with a pinned version
+    keeps the page reliable.
+    """
+    return get_redoc_html(
+        openapi_url="/api/openapi.json",
+        title="NMEA GPS Simulator API - ReDoc",
+        redoc_js_url="https://cdn.jsdelivr.net/npm/redoc@2.1.3/bundles/redoc.standalone.js",
+    )
+
+
 # Static files (React build output)
 static_dir = os.path.join(os.path.dirname(__file__), "static")
 if os.path.exists(static_dir):
@@ -99,11 +123,11 @@ if os.path.exists(static_dir):
         name="assets",
     )
 
-    @app.get("/")
+    @app.get("/", include_in_schema=False)
     async def serve_index():
         return FileResponse(os.path.join(static_dir, "index.html"))
 
-    @app.get("/{full_path:path}")
+    @app.get("/{full_path:path}", include_in_schema=False)
     async def serve_spa(full_path: str):
         file_path = os.path.join(static_dir, full_path)
         if os.path.exists(file_path) and os.path.isfile(file_path):

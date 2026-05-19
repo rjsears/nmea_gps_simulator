@@ -48,11 +48,13 @@ notes/
 # Node.js
 node_modules/
 
-#Certain Docs
+# Operator-only staging (instructions, proposals, screen-capture playbook,
+# historical brainstorming). docs/ itself is now the MkDocs source and IS
+# tracked.
+project_docs/
 
-docs
-docs/
-docs/superpowers/
+# MkDocs build output
+site/
 
 
 #Local Build/Run Files

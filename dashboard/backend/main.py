@@ -23,8 +23,9 @@ from typing import Optional
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.docs import get_redoc_html
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 from .config import get_settings, SimConfig
 from .airports import find_closest_airport
@@ -241,9 +242,16 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Fleet Dashboard",
-    description="Monitor multiple GPS simulators",
+    title="Fleet Dashboard API",
+    description=(
+        "REST + WebSocket API for the Fleet Dashboard. Aggregates UDP "
+        "telemetry and heartbeats from multiple NMEA GPS Simulator instances "
+        "and broadcasts a combined fleet view to connected web clients."
+    ),
     version="1.0.0",
+    docs_url="/api/docs",
+    redoc_url=None,
+    openapi_url="/api/openapi.json",
     lifespan=lifespan,
 )
 
@@ -256,13 +264,28 @@ app.add_middleware(
 )
 
 
-@app.get("/api/status")
+@app.get("/api/status", tags=["Status"])
 async def get_status():
     """Get current fleet status."""
     return {
         "simulators": fleet_monitor.get_all_states(),
         "timestamp": datetime.utcnow().isoformat(),
     }
+
+
+@app.get("/api/redoc", include_in_schema=False)
+async def redoc_html() -> HTMLResponse:
+    """ReDoc UI served from a pinned CDN.
+
+    FastAPI's default ReDoc mount uses an `@next` CDN tag that periodically
+    returns 404. Serving ReDoc through this custom route with a pinned version
+    keeps the page reliable.
+    """
+    return get_redoc_html(
+        openapi_url="/api/openapi.json",
+        title="Fleet Dashboard API - ReDoc",
+        redoc_js_url="https://cdn.jsdelivr.net/npm/redoc@2.1.3/bundles/redoc.standalone.js",
+    )
 
 
 @app.websocket("/ws")
@@ -299,7 +322,7 @@ if frontend_build.exists():
         "/assets", StaticFiles(directory=frontend_build / "assets"), name="assets"
     )
 
-    @app.get("/{full_path:path}")
+    @app.get("/{full_path:path}", include_in_schema=False)
     async def serve_frontend(full_path: str):
         """Serve frontend files."""
         file_path = frontend_build / full_path
