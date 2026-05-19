@@ -1,0 +1,40 @@
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+ * /docs/stylesheets/extra.css
+ *
+ * Part of "NMEA GPS Simulator"
+ * Version 1.0.0 - May 13th, 2026
+ *
+ * Richard J. Sears
+ * richardjsears@protonmail.com
+ * https://github.com/rjsears
+ * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+
+/* Center captioned figures consistently across light and dark themes. */
+figure {
+  text-align: center;
+  margin: 1.5em auto;
+}
+
+figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+figure figcaption {
+  font-size: 0.85em;
+  color: var(--md-default-fg-color--light);
+  margin-top: 0.5em;
+}
+
+/* Tighten the standard admonition title — Material's default has extra padding
+   that crowds dense reference pages. */
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-weight: 600;
+}
+
+/* Default tables look fine; just bump the header weight for scannability. */
+.md-typeset table:not([class]) th {
+  font-weight: 600;
+}

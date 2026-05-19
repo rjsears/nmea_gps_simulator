@@ -1,0 +1,150 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# /mkdocs.yml
+#
+# Part of "NMEA GPS Simulator"
+# Version 1.0.0 - May 13th, 2026
+#
+# Richard J. Sears
+# richardjsears@protonmail.com
+# https://github.com/rjsears
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+site_name: NMEA GPS Simulator
+site_description: A Dockerized NMEA GPS simulator with web interface for testing any application that requires GPS positioning data. Useful with aviation, georeferencing and ham radio (APRS) application testing.
+site_author: Richard J. Sears
+site_url: https://rjsears.github.io/nmea_gps_simulator
+
+repo_name: rjsears/nmea_gps_simulator
+repo_url: https://github.com/rjsears/nmea_gps_simulator
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/crosshairs-gps
+
+plugins:
+  - search
+  - tags
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - admonition
+  - tables
+  - attr_list
+  - md_in_html
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/rjsears
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+copyright: Copyright &copy; 2026 Richard J. Sears
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Overview: getting-started/overview.md
+      - Architecture: getting-started/architecture.md
+      - Hardware Requirements: getting-started/hardware.md
+      - Quick Start: getting-started/quick-start.md
+  - User Manual (Simulator):
+      - Welcome: manual/welcome.md
+      - Login: manual/login.md
+      - Dashboard Overview: manual/dashboard-overview.md
+      - Rebroadcaster Mode: manual/mode-rebroadcaster.md
+      - Sender Mode: manual/mode-sender.md
+      - Receiver Mode: manual/mode-receiver.md
+      - Stand-Alone Mode: manual/mode-standalone.md
+      - NMEA Sentences: manual/nmea-sentences.md
+      - Serial Output: manual/serial-output.md
+      - Navigation Controls: manual/navigation-controls.md
+      - Output Viewer: manual/output-viewer.md
+      - Status Display: manual/status-display.md
+      - Airport Lookup: manual/airport-lookup.md
+      - Common UI Elements: manual/common-ui.md
+      - Appendix: manual/appendix.md
+  - User Manual (Fleet Dashboard):
+      - Welcome: dashboard-manual/welcome.md
+      - Overview: dashboard-manual/overview.md
+      - Simulator Card: dashboard-manual/simulator-card.md
+      - Health Chain: dashboard-manual/health-chain.md
+      - Configuration: dashboard-manual/configuration.md
+      - Appendix: dashboard-manual/appendix.md
+  - User Guides:
+      - Auto-Start: user-guides/auto-start.md
+      - Connecting ForeFlight: user-guides/connecting-foreflight.md
+      - Connecting Garmin Pilot: user-guides/connecting-garmin-pilot.md
+      - USB Serial (Bad Elf): user-guides/usb-serial-bad-elf.md
+      - Sender/Receiver Pair: user-guides/sender-receiver-pair.md
+      - IP Range Parsing: user-guides/ip-range-parsing.md
+      - NMEA Sentence Catalog: user-guides/nmea-sentence-catalog.md
+      - Fleet Monitoring: user-guides/fleet-monitoring.md
+      - TX Checksum Offload Fix: user-guides/tx-checksum-offload.md
+      - Multi-Browser Sync: user-guides/multi-browser-sync.md
+  - Reference:
+      - API Reference: reference/api-reference.md
+      - Environment Variables: reference/env-vars.md
+      - NMEA Protocol: reference/nmea-protocol.md
+      - Network Protocol: reference/network-protocol.md
+      - Security: reference/security.md
+      - Troubleshooting: reference/troubleshooting.md
