@@ -1,0 +1,16 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# requirements-docs.txt
+#
+# Part of the "NMEA GPS Simulator" suite
+# Version 1.0.0 - May 18th, 2026
+#
+# Richard J. Sears
+# richardjsears@protonmail.com
+# https://github.com/rjsears
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+# Documentation site (MkDocs + Material theme).
+# Build locally:   python3 -m mkdocs serve
+# Build static:    python3 -m mkdocs build --strict --clean
+mkdocs>=1.6.1
+mkdocs-material>=9.7.6
