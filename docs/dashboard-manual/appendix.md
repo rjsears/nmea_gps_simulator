@@ -58,8 +58,12 @@ Endpoints:
 |----------|---------|
 | `GET /api/status` | Returns the same `fleet_state` payload the WebSocket pushes, in one HTTP call. Useful for scripts / integrations. |
 | `WS /ws` | Live WebSocket. Broadcasts a `fleet_state` message every second, plus a `fleet_state` message immediately on connect. |
+| `GET /api/recording` | Flight data recording status: per-simulator switches, stored time span, database size. |
+| `PUT /api/recording/{sim}` | Switch recording on or off for one simulator. |
+| `GET /api/recording/count` | Number of recorded positions in a time range. |
+| `GET /api/recording/export` | Download recorded positions as CSV, JSON, XML, GPX or KML. See [Flight Data Recording](flight-data.md#api). |
 
-The dashboard intentionally has a much smaller API than the simulator - everything that's not "read the current state" is operator-private, configured via env vars at deployment time.
+Apart from flight data recording, the dashboard has a much smaller API than the simulator - card configuration is set via env vars at deployment time.
 
 ## Glossary
 

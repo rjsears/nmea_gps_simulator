@@ -92,6 +92,14 @@ Source: `dashboard/backend/config.py`.
 
 The parser walks from 1 to 20 and stops on the first gap. So `SIM_1`, `SIM_3` (no `SIM_2`) registers only `SIM_1`.
 
+### Flight data recording
+
+| Var | Type | Default | Description |
+|-----|------|---------|-------------|
+| `RECORDING_DEFAULT_ENABLED` | bool | `true` | Recording state for a simulator the first time it appears. After that, the switch in the Flight Data panel wins. |
+| `RECORDING_RETENTION_DAYS` | int | `30` | Recordings older than this are deleted automatically. `0` keeps everything. |
+| `RECORDING_DB_PATH` | string | `/app/data/flight_data.db` | SQLite database location inside the container. |
+
 ### Compact alternative (no GPS-system label)
 
 | Var | Type | Description |
@@ -172,6 +180,9 @@ environment:
 environment:
   - HOST=0.0.0.0
   - PORT=80
+
+  - RECORDING_DEFAULT_ENABLED=true
+  - RECORDING_RETENTION_DAYS=30
 
   - SIM_1_NAME=CJ3
   - SIM_1_PORT=12001

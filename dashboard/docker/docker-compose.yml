@@ -16,10 +16,19 @@ services:
     network_mode: host
     security_opt:
       - "apparmor:unconfined"
+    volumes:
+      # Flight data recordings (SQLite). Keeps history across image updates.
+      - ./data:/app/data
     environment:
       # Server configuration
       - HOST=0.0.0.0
       - PORT=80
+
+      # Flight data recording
+      # Positions from every simulator are stored while it is sending data.
+      # Recording can be switched per simulator from the Flight Data panel.
+      - RECORDING_DEFAULT_ENABLED=true   # Initial state for newly added sims
+      - RECORDING_RETENTION_DAYS=30      # Auto-delete older data (0 = keep forever)
 
       # Simulator configuration
       # Each emulator should send UDP to this dashboard's IP on its assigned port

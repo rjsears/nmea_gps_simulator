@@ -31,6 +31,9 @@ class Settings:
     host: str
     port: int
     simulators: list[SimConfig]
+    recording_db_path: str = "/app/data/flight_data.db"
+    recording_default_enabled: bool = True
+    recording_retention_days: int = 30
 
 
 def parse_simulator_config() -> list[SimConfig]:
@@ -106,4 +109,10 @@ def get_settings() -> Settings:
         host=os.getenv("HOST", "0.0.0.0"),
         port=int(os.getenv("PORT", "8080")),
         simulators=parse_simulator_config(),
+        recording_db_path=os.getenv("RECORDING_DB_PATH", "/app/data/flight_data.db"),
+        recording_default_enabled=os.getenv("RECORDING_DEFAULT_ENABLED", "true")
+        .strip()
+        .lower()
+        in ("1", "true", "yes", "on"),
+        recording_retention_days=int(os.getenv("RECORDING_RETENTION_DAYS", "30")),
     )

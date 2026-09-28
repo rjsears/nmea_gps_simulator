@@ -115,7 +115,17 @@ If neither `SIMULATORS` nor any `SIM_N_*` are set, the dashboard falls back to a
 | `image: rjsears/fleet-dashboard:latest` | the canonical image | Multi-arch (linux/amd64, linux/arm64). |
 | `container_name: fleet-dashboard` | optional | Makes `docker compose logs fleet-dashboard` predictable. |
 
-The dashboard does **not** need `/dev` access and is **not** privileged. It also doesn't need access to any persistent volume - state is in-memory.
+The dashboard does **not** need `/dev` access and is **not** privileged. Mount a volume on `/app/data` (`./data:/app/data`) so [flight data recordings](flight-data.md) survive image updates.
+
+## Flight data recording
+
+| Var | Default | What it does |
+|-----|---------|--------------|
+| `RECORDING_DEFAULT_ENABLED` | `true` | Recording state for a simulator the first time it appears. After that, the switch in the Flight Data panel wins. |
+| `RECORDING_RETENTION_DAYS` | `30` | Recordings older than this are deleted automatically. `0` keeps everything. |
+| `RECORDING_DB_PATH` | `/app/data/flight_data.db` | SQLite database location inside the container. |
+
+See [Flight Data Recording](flight-data.md) for the panel, export formats and storage sizing.
 
 ## Matching the rebroadcasters
 
@@ -144,7 +154,7 @@ This is intentional - configuration is a deployment-time decision, not a runtime
 
 ## Time zone
 
-The dashboard does not use the host time zone for anything user-visible (it's a real-time view, not a historical log). There is no `TZ` env var to configure.
+The dashboard does not need a `TZ` env var. Flight data is recorded in UTC, and the Flight Data panel converts to and from each browser's local time zone.
 
 ## Network ports the dashboard binds
 
@@ -168,15 +178,14 @@ Because the container uses `network_mode: host`, every one of these binds the **
 
 ## Persistent state
 
-The dashboard has **no persistent state**. Every container restart begins from scratch:
+Apart from flight data recordings (stored in `/app/data`), the dashboard's state is in memory. Every container restart begins from scratch:
 
 | Thing | Persists? |
 |-------|-----------|
 | Card configuration | Reads env vars on every start (so persists in `docker-compose.yml`, not in the container's filesystem). |
 | Per-card packet counts | Reset to 0 on every container restart. |
 | Health states | Computed fresh from the most recent heartbeat / position - no history. |
-
-This is by design - the dashboard is a live view, not a log aggregator. If you need historical data, ingest the heartbeats and position packets into your own time-series store separately.
+| Flight data recordings and recording switches | Yes, in the SQLite database under `/app/data` (if a volume is mounted there). |
 
 ## What's next
 

@@ -23,14 +23,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_redoc_html
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, StreamingResponse
+from pydantic import BaseModel
 
 from .config import get_settings, SimConfig
 from .airports import find_closest_airport
+from .recorder import EXPORT_FORMATS, FlightRecorder
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -161,6 +163,7 @@ class FleetMonitor:
         self._sockets: list[socket.socket] = []
         self._running = False
         self._threads: list[threading.Thread] = []
+        self.recorder: Optional[FlightRecorder] = None
         self.last_evaluated: Optional[float] = None
 
     def mark_evaluated(self) -> None:
@@ -256,6 +259,8 @@ class FleetMonitor:
                         logger.debug(f"Received heartbeat for {sim.name}: {gps_data}")
                     else:
                         sim.update(gps_data)
+                        if self.recorder:
+                            self.recorder.record(sim.name, gps_data)
                         logger.debug(f"Received packet for {sim.name}: {gps_data}")
                 except json.JSONDecodeError:
                     logger.warning(f"Invalid JSON from {addr}: {packet[:50]}")
@@ -267,11 +272,21 @@ class FleetMonitor:
 
     def get_all_states(self) -> list[dict]:
         """Get current state of all simulators."""
-        return [sim.to_dict() for sim in self.simulators.values()]
+        states = []
+        for sim in self.simulators.values():
+            state = sim.to_dict()
+            state["recording"] = bool(
+                self.recorder and self.recorder.is_enabled(sim.name)
+            )
+            states.append(state)
+        return states
 
 
 # Global fleet monitor instance
 fleet_monitor = FleetMonitor()
+
+# Flight data recorder (created at startup)
+flight_recorder: Optional[FlightRecorder] = None
 
 # WebSocket connections
 websocket_connections: set[WebSocket] = set()
@@ -316,8 +331,19 @@ async def evaluate_and_broadcast():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan handler."""
+    global flight_recorder
     settings = get_settings()
     fleet_monitor.configure(settings.simulators)
+
+    flight_recorder = FlightRecorder(
+        settings.recording_db_path,
+        retention_days=settings.recording_retention_days,
+        default_enabled=settings.recording_default_enabled,
+    )
+    flight_recorder.register_sims([s.name for s in settings.simulators])
+    flight_recorder.start()
+    fleet_monitor.recorder = flight_recorder
+
     fleet_monitor.start()
 
     # Start broadcast task
@@ -327,6 +353,7 @@ async def lifespan(app: FastAPI):
 
     broadcast_task.cancel()
     fleet_monitor.stop()
+    flight_recorder.stop()
 
 
 app = FastAPI(
@@ -360,6 +387,97 @@ async def get_status():
         "generated_at": fleet_monitor.generated_at,
         "timestamp": datetime.utcnow().isoformat(),
     }
+
+
+class RecordingToggle(BaseModel):
+    enabled: bool
+
+
+def _get_recorder() -> FlightRecorder:
+    if flight_recorder is None:
+        raise HTTPException(status_code=503, detail="Flight recorder not running")
+    return flight_recorder
+
+
+def _parse_time(value: str, field: str) -> int:
+    """Parse an ISO 8601 date/time (UTC if no offset) into UTC milliseconds."""
+    try:
+        dt = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        raise HTTPException(
+            status_code=400, detail=f"Invalid {field} time: {value!r}"
+        ) from None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return int(dt.timestamp() * 1000)
+
+
+def _parse_range(
+    start: str, end: str, sims: Optional[str]
+) -> tuple[int, int, Optional[list[str]]]:
+    start_ms = _parse_time(start, "start")
+    end_ms = _parse_time(end, "end")
+    if end_ms < start_ms:
+        raise HTTPException(status_code=400, detail="End time is before start time")
+    sim_list = [s.strip() for s in sims.split(",") if s.strip()] if sims else None
+    return start_ms, end_ms, sim_list
+
+
+@app.get("/api/recording", tags=["Recording"])
+async def get_recording_status():
+    """Recording toggles, stored time span and database size."""
+    return await asyncio.to_thread(_get_recorder().status)
+
+
+@app.put("/api/recording/{sim_name}", tags=["Recording"])
+async def set_recording(sim_name: str, body: RecordingToggle):
+    """Turn recording on or off for one simulator."""
+    recorder = _get_recorder()
+    try:
+        await asyncio.to_thread(recorder.set_enabled, sim_name, body.enabled)
+    except KeyError:
+        raise HTTPException(
+            status_code=404, detail=f"Unknown simulator: {sim_name}"
+        ) from None
+    return {"name": sim_name, "recording": body.enabled}
+
+
+@app.get("/api/recording/count", tags=["Recording"])
+async def count_recorded(
+    start: str = Query(..., description="ISO 8601 start time (UTC if no offset)"),
+    end: str = Query(..., description="ISO 8601 end time (UTC if no offset)"),
+    sims: Optional[str] = Query(None, description="Comma-separated sim names"),
+):
+    """Number of recorded positions in a time range (export preview)."""
+    start_ms, end_ms, sim_list = _parse_range(start, end, sims)
+    rows = await asyncio.to_thread(_get_recorder().count, start_ms, end_ms, sim_list)
+    return {"rows": rows}
+
+
+@app.get("/api/recording/export", tags=["Recording"])
+async def export_recorded(
+    start: str = Query(..., description="ISO 8601 start time (UTC if no offset)"),
+    end: str = Query(..., description="ISO 8601 end time (UTC if no offset)"),
+    format: str = Query("csv", description="csv, json, xml, gpx or kml"),
+    sims: Optional[str] = Query(None, description="Comma-separated sim names"),
+):
+    """Download recorded positions in a time range as a file."""
+    fmt = format.lower()
+    if fmt not in EXPORT_FORMATS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported format {format!r}. Use one of: "
+            + ", ".join(EXPORT_FORMATS),
+        )
+    start_ms, end_ms, sim_list = _parse_range(start, end, sims)
+    media_type, ext = EXPORT_FORMATS[fmt]
+    stamp = datetime.fromtimestamp(start_ms / 1000, tz=timezone.utc)
+    filename = f"flight_data_{stamp:%Y%m%dT%H%MZ}.{ext}"
+    return StreamingResponse(
+        _get_recorder().export(fmt, start_ms, end_ms, sim_list),
+        media_type=media_type,
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 @app.get("/api/redoc", include_in_schema=False)
