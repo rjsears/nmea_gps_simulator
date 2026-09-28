@@ -14,6 +14,7 @@ import asyncio
 import json
 import logging
 import platform
+import re
 import socket
 import subprocess
 import threading
@@ -472,7 +473,13 @@ async def export_recorded(
     start_ms, end_ms, sim_list = _parse_range(start, end, sims)
     media_type, ext = EXPORT_FORMATS[fmt]
     stamp = datetime.fromtimestamp(start_ms / 1000, tz=timezone.utc)
-    filename = f"flight_data_{stamp:%Y%m%dT%H%MZ}.{ext}"
+    # One sim (the normal case from the UI) -> name the file after it
+    prefix = (
+        re.sub(r"[^A-Za-z0-9_-]+", "_", sim_list[0]).strip("_") or "flight_data"
+        if sim_list and len(sim_list) == 1
+        else "flight_data"
+    )
+    filename = f"{prefix}_{stamp:%Y%m%dT%H%MZ}.{ext}"
     return StreamingResponse(
         _get_recorder().export(fmt, start_ms, end_ms, sim_list),
         media_type=media_type,

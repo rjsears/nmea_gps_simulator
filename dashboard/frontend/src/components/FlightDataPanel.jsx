@@ -29,7 +29,7 @@ function FlightDataPanel({ onClose }) {
   const [start, setStart] = useState(() => toLocalInput(new Date(Date.now() - 2 * 3600 * 1000)))
   const [end, setEnd] = useState(() => toLocalInput(new Date()))
   const [format, setFormat] = useState('csv')
-  const [selectedSims, setSelectedSims] = useState(null) // null = all
+  const [selectedSim, setSelectedSim] = useState('')
   const [rowCount, setRowCount] = useState(null)
 
   const loadStatus = useCallback(async () => {
@@ -50,17 +50,16 @@ function FlightDataPanel({ onClose }) {
   }, [loadStatus])
 
   const sims = status?.simulators ?? []
-  const chosenSims = selectedSims ?? sims.map((s) => s.name)
   const startDate = new Date(start)
   // Pickers have minute precision, so "To" includes that entire minute
   const endDate = new Date(new Date(end).getTime() + 59999)
-  const rangeValid = !isNaN(startDate) && !isNaN(endDate) && endDate >= startDate && chosenSims.length > 0
+  const rangeValid = !isNaN(startDate) && !isNaN(endDate) && endDate >= startDate && selectedSim !== ''
 
   const query = rangeValid
     ? new URLSearchParams({
         start: startDate.toISOString(),
         end: endDate.toISOString(),
-        sims: chosenSims.join(','),
+        sims: selectedSim,
       }).toString()
     : null
 
@@ -97,13 +96,6 @@ function FlightDataPanel({ onClose }) {
     } catch (e) {
       setError(`Could not change recording for ${name}: ${e.message}`)
     }
-  }
-
-  const toggleSelected = (name) => {
-    const next = chosenSims.includes(name)
-      ? chosenSims.filter((n) => n !== name)
-      : [...chosenSims, name]
-    setSelectedSims(next)
   }
 
   const setPreset = (hours) => {
@@ -190,6 +182,15 @@ function FlightDataPanel({ onClose }) {
           {/* Export */}
           <section>
             <h3 className={sectionTitle}>Export</h3>
+            <label className="block text-sm text-gray-600 dark:text-gray-300 mb-4 sm:w-64">
+              Simulator
+              <select value={selectedSim} onChange={(e) => setSelectedSim(e.target.value)} className={`${inputClass} mt-1`}>
+                <option value="" disabled>Select a simulator…</option>
+                {sims.map((sim) => (
+                  <option key={sim.name} value={sim.name}>{sim.name}</option>
+                ))}
+              </select>
+            </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block text-sm text-gray-600 dark:text-gray-300">
                 From
@@ -221,23 +222,6 @@ function FlightDataPanel({ onClose }) {
               Times are in your local time zone. Exported timestamps are UTC.
             </p>
 
-            <div className="mt-4">
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Simulators</p>
-              <div className="flex flex-wrap gap-3">
-                {sims.map((sim) => (
-                  <label key={sim.name} className="inline-flex items-center gap-2 text-sm text-gray-800 dark:text-gray-200">
-                    <input
-                      type="checkbox"
-                      checked={chosenSims.includes(sim.name)}
-                      onChange={() => toggleSelected(sim.name)}
-                      className="rounded"
-                    />
-                    {sim.name}
-                  </label>
-                ))}
-              </div>
-            </div>
-
             <div className="mt-4 flex flex-col sm:flex-row sm:items-end gap-4">
               <label className="block text-sm text-gray-600 dark:text-gray-300 sm:w-64">
                 Format
@@ -259,8 +243,10 @@ function FlightDataPanel({ onClose }) {
                 Export
               </a>
               <p className="text-sm text-gray-600 dark:text-gray-300">
-                {!rangeValid
-                  ? 'Pick a valid range and at least one simulator'
+                {!selectedSim
+                  ? 'Select a simulator to export'
+                  : !rangeValid
+                  ? 'Pick a valid date/time range'
                   : rowCount === null
                     ? 'Counting…'
                     : `${rowCount.toLocaleString()} positions`}

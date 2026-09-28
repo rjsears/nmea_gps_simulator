@@ -247,6 +247,24 @@ class TestRecordingApi:
         )
         assert "-117.2803,33.1283" in resp.text
 
+    @pytest.mark.parametrize(
+        ("sims", "prefix"),
+        [("CJ3", "CJ3"), ("Classic CJ1", "Classic_CJ1"), ("../x", "x")],
+    )
+    def test_export_single_sim_filename(self, client, sims, prefix):
+        resp = client.get(
+            "/api/recording/export",
+            params={
+                "start": "2026-04-11T15:00:00Z",
+                "end": "2026-04-11T16:00:00Z",
+                "format": "gpx",
+                "sims": sims,
+            },
+        )
+        assert resp.status_code == 200
+        disposition = resp.headers["content-disposition"]
+        assert f'filename="{prefix}_20260411T1500Z.gpx"' in disposition
+
     def test_export_bad_format(self, client):
         resp = client.get(
             "/api/recording/export",
