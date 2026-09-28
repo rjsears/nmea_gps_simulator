@@ -42,10 +42,12 @@ Below the switches the panel shows the time span currently stored, the database 
 
 ### Export
 
-1. Pick a **From** and **To** date/time, or click a preset (last hour, 4 hours, 24 hours, 7 days, 30 days). Times are entered in your browser's local time zone; the **To** minute is included in full.
-2. Tick the simulators to include.
+Exports are one simulator at a time, since they're normally used to map an individual flight.
+
+1. Pick the **Simulator**.
+2. Pick a **From** and **To** date/time, or click a preset (last hour, 4 hours, 24 hours, 7 days, 30 days). Times are entered in your browser's local time zone; the **To** minute is included in full.
 3. Choose a format. The panel shows how many positions the export will contain.
-4. Click **Export** to download the file.
+4. Click **Export** to download the file. It is named after the simulator and start time, e.g. `CJ3_20260928T1645Z.kml`.
 
 Exported timestamps are always UTC (e.g. `2026-04-11T15:30:45.123Z`).
 
@@ -63,7 +65,7 @@ The panel follows the dashboard's light/dark theme:
 | **GPX** | GPS tools, ForeFlight, mapping apps | GPX 1.1, one `<trk>` per simulator. Elevation in meters, speed and heading in each point's `<desc>` |
 | **KML** | Google Earth | One 3D flight path per simulator at absolute altitude (meters) |
 
-Rows are grouped by simulator, then ordered by time.
+Rows are ordered by time. (When the API is asked for several simulators, rows are grouped by simulator first, and GPX/KML get one track per simulator.)
 
 ## Retention
 
@@ -110,7 +112,7 @@ The panel uses these endpoints, which you can also call from scripts. Times are 
 | `GET /api/recording` | Recording switches, stored time span, database size, retention |
 | `PUT /api/recording/{sim}` | Body `{"enabled": true\|false}` - switch recording for one simulator |
 | `GET /api/recording/count?start=&end=&sims=` | Number of positions in a range |
-| `GET /api/recording/export?start=&end=&format=&sims=` | Download a range. `format` is `csv`, `json`, `xml`, `gpx` or `kml`; `sims` is an optional comma-separated list (all simulators when omitted) |
+| `GET /api/recording/export?start=&end=&format=&sims=` | Download a range. `format` is `csv`, `json`, `xml`, `gpx` or `kml`; `sims` is a simulator name, or a comma-separated list for scripts (all simulators when omitted). A single-simulator export is named `<sim>_<start>.<ext>`, otherwise `flight_data_<start>.<ext>` |
 
 Example:
 
