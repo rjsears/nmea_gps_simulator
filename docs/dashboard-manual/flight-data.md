@@ -28,9 +28,15 @@ A simulator is only recorded while it is sending data. When a sim is shut down i
 
 Click the **download icon** in the dashboard header to open the panel.
 
+![Flight Data panel](../images/dashboard-flight-data-panel.png)
+
 ### Recording
 
 Each simulator has an on/off switch. The setting is saved in the database and survives container restarts. Cards for simulators that are online and recording show a red **REC** badge next to the name.
+
+![Simulator cards with REC badges](../images/dashboard-flight-data-rec-badges.png)
+
+A simulator that is offline (Classic CJ1 above) shows no badge, because nothing is being received or recorded for it.
 
 Below the switches the panel shows the time span currently stored, the database size and the retention setting.
 
@@ -42,6 +48,10 @@ Below the switches the panel shows the time span currently stored, the database 
 4. Click **Export** to download the file.
 
 Exported timestamps are always UTC (e.g. `2026-04-11T15:30:45.123Z`).
+
+The panel follows the dashboard's light/dark theme:
+
+![Flight Data panel in dark mode](../images/dashboard-flight-data-panel-dark.png)
 
 ## Export formats
 
