@@ -152,7 +152,16 @@ A 1 Hz JSON packet that the Rebroadcaster sends to the same UDP port as its posi
 | `receiving_udp` | bool | True if a position packet has been received in the last 5 s. |
 | `uptime_seconds` | int | Seconds since the rebroadcaster started (this run; reset on restart). |
 
-The dashboard uses these fields to drive the [Health Chain](../dashboard-manual/health-chain.md) view.
+The dashboard uses the heartbeat's `sim_reachable` field, together with its own derived `emulator_online` and `is_online` values, in the [Health Chain](../dashboard-manual/health-chain.md) view. `receiving_udp` and `uptime_seconds` are carried and exposed but do not drive a current Health Chain branch.
+
+The switch check is dashboard-local only. When `SIM_N_SWITCH_IP` is configured, the dashboard pings that address from the dashboard host and adds `switch_ip` and `switch_reachable` to each simulator object returned by `/api/status` and sent in `fleet_state`. Neither field is part of the heartbeat, and this check does not change the heartbeat or position wire format between the emulator and dashboard.
+
+| Dashboard-local field | Type | Description |
+|-----------------------|------|-------------|
+| `switch_ip` | string | The configured switch management IP for the dashboard card. |
+| `switch_reachable` | bool or null | The latest dashboard-to-switch ping result; `null` when no switch IP is configured. |
+| `generated_at` | string or null | UTC instant the dashboard last re-evaluated fleet data (1 Hz tick); advances even when every simulator is offline and does not advance on request. Use this, not `timestamp`, to detect a frozen dashboard. |
+| `timestamp` | string | Response time — new on every `/api/status` call. Kept for backward compatibility; prefer `generated_at` to detect a frozen/stalled dashboard. |
 
 ### Cadence
 
@@ -160,7 +169,7 @@ Strictly once per second. The heartbeat thread (`backend/rebroadcaster_runner.py
 
 ### Position packets sharing the same UDP port
 
-In addition to the heartbeat, the rebroadcaster also retransmits the **original incoming position packet** to the same UDP port. These packets are the JSON or CYGNUS format originally received - the rebroadcaster does **not** re-encode or canonicalize.
+In addition to the heartbeat, the rebroadcaster retransmits a JSON serialization of the parsed position dictionary to the same UDP port. JSON input retains the standard position fields; CYGNUS input is normalized by `parse_cygnus_packet()` before retransmit, so it is not forwarded byte-for-byte.
 
 The dashboard distinguishes them at parse time:
 

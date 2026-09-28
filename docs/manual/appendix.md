@@ -50,6 +50,19 @@ Screenshots in this manual are captured from real running deployments and then r
 | Real Fleet Dashboard IP (`AUTO_START_UDP_RETRANSMIT_IP`) | Same as EFB IPs - placeholder or blur. | Maps the lab network. |
 | `docker-compose.yml` excerpts that include the above values | Replace with example values before screenshotting | Same reason. |
 
+### Captured screenshots flagged for review
+
+The current screenshot set was captured from the live deployment. These specific images contain data worth reviewing before the docs are made public:
+
+| Screenshot | Page | Contains | Suggested action |
+|------------|------|----------|------------------|
+| `mode-sender-01-overview.png` | [Sender Mode](mode-sender.md) | Internal target IP `10.200.40.20` typed into the NMEA-output field | Low risk (RFC 1918). Blur or replace with a placeholder if publishing externally. |
+| `dashboard-overview-01-grid.png`, `dashboard-welcome-01-grid.png` | [Dashboard Overview](../dashboard-manual/overview.md), [Welcome](../dashboard-manual/welcome.md) | Live fleet roster (aircraft-type names), simulated positions near KJFK, per-card packet counts | Aircraft-type names and simulated positions are low sensitivity. Review if the fleet roster itself is considered private. |
+| `simulator-card-01-online.png` | [Simulator Card](../dashboard-manual/simulator-card.md) | One live card's simulated position + nearest airport (KJFK) | Low risk - position is simulated, not a real aircraft. |
+| `health-chain-01-all-ok.png`, `health-chain-02-gps-failure.png` | [Health Chain](../dashboard-manual/health-chain.md) | Aircraft-type name + GPS-system label (`Avionics 2`) | Low risk. Review if internal system labels are sensitive. |
+
+All other screenshots are UI panels with example values only and need no redaction.
+
 The capture playbook itself is in `project_docs/screen_capture.md` (operator-only, not published).
 
 ## Environment variables (summary)

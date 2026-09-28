@@ -7,7 +7,9 @@ The canonical use case: one instructor station running Sender, one or more stude
 !!! info "What goes on the wire"
     The Sender protocol is **position only**, not full NMEA. The packet is a ~100-150-byte JSON object at 1 Hz. The receiver decides which NMEA sentences to synthesize. Bandwidth is minimal and the wire format is open - any tool that can `socket.send` JSON can act as a sender. See [Network Protocol](../reference/network-protocol.md) for the schema.
 
-<!-- SCREENSHOT-PENDING: mode-sender-01-overview.png - Sender Settings panel with NMEA + EFB + USB blocks visible. -->
+![The Sender Settings panel with NMEA output enabled and a target IP set.](../images/screenshots/mode-sender-01-overview.png)
+
+*The Sender Settings panel with NMEA output enabled and a target IP set.*
 
 ## When to use Sender
 

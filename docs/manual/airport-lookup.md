@@ -4,7 +4,9 @@ The simulator ships with a built-in airport database (4,003 entries covering the
 
 This page documents the database, the lookup behavior in the UI, and the API endpoints you'd use from a script. For the wider position-setting workflow, see [Navigation Controls](navigation-controls.md).
 
-<!-- SCREENSHOT-PENDING: airport-lookup-01-search.png - Position panel with the airport search dropdown open showing 5+ results. -->
+![The airport search dropdown with ICAO matches.](../images/screenshots/airport-lookup-01-search.png)
+
+*The airport search dropdown with ICAO matches.*
 
 ## What's in the database
 

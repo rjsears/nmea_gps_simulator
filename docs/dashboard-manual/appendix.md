@@ -12,6 +12,7 @@ Cross-cutting reference for the dashboard side. The simulator appendix has its o
 | Dashboard UI itself won't load | Container isn't running, port collision, or you're hitting the wrong host. | `docker compose ps`; verify no other process on the host port; check the host firewall. |
 | Browser says "Disconnected" in the header | WebSocket dropped. | The reconnect runs on a 2 s timer; should re-establish on its own. If it persists, the container is down or the WebSocket path is blocked by a reverse proxy. |
 | Health view shows the GPS segment red but the rebroadcaster's Output Viewer shows NMEA scrolling | Rebroadcaster's UDP retransmit is off, or pointed at the wrong host. The dashboard sees heartbeats but no position. | Set `AUTO_START_UDP_RETRANSMIT=true` and verify the target IP. |
+| Health view says the Switch segment is red | `switch_reachable: false` and `sim_reachable: false` while a switch IP is configured. | Confirm `SIM_N_SWITCH_IP` is correct and answers `ping` from the dashboard host directly; the Switch node is red only when both pings fail, and a successful `sim_reachable` ping bypasses/suppresses the failed switch management-IP check. Check the switch power and uplink as needed. |
 | Health view says "Is the simulator powered on?" but the sim is on | `SIMULATOR_IP` is wrong, or ICMP is filtered between the rebroadcaster's host and the simulator host. | Set the right IP; allow ICMP echo across the path. |
 | All `sim_reachable` are false in health view | None of the rebroadcasters have `SIMULATOR_IP` set, **or** ping is unavailable inside the rebroadcaster container (it shouldn't be - `iputils-ping` is in the image). | Set `SIMULATOR_IP` per rebroadcaster. If still failing, `docker compose exec gps-emulator ping <SIMULATOR_IP>` to confirm from inside. |
 
@@ -33,6 +34,7 @@ For the authoritative reference see [Environment Variables](../reference/env-var
 | `SIM_N_NAME` | yes | (none) |
 | `SIM_N_PORT` | yes | (none) |
 | `SIM_N_GPS_SYSTEM` | no | empty |
+| `SIM_N_SWITCH_IP` | no | empty; an empty value skips the dashboard-local switch check |
 
 ### Compact alternative
 
@@ -64,9 +66,12 @@ The dashboard intentionally has a much smaller API than the simulator - everythi
 | Term | Meaning |
 |------|---------|
 | **Card** | One simulator's tile in the dashboard grid. |
-| **Health view** | The mode where every card's body is replaced with the four-node diagnostic chain. Toggled via the stethoscope icon in the header. |
+| **Health view** | The mode where every card's body is replaced with the five-node diagnostic chain. Toggled via the stethoscope icon in the header. |
 | **Position view** | The default mode. Cards show lat/lon/altitude/airspeed/heading and the nearest airport. |
 | **`sim_reachable`** | Heartbeat field. True if the rebroadcaster's last ICMP ping to `SIMULATOR_IP` succeeded. |
+| **`switch_ip`** | Dashboard-side field containing the configured switch management IP for the card. Empty when no switch check is configured. |
+| **`switch_reachable`** | Dashboard-side field containing the latest dashboard-to-switch ping result. `null` when no switch IP is configured. |
+| **`generated_at`** | Dashboard-side UTC timestamp of the last fleet-data evaluation tick; unchanged by status requests and updated every second, including when all simulators are offline. |
 | **`receiving_udp`** | Heartbeat field. True if the rebroadcaster has received a position packet in the last 5 seconds. |
 | **`is_online`** | Dashboard-side derived field. True if the dashboard has received a position packet (not a heartbeat) for this card in the last 5 seconds. |
 | **`emulator_online`** | Dashboard-side derived field. True if the dashboard has received a heartbeat in the last 3 seconds. |

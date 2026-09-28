@@ -16,6 +16,7 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException
 
 from ..auth import get_current_user
+from ..config import get_settings
 from ..models import ControlRequest, PositionUpdate, StatusResponse
 from ..state import get_app_state
 from ..emulator import get_emulator
@@ -185,6 +186,7 @@ async def control(
                     rebroadcast_udp=state.network.rebroadcast_udp,
                     rebroadcast_udp_ip=state.network.rebroadcast_udp_ip,
                     rebroadcast_udp_port=state.network.rebroadcast_udp_port,
+                    simulator_ip=get_settings().simulator_ip,
                 )
                 state.is_running = True
                 logger.info(f"Rebroadcaster started - port: {state.network.port}")

@@ -2,7 +2,9 @@
 
 The **Position** panel (airport picker) plus the **Navigation** panel (altitude / airspeed / heading) together drive the position the simulator publishes. They sit in the center column of the dashboard and apply to **every mode that originates position locally** - Stand-Alone, Sender, and the source-side of the engine in general. In Receiver mode they're disabled because position is inherited from the upstream packet.
 
-<!-- SCREENSHOT-PENDING: navigation-01-overview.png - Position panel plus Navigation panel with sliders and compass dial. -->
+![The Position and Navigation panels, including the compass dial.](../images/screenshots/navigation-01-overview.png)
+
+*The Position and Navigation panels, including the compass dial.*
 
 ## The Position panel (airport picker)
 

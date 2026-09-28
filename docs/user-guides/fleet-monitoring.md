@@ -26,14 +26,15 @@ The Fleet Dashboard is most useful when several rebroadcasters report to it. Thi
               +----------------------------------------+
 ```
 
-Three things to keep aligned across the pair:
+The settings to keep aligned or intentionally coordinated across the pair are:
 
 | Dashboard side | Rebroadcaster side |
 |----------------|--------------------|
 | `SIM_N_PORT` | `AUTO_START_UDP_RETRANSMIT_PORT` |
 | The dashboard's host IP | `AUTO_START_UDP_RETRANSMIT_IP` |
 | `SIM_N_GPS_SYSTEM` | (no rebroadcaster side - this is dashboard-only) |
-| (none, dashboard doesn't ping) | `SIMULATOR_IP` (for the rebroadcaster's own ping to the flight sim host) |
+| `SIM_N_SWITCH_IP` (dashboard-local switch check) | (none - the dashboard pings the switch from its own host) |
+| (none, dashboard does not ping the simulator) | `SIMULATOR_IP` (for the rebroadcaster's own ping to the flight sim host) |
 
 ## Step 1 - Deploy the dashboard
 
@@ -54,14 +55,17 @@ services:
       - SIM_1_NAME=CJ3
       - SIM_1_PORT=12001
       - SIM_1_GPS_SYSTEM=Avionics
+      - SIM_1_SWITCH_IP=10.200.10.6
 
       - SIM_2_NAME=Ultra
       - SIM_2_PORT=12002
       - SIM_2_GPS_SYSTEM=Avionics 2
+      - SIM_2_SWITCH_IP=10.200.10.27
 
       - SIM_3_NAME=CL350
       - SIM_3_PORT=12003
       - SIM_3_GPS_SYSTEM=rehost
+      - SIM_3_SWITCH_IP=172.16.24.1
 ```
 
 `docker compose up -d`. Open `http://<dashboard-host>/` - you see three cards, all gray. That's expected: no rebroadcaster is reporting yet.
@@ -116,7 +120,7 @@ Repeat for the Ultra rebroadcaster (port 12002, sim name `Ultra`, simulator IP `
 | State | What to confirm |
 |-------|-----------------|
 | Position view | All configured cards green (or, for those that aren't started yet, gray). Each green card shows lat/lon/altitude/airspeed/heading and the closest airport. |
-| Health view (toggle on) | Each card shows the four-node chain. With everything healthy, all four nodes are green and the footer reads "All systems operational". |
+| Health view (toggle on) | Each card shows the five-node chain. With everything healthy, all five nodes are green and the footer reads "All systems operational". |
 | Click an online card | New tab opens to Google Maps centered on the aircraft's current position. |
 | Configuration | The dashboard's `SIM_N_NAME` becomes the card title. `SIM_N_GPS_SYSTEM` only appears when the GPS segment of the health chain goes red. |
 
@@ -140,10 +144,11 @@ The combination of "rebroadcaster Output Viewer scrolling" + "`tcpdump` on dashb
 | Red segment | Cause | Fix |
 |-------------|-------|-----|
 | Dashboard -> Emulator | No heartbeat in 3 s | Rebroadcaster container down, or UDP retransmit IP wrong. |
-| Emulator -> Simulator | `sim_reachable: false` in the heartbeat | `SIMULATOR_IP` unreachable or unset on the rebroadcaster. |
-| Simulator -> GPS Data | `receiving_udp: false` in heartbeat **and** no position in 5 s | Upstream Sender / flight sim's GPSConnect-equivalent isn't running. The footer message names the system via `SIM_N_GPS_SYSTEM`. |
+| Emulator -> Switch / Switch node | `switch_reachable: false` AND `sim_reachable: false` while `SIM_N_SWITCH_IP` is configured | The Switch node turns red only when both pings fail and GPS data is not already flowing. Confirm the management IP, switch power, and uplink; a successful `sim_reachable` ping bypasses/suppresses the failed management-IP check, so the Switch node will not be the one that turns red in that case. |
+| Switch -> Simulator | `sim_reachable: false` after the Switch branch did not match | `SIMULATOR_IP` is unreachable or unset on the rebroadcaster; check the simulator PC and the path to it. |
+| Simulator -> GPS Data | `is_online: false` after heartbeats and the simulator reachability check pass | Upstream Sender / flight sim's GPSConnect-equivalent may not be producing data, or the source-to-dashboard path is broken. The footer message names the system via `SIM_N_GPS_SYSTEM`. |
 
-See [Health Chain](../dashboard-manual/health-chain.md) for the full state machine.
+See [Health Chain](../dashboard-manual/health-chain.md) for the full state machine and [Health Data Sources](../dashboard-manual/health-data-sources.md) for signal ownership.
 
 ## When the data is wrong
 
@@ -164,15 +169,16 @@ See [Health Chain](../dashboard-manual/health-chain.md) for the full state machi
 | Browsers connected to dashboard | Each gets the full `fleet_state` over WebSocket every second. ~3 kB/s per browser. |
 | Dashboard CPU | <5% on a Raspberry Pi 4 with 20 simulators. |
 
-The dashboard is intentionally cheap. It scales well past the documented max of 20 simulators - the only enforced limit is the `for i in range(1, 20)` loop in `dashboard/backend/config.py` (raise the constant if you genuinely need more).
+The dashboard is intentionally cheap. It scales well past the documented max of 20 simulators - the only enforced limit is the `for i in range(1, 20)` loop in `dashboard/backend/config.py` (raise the constant if you genuinely need more). A configured switch adds one ICMP check per simulator but no additional UDP listener.
 
 ## Persistent state on the dashboard
 
-The dashboard has **no persistent state**. Every restart starts every card's packet count at 0. Configuration (names, ports, GPS system labels) lives entirely in `docker-compose.yml`. To change anything, edit and `docker compose up -d`.
+The dashboard has **no persistent state**. Every restart starts every card's packet count at 0. Configuration (names, ports, GPS system labels, and switch management IPs) lives entirely in `docker-compose.yml`. To change anything, edit and `docker compose up -d`.
 
 ## What's next
 
 - [Configuration (Fleet Dashboard)](../dashboard-manual/configuration.md) - dashboard env vars in detail.
 - [Health Chain](../dashboard-manual/health-chain.md) - what each red segment means.
+- [Health Data Sources](../dashboard-manual/health-data-sources.md) - where each signal originates.
 - [Rebroadcaster Mode](../manual/mode-rebroadcaster.md) - rebroadcaster reference on the simulator side.
 - [TX Checksum Offload Fix](tx-checksum-offload.md) - when `tcpdump` shows bad UDP checksums.

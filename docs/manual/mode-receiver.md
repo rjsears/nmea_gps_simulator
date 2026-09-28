@@ -7,7 +7,9 @@ A plain Receiver has exactly **one** output - a USB-serial device. If you need t
 !!! info "Receiver auto-detects JSON vs CYGNUS"
     The Receiver accepts two payload formats on the same port: the project's own JSON schema, and the CYGNUS `key=value` string format used by some flight simulators. It picks the right parser per packet based on the leading character (`{` for JSON, `$` for CYGNUS). See [Network Protocol](../reference/network-protocol.md) for the schemas.
 
-<!-- SCREENSHOT-PENDING: mode-receiver-01-overview.png - Receiver Settings panel with protocol, port, listen badge. -->
+![The Receiver Settings panel: protocol, listen port, and the all-interfaces badge.](../images/screenshots/mode-receiver-01-overview.png)
+
+*The Receiver Settings panel: protocol, listen port, and the all-interfaces badge.*
 
 ## When to use Receiver
 

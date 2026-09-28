@@ -1249,7 +1249,7 @@ When a simulator is online (green status), clicking anywhere on its card will op
 
 ### Health Monitoring
 
-The Fleet Dashboard includes built-in diagnostics to help troubleshoot connectivity issues between the dashboard, emulators, and simulators.
+The Fleet Dashboard includes built-in diagnostics to help troubleshoot connectivity issues between the dashboard, emulators, switches, and simulators.
 
 <p align="center">
 <strong>Health View - Some Simulators Operational</strong><br>
@@ -1263,16 +1263,17 @@ The Fleet Dashboard includes built-in diagnostics to help troubleshoot connectiv
 
 #### How It Works
 
-Click the **Health** button (🩺) in the header to toggle health view. Each card displays a 4-node diagnostic chain:
+Click the **Health** button (🩺) in the header to toggle health view. Each card displays a 5-node diagnostic chain:
 
 ```
-📊 Dashboard  →  🖥️ Emulator  →  ✈️ Simulator  →  🛰️ GPS Data
+📊 Dashboard  →  🖥️ Emulator  →  🔀 Switch  →  ✈️ Simulator  →  🛰️ GPS Data
 ```
 
 | Node | What It Checks |
 |------|----------------|
 | Dashboard → Emulator | Heartbeat received within last 3 seconds |
-| Emulator → Simulator | ICMP ping from emulator to simulator |
+| Emulator → Switch | Dashboard-local ICMP ping to the configured switch management IP; bypassed when the simulator ping succeeds. |
+| Switch → Simulator | ICMP ping from emulator to simulator |
 | Simulator → GPS Data | GPS packets arriving at dashboard |
 
 When an issue is detected, the failing node shows a red X and a guidance message appears with troubleshooting steps.
@@ -1292,6 +1293,18 @@ environment:
 ```
 
 The emulator sends heartbeat packets every second with the ping status, allowing the dashboard to show exactly where connectivity breaks down.
+
+The dashboard's compose file configures the switch management target separately:
+
+```yaml
+environment:
+  - SIM_1_NAME=CJ3
+  - SIM_1_PORT=12001
+  - SIM_1_GPS_SYSTEM=Avionics
+  - SIM_1_SWITCH_IP=10.200.10.6   # Dashboard host pings this every second
+```
+
+Leave `SIM_N_SWITCH_IP` empty to skip the switch check. See the [Health Data Sources](docs/dashboard-manual/health-data-sources.md) deep dive for the exact gates and packet flow.
 
 ---
 

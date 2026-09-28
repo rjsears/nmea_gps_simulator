@@ -11,7 +11,9 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
-import { LogOut, Sun, Moon } from 'lucide-react'
+import { LogOut, Sun, Moon, BookOpen } from 'lucide-react'
+
+const DOCS_URL = 'https://rjsears.github.io/nmea_gps_simulator'
 
 export default function Layout({ children }) {
   const { logout } = useAuth()
@@ -88,6 +90,17 @@ export default function Layout({ children }) {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
+              {/* Documentation */}
+              <a
+                href={DOCS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                title="Documentation"
+              >
+                <BookOpen className="h-5 w-5" />
+              </a>
+
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}

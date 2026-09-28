@@ -18,6 +18,14 @@ const HealthIcon = () => (
   <span className="text-lg">🩺</span>
 )
 
+const BookIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.247m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.247" />
+  </svg>
+)
+
+const DOCS_URL = 'https://rjsears.github.io/nmea_gps_simulator'
+
 function App() {
   const [simulators, setSimulators] = useState([])
   const [connected, setConnected] = useState(false)
@@ -123,7 +131,7 @@ function App() {
 
       {/* Header */}
       <header className="relative z-10 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+        <div className={`${showHealth ? 'max-w-[1456px]' : 'max-w-7xl'} mx-auto px-4 py-4 sm:px-6 lg:px-8`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <img
@@ -132,11 +140,21 @@ function App() {
                 className="h-12 w-auto"
               />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Fleet Dashboard</h1>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Real-time simulator monitoring</p>
+                <h1 className="text-2xl font-bold"><span className="text-gray-900 dark:text-white">Fleet</span> <span className="text-loft-orange">Dashboard</span></h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Real-time Simulator Telemetry Monitoring</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
+              {/* Documentation */}
+              <a
+                href={DOCS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                title="Documentation"
+              >
+                <BookIcon />
+              </a>
               {/* Health toggle */}
               <button
                 onClick={() => setShowHealth(!showHealth)}
@@ -174,14 +192,14 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <main className={`relative z-10 ${showHealth ? 'max-w-[1456px]' : 'max-w-7xl'} mx-auto px-4 py-8 sm:px-6 lg:px-8`}>
         {simulators.length === 0 ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
             <p className="text-gray-500 dark:text-gray-400">Waiting for simulator data...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={showHealth ? 'grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'}>
             {simulators.map((sim) => (
               <SimulatorCard key={sim.port} simulator={sim} showHealth={showHealth} />
             ))}
@@ -191,9 +209,9 @@ function App() {
 
       {/* Footer */}
       <footer className="relative z-10 fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-2">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className={`${showHealth ? 'max-w-[1456px]' : 'max-w-7xl'} mx-auto px-4 sm:px-6 lg:px-8`}>
           <p className="text-center text-xs text-gray-400 dark:text-gray-500">
-            LOFT Fleet Dashboard v1.0.0 • Richard J. Sears ©2026 • richardjsears@protonmail.com • {simulators.length} simulators configured
+            LOFT Fleet Dashboard v1.0.1 • Richard J. Sears ©2026 • richardjsears@protonmail.com • {simulators.length} simulators configured
           </p>
         </div>
       </footer>

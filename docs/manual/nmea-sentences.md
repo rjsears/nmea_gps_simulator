@@ -4,7 +4,9 @@ The **NMEA Sentences** panel controls which NMEA-0183 sentences the simulator em
 
 This page documents the panel itself. For the wire-level details of each sentence (field order, formatting, the checksum algorithm), see [NMEA Sentence Catalog](../user-guides/nmea-sentence-catalog.md). For the underlying protocol, see [NMEA Protocol](../reference/nmea-protocol.md).
 
-<!-- SCREENSHOT-PENDING: nmea-sentences-01-overview.png - panel with default selections. -->
+![The NMEA Sentences panel. GPGGA and GPRMC are pinned on.](../images/screenshots/nmea-sentences-01-overview.png)
+
+*The NMEA Sentences panel. GPGGA and GPRMC are pinned on.*
 
 ## The panel
 

@@ -13,15 +13,22 @@ This page documents the configuration surface end to end. For the deployment-sid
 
 ## Per-simulator configuration
 
-The dashboard supports up to 20 simulators. For each, define three env vars (one of them optional):
+The dashboard supports up to 20 simulators. For each, define four env vars (two of them optional):
 
 | Var pattern | Required? | What it does |
 |-------------|-----------|--------------|
 | `SIM_N_NAME` | Yes | The display name on the card (e.g., `CJ3`, `Ultra`, `CL350`). Free text; spaces are fine. |
 | `SIM_N_PORT` | Yes | The UDP port the dashboard listens on for this simulator. **Must match** the rebroadcaster's `AUTO_START_UDP_RETRANSMIT_PORT`. |
 | `SIM_N_GPS_SYSTEM` | No (default empty) | The label inserted into the failure message in [Health Chain](health-chain.md) (e.g., `Avionics`, `Avionics 2`, `rehost`). |
+| `SIM_N_SWITCH_IP` | No (default empty) | The switch management IP for this simulator. The dashboard host pings it once per second for the Switch node; an empty value skips the switch check entirely. |
 
 `N` is `1`-`20`. The parser walks from 1 to 20 and stops as soon as it sees a gap, so you can't skip - `SIM_1`, `SIM_3` without `SIM_2` means only `SIM_1` gets registered.
+
+### Switch reachability
+
+`SIM_N_SWITCH_IP` identifies the management address of the switch feeding the simulator. The Fleet Dashboard pings that address every second from the **dashboard host** using the `ping` executable; the ping does not run from the emulator or the flight-simulator host. The dashboard image installs `iputils-ping` in `dashboard/docker/Dockerfile` so this check is available in the container.
+
+Leave `SIM_N_SWITCH_IP` empty, omit it, or use the compact `SIMULATORS` format to skip the switch check for that card. In that case `switch_reachable` remains `null` and the health component evaluates the simulator check without a switch-management result. When an address is configured, the most recent ping result is exposed as `switch_reachable`.
 
 ### Worked example
 
@@ -40,33 +47,50 @@ services:
       - SIM_1_NAME=CJ3
       - SIM_1_PORT=12001
       - SIM_1_GPS_SYSTEM=Avionics
+      - SIM_1_SWITCH_IP=10.200.10.6
 
       - SIM_2_NAME=Ultra
       - SIM_2_PORT=12002
       - SIM_2_GPS_SYSTEM=Avionics 2
+      - SIM_2_SWITCH_IP=10.200.10.27
 
       - SIM_3_NAME=CJ1
       - SIM_3_PORT=12003
       - SIM_3_GPS_SYSTEM=Avionics
+      - SIM_3_SWITCH_IP=10.200.10.8
 
       - SIM_4_NAME=CE560XL
       - SIM_4_PORT=12004
       - SIM_4_GPS_SYSTEM=Avionics 2
+      - SIM_4_SWITCH_IP=10.200.10.18
 
       - SIM_5_NAME=Classic CJ1
       - SIM_5_PORT=12005
       - SIM_5_GPS_SYSTEM=Avionics
+      - SIM_5_SWITCH_IP=10.200.10.4
 
       - SIM_6_NAME=CL350
       - SIM_6_PORT=12006
       - SIM_6_GPS_SYSTEM=rehost
+      - SIM_6_SWITCH_IP=172.16.24.1
 ```
 
 After `docker compose up -d`, the dashboard renders six cards in that order. Each card listens on the corresponding UDP port. The footer shows "6 simulators configured" regardless of how many are currently online.
 
+The current fleet values in `dashboard/docker/docker-compose.yml` are:
+
+| Card | Name | Port | GPS system | Switch IP |
+|------|------|------|------------|-----------|
+| `SIM_1` | `CJ3` | `12001` | `Avionics` | `10.200.10.6` |
+| `SIM_2` | `Ultra` | `12002` | `Avionics 2` | `10.200.10.27` |
+| `SIM_3` | `CJ1` | `12003` | `Avionics` | `10.200.10.8` |
+| `SIM_4` | `CE560XL` | `12004` | `Avionics 2` | `10.200.10.18` |
+| `SIM_5` | `Classic CJ1` | `12005` | `Avionics` | `10.200.10.4` |
+| `SIM_6` | `CL350` | `12006` | `rehost` | `172.16.24.1` |
+
 ## Alternative format: single `SIMULATORS` env var
 
-If you don't need per-simulator GPS-system labels, you can compress the configuration into a single `SIMULATORS` variable:
+If you don't need per-simulator GPS-system labels or switch checks, you can compress the configuration into a single `SIMULATORS` variable:
 
 ```yaml
 environment:
@@ -103,6 +127,7 @@ For each simulator in the dashboard's compose file, the corresponding rebroadcas
 | `SIM_N_NAME` | `AUTO_START_EFB_SIM_NAME` (so the EFB shows the same name as the dashboard card - **optional** but operationally helpful) |
 | (no dashboard side) | `AUTO_START_UDP_RETRANSMIT_IP` (set to the dashboard host's IP) |
 | `SIM_N_GPS_SYSTEM` | (no rebroadcaster side - this label is dashboard-only) |
+| `SIM_N_SWITCH_IP` | (no rebroadcaster side - this is a dashboard-local ping target) |
 | (no dashboard side) | `SIMULATOR_IP` (set to the flight simulator's IP for the `sim_reachable` ping) |
 
 See [Fleet Monitoring](../user-guides/fleet-monitoring.md) for the matching rebroadcaster compose alongside.
@@ -127,6 +152,7 @@ The dashboard does not use the host time zone for anything user-visible (it's a 
 |------|------|-----|
 | `PORT` (TCP, default `80`) | The web UI + REST + WebSocket | The whole user-facing surface. |
 | `SIM_N_PORT` (UDP, one per simulator, typically `12001`-`12020`) | The per-simulator listener thread | Receives both heartbeats and position packets on the same port; distinguished by JSON payload. |
+| `SIM_N_SWITCH_IP` | No port bind | The dashboard-local ICMP target for the Switch node; one ping thread runs per configured address. |
 
 Because the container uses `network_mode: host`, every one of these binds the **host's** port directly - there's no Docker port-publish step. Confirm nothing else on the host is on those ports before bringing the container up.
 
@@ -138,6 +164,7 @@ Because the container uses `network_mode: host`, every one of these binds the **
 | Some simulators show up but not all | A gap in the `SIM_N_*` numbering (e.g., `SIM_1`, `SIM_3` with no `SIM_2`). The parser stops at the gap. |
 | `Address already in use` errors at startup | One of `PORT` or `SIM_N_PORT` is bound by another process on the host. With `network_mode: host`, the dashboard cannot share these ports with anyone else. |
 | Failure message says "the simulator" not "on Avionics 2" | `SIM_N_GPS_SYSTEM` is unset for that simulator. Set it. |
+| Switch segment is red | `switch_reachable: false` and `sim_reachable: false` while a switch IP is configured. Confirm the IP is correct and answers `ping` from the dashboard host; a successful `sim_reachable` ping bypasses/suppresses the failed switch management-IP check, so the Switch node will not be the one that turns red in that case. |
 
 ## Persistent state
 
@@ -155,5 +182,6 @@ This is by design - the dashboard is a live view, not a log aggregator. If you n
 
 - [Welcome](welcome.md) - manual orientation.
 - [Health Chain](health-chain.md) - how `SIM_N_GPS_SYSTEM` shows up in failure messages.
+- [Health Data Sources](health-data-sources.md) - where each health signal originates.
 - [Fleet Monitoring](../user-guides/fleet-monitoring.md) - end-to-end deployment with matching rebroadcaster config.
 - [Environment Variables](../reference/env-vars.md) - dashboard env-var reference alongside the simulator's.
