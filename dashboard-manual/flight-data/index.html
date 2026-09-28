@@ -12,13 +12,13 @@
         <meta name="author" content="Richard J. Sears">
       
       
-        <link rel="canonical" href="https://rjsears.github.io/nmea_gps_simulator/manual/nmea-sentences/">
+        <link rel="canonical" href="https://rjsears.github.io/nmea_gps_simulator/dashboard-manual/flight-data/">
       
       
-        <link rel="prev" href="../mode-standalone/">
+        <link rel="prev" href="../health-chain/">
       
       
-        <link rel="next" href="../serial-output/">
+        <link rel="next" href="../configuration/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>NMEA Sentences - NMEA GPS Simulator</title>
+        <title>Flight Data - NMEA GPS Simulator</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#nmea-sentences" class="md-skip">
+        <a href="#flight-data-recording" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              NMEA Sentences
+              Flight Data
             
           </span>
         </div>
@@ -465,8 +465,6 @@
       
   
   
-    
-  
   
   
     
@@ -479,11 +477,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -504,12 +504,493 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
     User Manual (Simulator)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/welcome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/login/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Login
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/dashboard-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dashboard Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/mode-rebroadcaster/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rebroadcaster Mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/mode-sender/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sender Mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/mode-receiver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Receiver Mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/mode-standalone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stand-Alone Mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/nmea-sentences/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NMEA Sentences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/serial-output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Serial Output
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/navigation-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Navigation Controls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/output-viewer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Output Viewer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/status-display/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/airport-lookup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Airport Lookup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/common-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Common UI Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Manual (Fleet Dashboard)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Manual (Fleet Dashboard)
   
 
           </label>
@@ -550,14 +1031,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../login/" class="md-nav__link">
+      <a href="../overview/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Login
+    Overview
   
 
     
@@ -578,14 +1059,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../dashboard-overview/" class="md-nav__link">
+      <a href="../simulator-card/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Dashboard Overview
+    Simulator Card
   
 
     
@@ -606,98 +1087,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../mode-rebroadcaster/" class="md-nav__link">
+      <a href="../health-chain/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Rebroadcaster Mode
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../mode-sender/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Sender Mode
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../mode-receiver/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Receiver Mode
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../mode-standalone/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Stand-Alone Mode
+    Health Chain
   
 
     
@@ -734,7 +1131,7 @@
   <span class="md-ellipsis">
     
   
-    NMEA Sentences
+    Flight Data
   
 
     
@@ -752,7 +1149,7 @@
   <span class="md-ellipsis">
     
   
-    NMEA Sentences
+    Flight Data
   
 
     
@@ -778,10 +1175,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-panel" class="md-nav__link">
+  <a href="#what-gets-recorded" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The panel
+        What gets recorded
       
     </span>
   </a>
@@ -789,10 +1186,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-changes-when-you-flip-a-sentence" class="md-nav__link">
+  <a href="#the-flight-data-panel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What changes when you flip a sentence
+        The Flight Data panel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Flight Data panel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recording" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recording
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#export-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export formats
       
     </span>
   </a>
@@ -800,10 +1236,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-enable-optional-sentences" class="md-nav__link">
+  <a href="#retention" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When to enable optional sentences
+        Retention
       
     </span>
   </a>
@@ -811,10 +1247,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#output-cadence" class="md-nav__link">
+  <a href="#storage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output cadence
+        Storage
       
     </span>
   </a>
@@ -822,10 +1258,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-output" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example output
+        Configuration
       
     </span>
   </a>
@@ -833,21 +1269,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-the-state-lives" class="md-nav__link">
+  <a href="#api" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where the state lives
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's next
+        API
       
     </span>
   </a>
@@ -870,404 +1295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../serial-output/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Serial Output
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../navigation-controls/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Navigation Controls
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../output-viewer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Output Viewer
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../status-display/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Status Display
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../airport-lookup/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Airport Lookup
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../common-ui/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Common UI Elements
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../appendix/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Appendix
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    User Manual (Fleet Dashboard)
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    User Manual (Fleet Dashboard)
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../dashboard-manual/welcome/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Welcome
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../dashboard-manual/overview/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../dashboard-manual/simulator-card/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Simulator Card
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../dashboard-manual/health-chain/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Health Chain
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../dashboard-manual/flight-data/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Flight Data
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../dashboard-manual/configuration/" class="md-nav__link">
+      <a href="../configuration/" class="md-nav__link">
         
   
   
@@ -1295,7 +1323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dashboard-manual/appendix/" class="md-nav__link">
+      <a href="../appendix/" class="md-nav__link">
         
   
   
@@ -1913,207 +1941,199 @@
   
 
 
-<h1 id="nmea-sentences">NMEA Sentences<a class="headerlink" href="#nmea-sentences" title="Permanent link">&para;</a></h1>
-<p>The <strong>NMEA Sentences</strong> panel controls which NMEA-0183 sentences the simulator emits. Two sentences (<code>GPGGA</code> and <code>GPRMC</code>) are always on; the other six are operator-toggleable.</p>
-<p>This page documents the panel itself. For the wire-level details of each sentence (field order, formatting, the checksum algorithm), see <a href="../../user-guides/nmea-sentence-catalog/">NMEA Sentence Catalog</a>. For the underlying protocol, see <a href="../../reference/nmea-protocol/">NMEA Protocol</a>.</p>
-<!-- SCREENSHOT-PENDING: nmea-sentences-01-overview.png - panel with default selections. -->
-
-<h2 id="the-panel">The panel<a class="headerlink" href="#the-panel" title="Permanent link">&para;</a></h2>
+<h1 id="flight-data-recording">Flight Data Recording<a class="headerlink" href="#flight-data-recording" title="Permanent link">&para;</a></h1>
+<p>The Fleet Dashboard records the position of every simulator while it is sending data, and lets you export any date/time range as CSV, JSON, XML, GPX or KML.</p>
+<p>Recording happens on the dashboard, so nothing changes on the simulators or their rebroadcasters. It uses the same UDP packets the cards already display.</p>
+<h2 id="what-gets-recorded">What gets recorded<a class="headerlink" href="#what-gets-recorded" title="Permanent link">&para;</a></h2>
+<p>For every position packet received from a simulator whose recording is switched on:</p>
 <table>
 <thead>
 <tr>
-<th>Sentence</th>
-<th>Default</th>
-<th>Toggleable</th>
-<th>What it carries</th>
+<th>Field</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong><code>GPGGA</code></strong></td>
-<td>on</td>
-<td><strong>no</strong> (always on)</td>
-<td>Position, altitude, fix quality, satellite count, HDOP. The single most-consumed NMEA sentence.</td>
+<td><code>sim</code></td>
+<td>The simulator name (<code>SIM_N_NAME</code>)</td>
 </tr>
 <tr>
-<td><strong><code>GPRMC</code></strong></td>
-<td>on</td>
-<td><strong>no</strong> (always on)</td>
-<td>Recommended-minimum: position, speed over ground, course over ground, magnetic variation, date/time.</td>
+<td><code>timestamp</code></td>
+<td>When the dashboard <strong>received</strong> the packet (UTC, millisecond precision)</td>
 </tr>
 <tr>
-<td><strong><code>GPGLL</code></strong></td>
-<td>off</td>
-<td>yes</td>
-<td>Geographic position (lat/lon) plus UTC and status. Subset of <code>GPGGA</code>.</td>
+<td><code>lat</code>, <code>lon</code></td>
+<td>Position in decimal degrees</td>
 </tr>
 <tr>
-<td><strong><code>GPVTG</code></strong></td>
-<td>off</td>
-<td>yes</td>
-<td>Track made good and ground speed in true and magnetic. Useful for HSI driving.</td>
+<td><code>alt_ft</code></td>
+<td>Altitude in feet MSL</td>
 </tr>
 <tr>
-<td><strong><code>GPGSA</code></strong></td>
-<td>off</td>
-<td>yes</td>
-<td>DOP and active satellites. Pads out the realism for consumers that watch fix quality.</td>
+<td><code>speed_kts</code></td>
+<td>Speed in knots</td>
 </tr>
 <tr>
-<td><strong><code>GPGSV</code></strong></td>
-<td>off</td>
-<td>yes</td>
-<td>Satellites in view - SNR, elevation, azimuth per satellite. Drives sat-view panels.</td>
-</tr>
-<tr>
-<td><strong><code>GPZDA</code></strong></td>
-<td>off</td>
-<td>yes</td>
-<td>Time and date in UTC. Useful when the consumer wants the clock from NMEA rather than from its own RTC.</td>
-</tr>
-<tr>
-<td><strong><code>GPHDT</code></strong></td>
-<td>off</td>
-<td>yes</td>
-<td>True heading. Some autopilots and HSIs look for this specifically.</td>
+<td><code>heading</code></td>
+<td>Heading in degrees</td>
 </tr>
 </tbody>
 </table>
-<p>Each row has a checkbox; toggling it sends a <code>POST /api/config/nmea</code> request and updates the engine's enabled-sentence set immediately (when the emulator isn't running) or queues the change for the next Start (when it is).</p>
-<div class="admonition info">
-<p class="admonition-title">Why <code>GPGGA</code> and <code>GPRMC</code> are pinned on</p>
-<p>These two are what every NMEA-aware consumer expects. Many devices simply won't recognize a "GPS" without them. The simulator enforces the pin server-side too - even if a request comes in trying to turn them off, the engine ignores it.</p>
+<p>Heartbeat packets are not recorded.</p>
+<p>A simulator is only recorded while it is sending data. When a sim is shut down its rebroadcaster stops forwarding packets, so nothing is written for it.</p>
+<div class="admonition note">
+<p class="admonition-title">Why the receive time?</p>
+<p>Flight simulators often run on a scenario clock (for example a night departure set in the IOS), so the <code>timestamp</code> inside the packet is not a reliable way to find a session by real date and time. The dashboard's own clock is used for every simulator instead.</p>
 </div>
-<h2 id="what-changes-when-you-flip-a-sentence">What changes when you flip a sentence<a class="headerlink" href="#what-changes-when-you-flip-a-sentence" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Change</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Toggle a sentence <strong>while the emulator is stopped</strong></td>
-<td>The next <strong>Start</strong> uses the new set.</td>
-</tr>
-<tr>
-<td>Toggle a sentence <strong>while the emulator is running</strong></td>
-<td>The toggle is ignored at the UI layer - the panel is disabled. Press Stop, toggle, Start.</td>
-</tr>
-<tr>
-<td>Toggle a sentence <strong>in Receiver mode</strong></td>
-<td>The panel is also disabled. The Receiver inherits its own sentence selection at Start.</td>
-</tr>
-</tbody>
-</table>
-<p>The panel's disabled state matches both conditions, so you'll see the panel grayed out either when running or when in Receiver mode.</p>
-<h2 id="when-to-enable-optional-sentences">When to enable optional sentences<a class="headerlink" href="#when-to-enable-optional-sentences" title="Permanent link">&para;</a></h2>
-<p>Pick what the <strong>downstream consumer</strong> wants - not what looks impressive. NMEA over RS-232 is bandwidth-bound, and at low baud rates a consumer's serial buffer can overflow if you push more sentences per second than it can drain.</p>
-<table>
-<thead>
-<tr>
-<th>Consumer</th>
-<th>Likely needed</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ForeFlight / Garmin Pilot via XGPS</td>
-<td>None of the optional ones - XGPS is its own one-line-per-second format, not NMEA. Your NMEA selection only matters for USB and TCP/UDP NMEA outputs.</td>
-</tr>
-<tr>
-<td>Bad Elf SBK-2500 with downstream avionics</td>
-<td><code>GPGGA</code> + <code>GPRMC</code> is usually enough. Some panels also want <code>GPVTG</code> for ground track.</td>
-</tr>
-<tr>
-<td>HSI / autopilot pickling true heading</td>
-<td><code>GPHDT</code> (and confirm the consumer is set to "true" not "magnetic").</td>
-</tr>
-<tr>
-<td>Software that draws a satellite-view widget</td>
-<td><code>GPGSV</code> and <code>GPGSA</code>.</td>
-</tr>
-<tr>
-<td>Software that wants UTC from NMEA</td>
-<td><code>GPZDA</code>.</td>
-</tr>
-<tr>
-<td>Generic GPS-logging software</td>
-<td><code>GPGGA</code> + <code>GPRMC</code> + <code>GPGLL</code> covers nearly every parser.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition tip">
-<p class="admonition-title">Add sentences one at a time when troubleshooting</p>
-<p>If a downstream device starts misbehaving after you turn on more sentences, the issue is almost always buffer overflow at low baud rates. Drop back to <code>GPGGA</code> + <code>GPRMC</code> and add one sentence per restart until you reproduce the failure - the last-added sentence is the culprit.</p>
-</div>
-<h2 id="output-cadence">Output cadence<a class="headerlink" href="#output-cadence" title="Permanent link">&para;</a></h2>
-<p>Every enabled sentence is emitted once per second, in this fixed order:</p>
+<h2 id="the-flight-data-panel">The Flight Data panel<a class="headerlink" href="#the-flight-data-panel" title="Permanent link">&para;</a></h2>
+<p>Click the <strong>download icon</strong> in the dashboard header to open the panel.</p>
+<h3 id="recording">Recording<a class="headerlink" href="#recording" title="Permanent link">&para;</a></h3>
+<p>Each simulator has an on/off switch. The setting is saved in the database and survives container restarts. Cards for simulators that are online and recording show a red <strong>REC</strong> badge next to the name.</p>
+<p>Below the switches the panel shows the time span currently stored, the database size and the retention setting.</p>
+<h3 id="export">Export<a class="headerlink" href="#export" title="Permanent link">&para;</a></h3>
 <ol>
-<li><code>GPGGA</code></li>
-<li><code>GPRMC</code></li>
-<li><code>GPGLL</code> (if enabled)</li>
-<li><code>GPGSA</code> (if enabled)</li>
-<li><code>GPGSV</code> (if enabled)</li>
-<li><code>GPHDT</code> (if enabled)</li>
-<li><code>GPVTG</code> (if enabled)</li>
-<li><code>GPZDA</code> (if enabled)</li>
+<li>Pick a <strong>From</strong> and <strong>To</strong> date/time, or click a preset (last hour, 4 hours, 24 hours, 7 days, 30 days). Times are entered in your browser's local time zone; the <strong>To</strong> minute is included in full.</li>
+<li>Tick the simulators to include.</li>
+<li>Choose a format. The panel shows how many positions the export will contain.</li>
+<li>Click <strong>Export</strong> to download the file.</li>
 </ol>
-<p>This matches the <code>NmeaEngine.tick()</code> loop in <code>backend/nmea/engine.py</code>. All sentences for a given tick are written back-to-back with <code>\r\n</code> line terminators.</p>
-<h2 id="example-output">Example output<a class="headerlink" href="#example-output" title="Permanent link">&para;</a></h2>
-<p>With all sentences enabled, a single 1 Hz tick looks like:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$GPGGA,192430.00,3307.6980,N,11716.8180,W,1,12,0.9,13716.0,M,-32.6,M,,*5F
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$GPRMC,192430.00,A,3307.6980,N,11716.8180,W,450,360,100426,,,A*7B
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>$GPGLL,3307.6980,N,11716.8180,W,192430.00,A,A*7C
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>$GPGSA,A,3,01,02,03,04,05,06,07,08,09,10,11,12,1.0,0.9,0.5*35
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>$GPGSV,3,1,12,01,45,090,50,02,30,180,48,03,60,270,52,04,15,045,44*7A
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>$GPGSV,3,2,12,05,50,135,49,06,25,225,46,07,70,315,51,08,35,000,47*7D
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>$GPGSV,3,3,12,09,55,090,50,10,20,180,45,11,40,270,48,12,65,045,53*70
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>$GPHDT,360,T*09
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>$GPVTG,360,T,,M,450,N,833.4,K,A*2F
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>$GPZDA,192430.00,10,04,2026,00,00*69
-</span></code></pre></div>
-<p>Each line ends with <code>*&lt;checksum&gt;</code> (two hex digits) and is followed by <code>\r\n</code> on the wire. The checksum is XOR of every byte between <code>$</code> and <code>*</code>, exclusive on both ends. See <a href="../../reference/nmea-protocol/">NMEA Protocol</a> for the algorithm in detail.</p>
-<h2 id="where-the-state-lives">Where the state lives<a class="headerlink" href="#where-the-state-lives" title="Permanent link">&para;</a></h2>
+<p>Exported timestamps are always UTC (e.g. <code>2026-04-11T15:30:45.123Z</code>).</p>
+<h2 id="export-formats">Export formats<a class="headerlink" href="#export-formats" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Setting</th>
-<th>UI control</th>
-<th>Env var</th>
-<th>Survives restart?</th>
+<th>Format</th>
+<th>Best for</th>
+<th>Structure</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>GPGGA</code> enabled</td>
-<td>Pinned on</td>
-<td>(no var)</td>
-<td>Always on</td>
+<td><strong>CSV</strong></td>
+<td>Excel, spreadsheets</td>
+<td>One row per position, with a header row</td>
 </tr>
 <tr>
-<td><code>GPRMC</code> enabled</td>
-<td>Pinned on</td>
-<td>(no var)</td>
-<td>Always on</td>
+<td><strong>JSON</strong></td>
+<td>Scripts, other applications</td>
+<td><code>{"start", "end", "positions": [ {...}, ... ]}</code></td>
 </tr>
 <tr>
-<td><code>GPGLL</code>, <code>GPGSA</code>, <code>GPGSV</code>, <code>GPHDT</code>, <code>GPVTG</code>, <code>GPZDA</code></td>
-<td>NMEA panel</td>
-<td>(no per-sentence boot var)</td>
-<td>No - set via UI per run</td>
+<td><strong>XML</strong></td>
+<td>Systems that require XML</td>
+<td><code>&lt;flight_data&gt;</code> with one <code>&lt;position .../&gt;</code> element per row</td>
+</tr>
+<tr>
+<td><strong>GPX</strong></td>
+<td>GPS tools, ForeFlight, mapping apps</td>
+<td>GPX 1.1, one <code>&lt;trk&gt;</code> per simulator. Elevation in meters, speed and heading in each point's <code>&lt;desc&gt;</code></td>
+</tr>
+<tr>
+<td><strong>KML</strong></td>
+<td>Google Earth</td>
+<td>One 3D flight path per simulator at absolute altitude (meters)</td>
 </tr>
 </tbody>
 </table>
-<p>There is intentionally no env-var path to pre-select optional sentences at boot. The thinking: the right set depends on what's connected downstream, which is a per-deployment decision better handled by the operator at start time.</p>
-<h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="../../user-guides/nmea-sentence-catalog/">NMEA Sentence Catalog</a> - per-sentence field-by-field reference.</li>
-<li><a href="../../reference/nmea-protocol/">NMEA Protocol</a> - the framing, checksum, talker-ID format.</li>
-<li><a href="../serial-output/">Serial Output</a> - downstream USB consumer setup.</li>
-<li><a href="../output-viewer/">Output Viewer</a> - watch the sentences scroll live as you toggle them.</li>
-</ul>
+<p>Rows are grouped by simulator, then ordered by time.</p>
+<h2 id="retention">Retention<a class="headerlink" href="#retention" title="Permanent link">&para;</a></h2>
+<p>Data older than <code>RECORDING_RETENTION_DAYS</code> (default <strong>30</strong>) is deleted automatically. The check runs at startup and then every hour. Set it to <code>0</code> to keep data forever.</p>
+<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">&para;</a></h2>
+<p>Each recorded position uses about 56 bytes on disk (SQLite).</p>
+<table>
+<thead>
+<tr>
+<th>Packet rate</th>
+<th>Per sim per hour</th>
+<th>Per sim per 8-hour day</th>
+<th>6 sims, 30 days, 8 h/day</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 Hz</td>
+<td>~200 KB</td>
+<td>~1.6 MB</td>
+<td>~290 MB</td>
+</tr>
+<tr>
+<td>5 Hz</td>
+<td>~1 MB</td>
+<td>~8 MB</td>
+<td>~1.4 GB</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Var</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RECORDING_DEFAULT_ENABLED</code></td>
+<td><code>true</code></td>
+<td>Recording state for a simulator the first time it appears. After that, the switch in the panel wins.</td>
+</tr>
+<tr>
+<td><code>RECORDING_RETENTION_DAYS</code></td>
+<td><code>30</code></td>
+<td>Days of data to keep. <code>0</code> keeps everything.</td>
+</tr>
+<tr>
+<td><code>RECORDING_DB_PATH</code></td>
+<td><code>/app/data/flight_data.db</code></td>
+<td>SQLite database location inside the container.</td>
+</tr>
+</tbody>
+</table>
+<p>Mount a volume on <code>/app/data</code> so recordings survive image updates:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">dashboard</span><span class="p">:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rjsears/fleet-dashboard:latest</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./data:/app/data</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RECORDING_DEFAULT_ENABLED=true</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RECORDING_RETENTION_DAYS=30</span>
+</span></code></pre></div>
+<p>Without the volume, recordings are lost whenever the container is recreated (for example after <code>docker compose pull</code>).</p>
+<h2 id="api">API<a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
+<p>The panel uses these endpoints, which you can also call from scripts. Times are ISO 8601; a time without an offset is treated as UTC.</p>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /api/recording</code></td>
+<td>Recording switches, stored time span, database size, retention</td>
+</tr>
+<tr>
+<td><code>PUT /api/recording/{sim}</code></td>
+<td>Body <code>{"enabled": true\|false}</code> - switch recording for one simulator</td>
+</tr>
+<tr>
+<td><code>GET /api/recording/count?start=&amp;end=&amp;sims=</code></td>
+<td>Number of positions in a range</td>
+</tr>
+<tr>
+<td><code>GET /api/recording/export?start=&amp;end=&amp;format=&amp;sims=</code></td>
+<td>Download a range. <code>format</code> is <code>csv</code>, <code>json</code>, <code>xml</code>, <code>gpx</code> or <code>kml</code>; <code>sims</code> is an optional comma-separated list (all simulators when omitted)</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-o<span class="w"> </span>cj3.kml<span class="w"> </span><span class="s2">"http://&lt;dashboard-host&gt;/api/recording/export?start=2026-04-11T14:00:00Z&amp;end=2026-04-11T18:00:00Z&amp;format=kml&amp;sims=CJ3"</span>
+</span></code></pre></div>
 
 
 

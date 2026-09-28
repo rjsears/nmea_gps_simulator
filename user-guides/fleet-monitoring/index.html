@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1095,6 +1095,34 @@
     
   
     Health Chain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dashboard-manual/flight-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flight Data
   
 
     
@@ -2185,7 +2213,7 @@
 </table>
 <p>The dashboard is intentionally cheap. It scales well past the documented max of 20 simulators - the only enforced limit is the <code>for i in range(1, 20)</code> loop in <code>dashboard/backend/config.py</code> (raise the constant if you genuinely need more).</p>
 <h2 id="persistent-state-on-the-dashboard">Persistent state on the dashboard<a class="headerlink" href="#persistent-state-on-the-dashboard" title="Permanent link">&para;</a></h2>
-<p>The dashboard has <strong>no persistent state</strong>. Every restart starts every card's packet count at 0. Configuration (names, ports, GPS system labels) lives entirely in <code>docker-compose.yml</code>. To change anything, edit and <code>docker compose up -d</code>.</p>
+<p>Every restart starts every card's packet count at 0. The only thing stored on disk is <a href="../../dashboard-manual/flight-data/">flight data recordings</a> in <code>/app/data</code> (mount a volume there to keep them). Configuration (names, ports, GPS system labels) lives entirely in <code>docker-compose.yml</code>. To change anything, edit and <code>docker compose up -d</code>.</p>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../dashboard-manual/configuration/">Configuration (Fleet Dashboard)</a> - dashboard env vars in detail.</li>
@@ -2268,7 +2296,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "toc.integrate", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
