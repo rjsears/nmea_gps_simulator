@@ -36,6 +36,7 @@ Cards lay out in a responsive 3-column grid on a desktop, 2 columns on tablets, 
 |---------|--------------|
 | **LOFT logo + "Fleet Dashboard" title + subtitle** | Branding. The subtitle reads "Real-time simulator monitoring". Static. |
 | **Health toggle** (stethoscope icon) | Switches every card between **position view** and **health view**. See [Health Chain](health-chain.md). |
+| **Flight Data** (download icon) | Opens the [Flight Data](flight-data.md) panel: per-simulator recording switches and date/time-range export. |
 | **Theme toggle** (sun/moon icon) | Toggles light <-> dark. Stored in `localStorage` as `dashboard-theme` (distinct from the simulator's `theme` key so the two apps' themes can differ). |
 | **Connection badge** | Green "Connected" or red "Disconnected" with a dot. Reflects the WebSocket connection to `/ws`. |
 
@@ -112,7 +113,8 @@ Like the simulator, the dashboard fans out updates over a single WebSocket per b
 | Theme | `localStorage["dashboard-theme"]` | Per-browser, per-host. Survives anything. |
 | Health toggle | In-memory React state | No - resets to off on every page load. |
 | Connection state | In-memory React state | No. |
-| Simulator data | In-memory on the server; broadcast to browsers via WebSocket | No - the dashboard is stateless across restarts. Every restart starts the per-card packet count back at 0. |
+| Simulator data | In-memory on the server; broadcast to browsers via WebSocket | No - every restart starts the per-card packet count back at 0. |
+| Flight data recordings | SQLite database in `/app/data` | Yes, when a volume is mounted there. See [Flight Data Recording](flight-data.md). |
 
 ## What's next
 

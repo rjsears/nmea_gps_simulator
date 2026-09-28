@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import SimulatorCard from './components/SimulatorCard'
+import FlightDataPanel from './components/FlightDataPanel'
 
 // Simple Sun/Moon icons
 const SunIcon = () => (
@@ -18,6 +19,12 @@ const HealthIcon = () => (
   <span className="text-lg">🩺</span>
 )
 
+const FlightDataIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+  </svg>
+)
+
 function App() {
   const [simulators, setSimulators] = useState([])
   const [connected, setConnected] = useState(false)
@@ -33,6 +40,7 @@ function App() {
   })
   const [isDark, setIsDark] = useState(false)
   const [showHealth, setShowHealth] = useState(false)
+  const [showFlightData, setShowFlightData] = useState(false)
 
   const toggleTheme = () => {
     setTheme(isDark ? 'light' : 'dark')
@@ -149,6 +157,14 @@ function App() {
               >
                 <HealthIcon />
               </button>
+              {/* Flight data recording / export */}
+              <button
+                onClick={() => setShowFlightData(true)}
+                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                title="Flight data recording and export"
+              >
+                <FlightDataIcon />
+              </button>
               {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
@@ -188,6 +204,8 @@ function App() {
           </div>
         )}
       </main>
+
+      {showFlightData && <FlightDataPanel onClose={() => setShowFlightData(false)} />}
 
       {/* Footer */}
       <footer className="relative z-10 fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-2">
