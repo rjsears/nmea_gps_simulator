@@ -31,6 +31,9 @@ COPY backend/ ./backend/
 # Copy frontend build (includes public/ assets)
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 
+# Flight data recordings live here (mount a volume to persist them)
+RUN mkdir -p /app/data
+
 # Default port (can be overridden by PORT env var)
 ENV PORT=80
 EXPOSE 80

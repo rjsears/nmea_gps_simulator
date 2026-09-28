@@ -168,7 +168,7 @@ The dashboard is intentionally cheap. It scales well past the documented max of 
 
 ## Persistent state on the dashboard
 
-The dashboard has **no persistent state**. Every restart starts every card's packet count at 0. Configuration (names, ports, GPS system labels) lives entirely in `docker-compose.yml`. To change anything, edit and `docker compose up -d`.
+Every restart starts every card's packet count at 0. The only thing stored on disk is [flight data recordings](../dashboard-manual/flight-data.md) in `/app/data` (mount a volume there to keep them). Configuration (names, ports, GPS system labels) lives entirely in `docker-compose.yml`. To change anything, edit and `docker compose up -d`.
 
 ## What's next
 

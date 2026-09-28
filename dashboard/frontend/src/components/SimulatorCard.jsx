@@ -12,6 +12,7 @@ function SimulatorCard({ simulator, showHealth = false }) {
     closest_airport,
     airport_distance_nm,
     packet_count,
+    recording,
   } = simulator
 
   // Health status for header badge
@@ -72,7 +73,18 @@ function SimulatorCard({ simulator, showHealth = false }) {
         }`}
       >
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">{name}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-bold text-white">{name}</h2>
+            {recording && is_online && (
+              <span
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/90 text-red-600 text-xs font-bold"
+                title="Flight data is being recorded"
+              >
+                <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                REC
+              </span>
+            )}
+          </div>
           <span
             className={`px-3 py-1 rounded-full text-sm font-semibold ${
               showHealth
