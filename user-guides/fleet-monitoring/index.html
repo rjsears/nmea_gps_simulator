@@ -1115,6 +1115,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dashboard-manual/health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dashboard-manual/flight-data/" class="md-nav__link">
         
   
@@ -1969,7 +1997,7 @@
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>              |  SIM_2_GPS_SYSTEM=Avionics 2           |
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>              +----------------------------------------+
 </span></code></pre></div>
-<p>Three things to keep aligned across the pair:</p>
+<p>The settings to keep aligned or intentionally coordinated across the pair are:</p>
 <table>
 <thead>
 <tr>
@@ -1991,7 +2019,11 @@
 <td>(no rebroadcaster side - this is dashboard-only)</td>
 </tr>
 <tr>
-<td>(none, dashboard doesn't ping)</td>
+<td><code>SIM_N_SWITCH_IP</code> (dashboard-local switch check)</td>
+<td>(none - the dashboard pings the switch from its own host)</td>
+</tr>
+<tr>
+<td>(none, dashboard does not ping the simulator)</td>
 <td><code>SIMULATOR_IP</code> (for the rebroadcaster's own ping to the flight sim host)</td>
 </tr>
 </tbody>
@@ -2012,14 +2044,17 @@
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_1_NAME=CJ3</span>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_1_PORT=12001</span>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_1_GPS_SYSTEM=Avionics</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_NAME=Ultra</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_PORT=12002</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_GPS_SYSTEM=Avionics 2</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_NAME=CL350</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_PORT=12003</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_GPS_SYSTEM=rehost</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_1_SWITCH_IP=10.200.10.6</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_NAME=Ultra</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_PORT=12002</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_GPS_SYSTEM=Avionics 2</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_SWITCH_IP=10.200.10.27</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_NAME=CL350</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_PORT=12003</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_GPS_SYSTEM=rehost</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_SWITCH_IP=172.16.24.1</span>
 </span></code></pre></div>
 <p><code>docker compose up -d</code>. Open <code>http://&lt;dashboard-host&gt;/</code> - you see three cards, all gray. That's expected: no rebroadcaster is reporting yet.</p>
 <h2 id="step-2-configure-each-rebroadcaster">Step 2 - Configure each rebroadcaster<a class="headerlink" href="#step-2-configure-each-rebroadcaster" title="Permanent link">&para;</a></h2>
@@ -2076,7 +2111,7 @@
 </tr>
 <tr>
 <td>Health view (toggle on)</td>
-<td>Each card shows the four-node chain. With everything healthy, all four nodes are green and the footer reads "All systems operational".</td>
+<td>Each card shows the five-node chain. With everything healthy, all five nodes are green and the footer reads "All systems operational".</td>
 </tr>
 <tr>
 <td>Click an online card</td>
@@ -2141,18 +2176,23 @@
 <td>Rebroadcaster container down, or UDP retransmit IP wrong.</td>
 </tr>
 <tr>
-<td>Emulator -&gt; Simulator</td>
-<td><code>sim_reachable: false</code> in the heartbeat</td>
-<td><code>SIMULATOR_IP</code> unreachable or unset on the rebroadcaster.</td>
+<td>Emulator -&gt; Switch / Switch node</td>
+<td><code>switch_reachable: false</code> AND <code>sim_reachable: false</code> while <code>SIM_N_SWITCH_IP</code> is configured</td>
+<td>The Switch node turns red only when both pings fail and GPS data is not already flowing. Confirm the management IP, switch power, and uplink; a successful <code>sim_reachable</code> ping bypasses/suppresses the failed management-IP check, so the Switch node will not be the one that turns red in that case.</td>
+</tr>
+<tr>
+<td>Switch -&gt; Simulator</td>
+<td><code>sim_reachable: false</code> after the Switch branch did not match</td>
+<td><code>SIMULATOR_IP</code> is unreachable or unset on the rebroadcaster; check the simulator PC and the path to it.</td>
 </tr>
 <tr>
 <td>Simulator -&gt; GPS Data</td>
-<td><code>receiving_udp: false</code> in heartbeat <strong>and</strong> no position in 5 s</td>
-<td>Upstream Sender / flight sim's GPSConnect-equivalent isn't running. The footer message names the system via <code>SIM_N_GPS_SYSTEM</code>.</td>
+<td><code>is_online: false</code> after heartbeats and the simulator reachability check pass</td>
+<td>Upstream Sender / flight sim's GPSConnect-equivalent may not be producing data, or the source-to-dashboard path is broken. The footer message names the system via <code>SIM_N_GPS_SYSTEM</code>.</td>
 </tr>
 </tbody>
 </table>
-<p>See <a href="../../dashboard-manual/health-chain/">Health Chain</a> for the full state machine.</p>
+<p>See <a href="../../dashboard-manual/health-chain/">Health Chain</a> for the full state machine and <a href="../../dashboard-manual/health-data-sources/">Health Data Sources</a> for signal ownership.</p>
 <h2 id="when-the-data-is-wrong">When the data is wrong<a class="headerlink" href="#when-the-data-is-wrong" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2211,13 +2251,14 @@
 </tr>
 </tbody>
 </table>
-<p>The dashboard is intentionally cheap. It scales well past the documented max of 20 simulators - the only enforced limit is the <code>for i in range(1, 20)</code> loop in <code>dashboard/backend/config.py</code> (raise the constant if you genuinely need more).</p>
+<p>The dashboard is intentionally cheap. It scales well past the documented max of 20 simulators - the only enforced limit is the <code>for i in range(1, 20)</code> loop in <code>dashboard/backend/config.py</code> (raise the constant if you genuinely need more). A configured switch adds one ICMP check per simulator but no additional UDP listener.</p>
 <h2 id="persistent-state-on-the-dashboard">Persistent state on the dashboard<a class="headerlink" href="#persistent-state-on-the-dashboard" title="Permanent link">&para;</a></h2>
-<p>Every restart starts every card's packet count at 0. The only thing stored on disk is <a href="../../dashboard-manual/flight-data/">flight data recordings</a> in <code>/app/data</code> (mount a volume there to keep them). Configuration (names, ports, GPS system labels) lives entirely in <code>docker-compose.yml</code>. To change anything, edit and <code>docker compose up -d</code>.</p>
+<p>Every restart starts every card's packet count at 0. The only thing stored on disk is <a href="../../dashboard-manual/flight-data/">flight data recordings</a> in <code>/app/data</code> (mount a volume there to keep them). Configuration (names, ports, GPS system labels, and switch management IPs) lives entirely in <code>docker-compose.yml</code>. To change anything, edit and <code>docker compose up -d</code>.</p>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../dashboard-manual/configuration/">Configuration (Fleet Dashboard)</a> - dashboard env vars in detail.</li>
 <li><a href="../../dashboard-manual/health-chain/">Health Chain</a> - what each red segment means.</li>
+<li><a href="../../dashboard-manual/health-data-sources/">Health Data Sources</a> - where each signal originates.</li>
 <li><a href="../../manual/mode-rebroadcaster/">Rebroadcaster Mode</a> - rebroadcaster reference on the simulator side.</li>
 <li><a href="../tx-checksum-offload/">TX Checksum Offload Fix</a> - when <code>tcpdump</code> shows bad UDP checksums.</li>
 </ul>

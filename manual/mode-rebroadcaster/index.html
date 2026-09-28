@@ -1367,6 +1367,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dashboard-manual/health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dashboard-manual/flight-data/" class="md-nav__link">
         
   
@@ -2048,10 +2076,8 @@
 <p class="admonition-title">Where this fits</p>
 <p>Rebroadcaster is the <strong>most-configured</strong> of the four modes. If you only need to drive a single output - just an EFB, or just a serial device, with no upstream source - use <a href="../mode-standalone/">Stand-Alone Mode</a> instead. If you have an upstream source but only one downstream consumer, plain <a href="../mode-receiver/">Receiver Mode</a> is simpler.</p>
 </div>
-<!-- SCREENSHOT-PENDING: mode-rebroadcaster-01-overview.png - overview shot of the
-     Rebroadcaster Settings panel with EFB + UDP retransmit + USB blocks visible.
-     Captured during Phase H per docs project_docs/screen_capture.md. -->
-
+<p><img alt="The Rebroadcaster Settings panel: EFB, UDP retransmit, and USB output blocks." src="../../images/screenshots/mode-rebroadcaster-01-overview.png" /></p>
+<p><em>The Rebroadcaster Settings panel: EFB, UDP retransmit, and USB output blocks.</em></p>
 <h2 id="what-rebroadcaster-mode-does">What Rebroadcaster Mode does<a class="headerlink" href="#what-rebroadcaster-mode-does" title="Permanent link">&para;</a></h2>
 <p>At a high level:</p>
 <pre class="mermaid"><code>flowchart LR
@@ -2480,7 +2506,7 @@
 <ol>
 <li>Ping that IP once per second from inside the container.</li>
 <li>Include the result (<code>sim_reachable: true | false</code>) in every heartbeat.</li>
-<li>The Fleet Dashboard's per-card <strong>Health Chain</strong> uses this to distinguish a "dashboard &lt;-&gt; emulator" failure from an "emulator &lt;-&gt; simulator" failure.</li>
+<li>The Fleet Dashboard's per-card <strong>Health Chain</strong> combines this with its dashboard-local switch check to distinguish a "dashboard &lt;-&gt; emulator" failure, a switch failure, and a simulator reachability failure.</li>
 </ol>
 <p><code>SIMULATOR_IP</code> is <strong>only</strong> read at container start. Changing it requires a restart. See <a href="../../dashboard-manual/health-chain/">Health Chain</a> for what the dashboard does with the value.</p>
 <div class="admonition info">

@@ -1115,6 +1115,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../flight-data/" class="md-nav__link">
         
   
@@ -1224,6 +1252,17 @@
   
     <nav class="md-nav" aria-label="Per-simulator configuration">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#switch-reachability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Switch reachability
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#worked-example" class="md-nav__link">
@@ -2028,7 +2067,7 @@
 </tbody>
 </table>
 <h2 id="per-simulator-configuration">Per-simulator configuration<a class="headerlink" href="#per-simulator-configuration" title="Permanent link">&para;</a></h2>
-<p>The dashboard supports up to 20 simulators. For each, define three env vars (one of them optional):</p>
+<p>The dashboard supports up to 20 simulators. For each, define four env vars (two of them optional):</p>
 <table>
 <thead>
 <tr>
@@ -2053,9 +2092,17 @@
 <td>No (default empty)</td>
 <td>The label inserted into the failure message in <a href="../health-chain/">Health Chain</a> (e.g., <code>Avionics</code>, <code>Avionics 2</code>, <code>rehost</code>).</td>
 </tr>
+<tr>
+<td><code>SIM_N_SWITCH_IP</code></td>
+<td>No (default empty)</td>
+<td>The switch management IP for this simulator. The dashboard host pings it once per second for the Switch node; an empty value skips the switch check entirely.</td>
+</tr>
 </tbody>
 </table>
 <p><code>N</code> is <code>1</code>-<code>20</code>. The parser walks from 1 to 20 and stops as soon as it sees a gap, so you can't skip - <code>SIM_1</code>, <code>SIM_3</code> without <code>SIM_2</code> means only <code>SIM_1</code> gets registered.</p>
+<h3 id="switch-reachability">Switch reachability<a class="headerlink" href="#switch-reachability" title="Permanent link">&para;</a></h3>
+<p><code>SIM_N_SWITCH_IP</code> identifies the management address of the switch feeding the simulator. The Fleet Dashboard pings that address every second from the <strong>dashboard host</strong> using the <code>ping</code> executable; the ping does not run from the emulator or the flight-simulator host. The dashboard image installs <code>iputils-ping</code> in <code>dashboard/docker/Dockerfile</code> so this check is available in the container.</p>
+<p>Leave <code>SIM_N_SWITCH_IP</code> empty, omit it, or use the compact <code>SIMULATORS</code> format to skip the switch check for that card. In that case <code>switch_reachable</code> remains <code>null</code> and the health component evaluates the simulator check without a switch-management result. When an address is configured, the most recent ping result is exposed as <code>switch_reachable</code>.</p>
 <h3 id="worked-example">Worked example<a class="headerlink" href="#worked-example" title="Permanent link">&para;</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">services</span><span class="p">:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">dashboard</span><span class="p">:</span>
@@ -2071,30 +2118,92 @@
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_1_NAME=CJ3</span>
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_1_PORT=12001</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_1_GPS_SYSTEM=Avionics</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_NAME=Ultra</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_PORT=12002</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_GPS_SYSTEM=Avionics 2</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_NAME=CJ1</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_PORT=12003</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_GPS_SYSTEM=Avionics</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_4_NAME=CE560XL</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_4_PORT=12004</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_4_GPS_SYSTEM=Avionics 2</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_5_NAME=Classic CJ1</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_5_PORT=12005</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_5_GPS_SYSTEM=Avionics</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_1_SWITCH_IP=10.200.10.6</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_NAME=Ultra</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_PORT=12002</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_GPS_SYSTEM=Avionics 2</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_2_SWITCH_IP=10.200.10.27</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_NAME=CJ1</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_PORT=12003</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_GPS_SYSTEM=Avionics</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_3_SWITCH_IP=10.200.10.8</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_4_NAME=CE560XL</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_4_PORT=12004</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_4_GPS_SYSTEM=Avionics 2</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_4_SWITCH_IP=10.200.10.18</span>
 </span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_6_NAME=CL350</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_6_PORT=12006</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_6_GPS_SYSTEM=rehost</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_5_NAME=Classic CJ1</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_5_PORT=12005</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_5_GPS_SYSTEM=Avionics</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_5_SWITCH_IP=10.200.10.4</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_6_NAME=CL350</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_6_PORT=12006</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_6_GPS_SYSTEM=rehost</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIM_6_SWITCH_IP=172.16.24.1</span>
 </span></code></pre></div>
 <p>After <code>docker compose up -d</code>, the dashboard renders six cards in that order. Each card listens on the corresponding UDP port. The footer shows "6 simulators configured" regardless of how many are currently online.</p>
+<p>The current fleet values in <code>dashboard/docker/docker-compose.yml</code> are:</p>
+<table>
+<thead>
+<tr>
+<th>Card</th>
+<th>Name</th>
+<th>Port</th>
+<th>GPS system</th>
+<th>Switch IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SIM_1</code></td>
+<td><code>CJ3</code></td>
+<td><code>12001</code></td>
+<td><code>Avionics</code></td>
+<td><code>10.200.10.6</code></td>
+</tr>
+<tr>
+<td><code>SIM_2</code></td>
+<td><code>Ultra</code></td>
+<td><code>12002</code></td>
+<td><code>Avionics 2</code></td>
+<td><code>10.200.10.27</code></td>
+</tr>
+<tr>
+<td><code>SIM_3</code></td>
+<td><code>CJ1</code></td>
+<td><code>12003</code></td>
+<td><code>Avionics</code></td>
+<td><code>10.200.10.8</code></td>
+</tr>
+<tr>
+<td><code>SIM_4</code></td>
+<td><code>CE560XL</code></td>
+<td><code>12004</code></td>
+<td><code>Avionics 2</code></td>
+<td><code>10.200.10.18</code></td>
+</tr>
+<tr>
+<td><code>SIM_5</code></td>
+<td><code>Classic CJ1</code></td>
+<td><code>12005</code></td>
+<td><code>Avionics</code></td>
+<td><code>10.200.10.4</code></td>
+</tr>
+<tr>
+<td><code>SIM_6</code></td>
+<td><code>CL350</code></td>
+<td><code>12006</code></td>
+<td><code>rehost</code></td>
+<td><code>172.16.24.1</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="alternative-format-single-simulators-env-var">Alternative format: single <code>SIMULATORS</code> env var<a class="headerlink" href="#alternative-format-single-simulators-env-var" title="Permanent link">&para;</a></h2>
-<p>If you don't need per-simulator GPS-system labels, you can compress the configuration into a single <code>SIMULATORS</code> variable:</p>
+<p>If you don't need per-simulator GPS-system labels or switch checks, you can compress the configuration into a single <code>SIMULATORS</code> variable:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">environment</span><span class="p">:</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SIMULATORS=CJ3:12001,Ultra:12002,CL350:12003</span>
 </span></code></pre></div>
@@ -2195,6 +2304,10 @@
 <td>(no rebroadcaster side - this label is dashboard-only)</td>
 </tr>
 <tr>
+<td><code>SIM_N_SWITCH_IP</code></td>
+<td>(no rebroadcaster side - this is a dashboard-local ping target)</td>
+</tr>
+<tr>
 <td>(no dashboard side)</td>
 <td><code>SIMULATOR_IP</code> (set to the flight simulator's IP for the <code>sim_reachable</code> ping)</td>
 </tr>
@@ -2231,6 +2344,11 @@
 <td>The per-simulator listener thread</td>
 <td>Receives both heartbeats and position packets on the same port; distinguished by JSON payload.</td>
 </tr>
+<tr>
+<td><code>SIM_N_SWITCH_IP</code></td>
+<td>No port bind</td>
+<td>The dashboard-local ICMP target for the Switch node; one ping thread runs per configured address.</td>
+</tr>
 </tbody>
 </table>
 <p>Because the container uses <code>network_mode: host</code>, every one of these binds the <strong>host's</strong> port directly - there's no Docker port-publish step. Confirm nothing else on the host is on those ports before bringing the container up.</p>
@@ -2258,6 +2376,10 @@
 <tr>
 <td>Failure message says "the simulator" not "on Avionics 2"</td>
 <td><code>SIM_N_GPS_SYSTEM</code> is unset for that simulator. Set it.</td>
+</tr>
+<tr>
+<td>Switch segment is red</td>
+<td><code>switch_reachable: false</code> and <code>sim_reachable: false</code> while a switch IP is configured. Confirm the IP is correct and answers <code>ping</code> from the dashboard host; a successful <code>sim_reachable</code> ping bypasses/suppresses the failed switch management-IP check, so the Switch node will not be the one that turns red in that case.</td>
 </tr>
 </tbody>
 </table>
@@ -2293,6 +2415,7 @@
 <ul>
 <li><a href="../welcome/">Welcome</a> - manual orientation.</li>
 <li><a href="../health-chain/">Health Chain</a> - how <code>SIM_N_GPS_SYSTEM</code> shows up in failure messages.</li>
+<li><a href="../health-data-sources/">Health Data Sources</a> - where each health signal originates.</li>
 <li><a href="../../user-guides/fleet-monitoring/">Fleet Monitoring</a> - end-to-end deployment with matching rebroadcaster config.</li>
 <li><a href="../../reference/env-vars/">Environment Variables</a> - dashboard env-var reference alongside the simulator's.</li>
 </ul>

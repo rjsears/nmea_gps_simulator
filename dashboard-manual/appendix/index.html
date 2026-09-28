@@ -1115,6 +1115,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../flight-data/" class="md-nav__link">
         
   
@@ -1973,6 +2001,11 @@
 <td>Set <code>AUTO_START_UDP_RETRANSMIT=true</code> and verify the target IP.</td>
 </tr>
 <tr>
+<td>Health view says the Switch segment is red</td>
+<td><code>switch_reachable: false</code> and <code>sim_reachable: false</code> while a switch IP is configured.</td>
+<td>Confirm <code>SIM_N_SWITCH_IP</code> is correct and answers <code>ping</code> from the dashboard host directly; the Switch node is red only when both pings fail, and a successful <code>sim_reachable</code> ping bypasses/suppresses the failed switch management-IP check. Check the switch power and uplink as needed.</td>
+</tr>
+<tr>
 <td>Health view says "Is the simulator powered on?" but the sim is on</td>
 <td><code>SIMULATOR_IP</code> is wrong, or ICMP is filtered between the rebroadcaster's host and the simulator host.</td>
 <td>Set the right IP; allow ICMP echo across the path.</td>
@@ -2029,6 +2062,11 @@
 <td><code>SIM_N_GPS_SYSTEM</code></td>
 <td>no</td>
 <td>empty</td>
+</tr>
+<tr>
+<td><code>SIM_N_SWITCH_IP</code></td>
+<td>no</td>
+<td>empty; an empty value skips the dashboard-local switch check</td>
 </tr>
 </tbody>
 </table>
@@ -2122,7 +2160,7 @@
 </tr>
 <tr>
 <td><strong>Health view</strong></td>
-<td>The mode where every card's body is replaced with the four-node diagnostic chain. Toggled via the stethoscope icon in the header.</td>
+<td>The mode where every card's body is replaced with the five-node diagnostic chain. Toggled via the stethoscope icon in the header.</td>
 </tr>
 <tr>
 <td><strong>Position view</strong></td>
@@ -2131,6 +2169,18 @@
 <tr>
 <td><strong><code>sim_reachable</code></strong></td>
 <td>Heartbeat field. True if the rebroadcaster's last ICMP ping to <code>SIMULATOR_IP</code> succeeded.</td>
+</tr>
+<tr>
+<td><strong><code>switch_ip</code></strong></td>
+<td>Dashboard-side field containing the configured switch management IP for the card. Empty when no switch check is configured.</td>
+</tr>
+<tr>
+<td><strong><code>switch_reachable</code></strong></td>
+<td>Dashboard-side field containing the latest dashboard-to-switch ping result. <code>null</code> when no switch IP is configured.</td>
+</tr>
+<tr>
+<td><strong><code>generated_at</code></strong></td>
+<td>Dashboard-side UTC timestamp of the last fleet-data evaluation tick; unchanged by status requests and updated every second, including when all simulators are offline.</td>
 </tr>
 <tr>
 <td><strong><code>receiving_udp</code></strong></td>

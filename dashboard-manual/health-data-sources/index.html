@@ -1,0 +1,2442 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A Dockerized NMEA GPS simulator with web interface for testing any application that requires GPS positioning data. Useful with aviation, georeferencing and ham radio (APRS) application testing.">
+      
+      
+        <meta name="author" content="Richard J. Sears">
+      
+      
+        <link rel="canonical" href="https://rjsears.github.io/nmea_gps_simulator/dashboard-manual/health-data-sources/">
+      
+      
+        <link rel="prev" href="../health-chain/">
+      
+      
+        <link rel="next" href="../flight-data/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Health Data Sources - NMEA GPS Simulator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#health-data-sources" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NMEA GPS Simulator" class="md-header__button md-logo" aria-label="NMEA GPS Simulator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m-8.95 5H1v-2h2.05C3.5 6.83 6.83 3.5 11 3.05V1h2v2.05c4.17.45 7.5 3.78 7.95 7.95H23v2h-2.05c-.45 4.17-3.78 7.5-7.95 7.95V23h-2v-2.05C6.83 20.5 3.5 17.17 3.05 13M12 5a7 7 0 0 0-7 7 7 7 0 0 0 7 7 7 7 0 0 0 7-7 7 7 0 0 0-7-7"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NMEA GPS Simulator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Health Data Sources
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/rjsears/nmea_gps_simulator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rjsears/nmea_gps_simulator
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NMEA GPS Simulator" class="md-nav__button md-logo" aria-label="NMEA GPS Simulator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m-8.95 5H1v-2h2.05C3.5 6.83 6.83 3.5 11 3.05V1h2v2.05c4.17.45 7.5 3.78 7.95 7.95H23v2h-2.05c-.45 4.17-3.78 7.5-7.95 7.95V23h-2v-2.05C6.83 20.5 3.5 17.17 3.05 13M12 5a7 7 0 0 0-7 7 7 7 0 0 0 7 7 7 7 0 0 0 7-7 7 7 0 0 0-7-7"/></svg>
+
+    </a>
+    NMEA GPS Simulator
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/rjsears/nmea_gps_simulator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rjsears/nmea_gps_simulator
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/hardware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Manual (Simulator)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Manual (Simulator)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/welcome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/login/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Login
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/dashboard-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dashboard Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/mode-rebroadcaster/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rebroadcaster Mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/mode-sender/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sender Mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/mode-receiver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Receiver Mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/mode-standalone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stand-Alone Mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/nmea-sentences/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NMEA Sentences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/serial-output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Serial Output
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/navigation-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Navigation Controls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/output-viewer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Output Viewer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/status-display/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/airport-lookup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Airport Lookup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/common-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Common UI Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manual/appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Manual (Fleet Dashboard)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Manual (Fleet Dashboard)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../welcome/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simulator-card/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simulator Card
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../health-chain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Chain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#physical-and-network-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Physical and network path
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-second-of-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One second of traffic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-node-source-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-node source table
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Per-node source table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields-that-are-easy-to-confuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields that are easy to confuse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration mapping
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration mapping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emulator-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulator side
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboard-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard side
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-each-red-node-can-and-cannot-tell-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What each red node can and cannot tell you
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cadence-and-staleness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cadence and staleness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-the-raw-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the raw fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flight-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flight Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/auto-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auto-Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/connecting-foreflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connecting ForeFlight
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/connecting-garmin-pilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connecting Garmin Pilot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/usb-serial-bad-elf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USB Serial (Bad Elf)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/sender-receiver-pair/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sender/Receiver Pair
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/ip-range-parsing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IP Range Parsing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/nmea-sentence-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NMEA Sentence Catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/fleet-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fleet Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/tx-checksum-offload/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TX Checksum Offload Fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guides/multi-browser-sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-Browser Sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/env-vars/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Environment Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/nmea-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NMEA Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/network-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="health-data-sources">Health Data Sources<a class="headerlink" href="#health-data-sources" title="Permanent link">&para;</a></h1>
+<p>The Fleet Dashboard never initiates contact with any emulator. Emulators push UDP to it, and the dashboard identifies which simulator a packet belongs to by the port on which the packet arrived, not by its source IP; this is the <code>FleetMonitor._listen()</code> design in <code>dashboard/backend/main.py</code>. The only two active network probes in this system are the rebroadcaster's ping to <code>SIMULATOR_IP</code>, run by the rebroadcaster container on the simulator host through <code>backend/rebroadcaster_runner.py:_send_heartbeat()</code>, and the dashboard's ping to <code>SIM_N_SWITCH_IP</code>, run from the dashboard host by <code>FleetMonitor._ping_switch()</code> in <code>dashboard/backend/main.py</code>.</p>
+<h2 id="physical-and-network-path">Physical and network path<a class="headerlink" href="#physical-and-network-path" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    GPS["GPSConnect&lt;br/&gt;Avionics WS"] --&gt;|"JSON/UDP :12000"| Switch["Cisco switch"]
+    Switch --&gt;|"LAN path"| Reb["Rebroadcaster&lt;br/&gt;sim host"]
+    Reb --&gt;|"LAN path"| Switch
+    Switch --&gt;|"LAN path"| SimPC["Sim PC"]
+    Reb --&gt;|"JSON/UDP"| Dash["Dashboard&lt;br/&gt;10.200.40.3:1200N"]
+    Dash --&gt; Fleet["FleetMonitor"]
+    Fleet --&gt;|"WS fleet_state, 1 Hz"| Browser["Browser"]
+    Browser --&gt;|"GET /api/status"| Fleet
+    Reb -.-&gt;|"SIMULATOR_IP"| SimPC
+    Dash -.-&gt;|"SIM_N_SWITCH_IP"| Switch</code></pre>
+<p><em>Exact topology varies per sim; the dashboard's switch ping is independent of the emulator's sim ping.</em></p>
+<p>The solid paths show the physical adjacency relevant to both legs represented in the diagram: depending on the deployment, the same Cisco switch may be on the GPSConnect-to-rebroadcaster leg, the rebroadcaster-to-Sim PC leg, or both; it is not necessarily only on the latter. The dashed arrows are probes, not application data paths, and the dashboard's switch ping is independent of the rebroadcaster's <code>SIMULATOR_IP</code> ping. The rebroadcaster's UDP retransmit is shown separately because it sends JSON to the dashboard's per-simulator port; <code>FleetMonitor._listen()</code> chooses the configured simulator from that port. The dashboard uses host networking in <code>dashboard/docker/docker-compose.yml</code>, so <code>10.200.40.3:1200N</code> represents the dashboard host address and one configured <code>SIM_N_PORT</code>.</p>
+<h2 id="one-second-of-traffic">One second of traffic<a class="headerlink" href="#one-second-of-traffic" title="Permanent link">&para;</a></h2>
+<p>The following sequence puts the four important activities in the requested order. The heartbeat thread, position callback, switch-ping thread, and WebSocket broadcaster are independent; their exact sub-second order can vary even though each is approximately one second apart.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant GPSConnect
+    participant Rebroadcaster
+    participant Switch
+    participant SimPC
+    participant Dashboard
+    participant Browser
+
+    Note over Rebroadcaster,Dashboard: One-second interval
+    Rebroadcaster-&gt;&gt;SimPC: ping -c 1 -W 1 SIMULATOR_IP
+    SimPC--&gt;&gt;Rebroadcaster: ICMP result or timeout
+    Rebroadcaster-&gt;&gt;Rebroadcaster: Build heartbeat JSON
+    Rebroadcaster-&gt;&gt;Dashboard: UDP heartbeat: type, sim_ip, sim_reachable, receiving_udp, uptime_seconds
+    GPSConnect-&gt;&gt;Rebroadcaster: JSON/UDP position: lat, lon, alt_ft, speed_kts, heading, timestamp
+    Rebroadcaster-&gt;&gt;Dashboard: UDP position JSON: lat, lon, alt_ft, speed_kts, heading, timestamp
+    Dashboard-&gt;&gt;Switch: ping -c 1 -W 1 SIM_N_SWITCH_IP
+    Switch--&gt;&gt;Dashboard: ICMP result or timeout
+    Dashboard-&gt;&gt;Browser: WebSocket /ws: fleet_state
+    Browser-&gt;&gt;Dashboard: GET /api/status (on demand)
+    Dashboard--&gt;&gt;Browser: Simulator snapshot and timestamp</code></pre>
+<p><code>RebroadcasterRunner._send_heartbeat()</code> builds the heartbeat with the exact fields <code>type</code>, <code>sim_ip</code>, <code>sim_reachable</code>, <code>receiving_udp</code>, and <code>uptime_seconds</code>, then calls <code>sendto()</code> on the configured retransmit socket. <code>NetworkReceiver._handle_packet()</code> parses incoming position data before calling <code>RebroadcasterRunner._handle_packet()</code>, which retransmits <code>json.dumps(data)</code> to the dashboard. For JSON input, that preserves the standard position fields; for CYGNUS input, <code>parse_cygnus_packet()</code> first converts the data to the standard dictionary, so the retransmit is not byte-for-byte for that format. The dashboard's <code>FleetMonitor._listen()</code> dispatches a packet with <code>type == "heartbeat"</code> to <code>SimulatorState.update_heartbeat()</code> and treats other valid JSON as position data.</p>
+<p>The dashboard's <code>FleetMonitor._ping_switch()</code> runs only for a configured switch address. <code>broadcast_state()</code> sends a <code>{"type": "fleet_state", "simulators": [...]}</code> message once per second while browsers are connected, and <code>websocket_endpoint()</code> sends an initial snapshot when a browser connects. <code>get_status()</code> provides the on-demand <code>/api/status</code> snapshot.</p>
+<h2 id="per-node-source-table">Per-node source table<a class="headerlink" href="#per-node-source-table" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Represents</th>
+<th>Who produces the signal</th>
+<th>Config (env var + file)</th>
+<th>Wire field</th>
+<th>Consumer (file + function)</th>
+<th>Exact rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dashboard</td>
+<td>The dashboard container and the browser-rendered health component.</td>
+<td>Nothing probes the Dashboard node. <code>HealthChain()</code> declares <code>dashboardOk = true</code>, and the <code>NodeBox</code> for Dashboard is rendered with both failure flags false.</td>
+<td>n/a</td>
+<td>n/a</td>
+<td><code>dashboard/frontend/src/components/HealthChain.jsx</code> — <code>HealthChain()</code> and <code>NodeBox()</code></td>
+<td>Green whenever the health component renders. A disconnected browser is shown by the header connection badge, not by a red Dashboard node.</td>
+</tr>
+<tr>
+<td>Emulator</td>
+<td>The rebroadcaster container on the simulator host and its UDP path to the dashboard.</td>
+<td><code>RebroadcasterRunner._send_heartbeat()</code> in <code>backend/rebroadcaster_runner.py</code> runs in that container when UDP retransmit is configured and sleeps for <code>1.0</code> second between iterations.</td>
+<td><code>AUTO_START_UDP_RETRANSMIT</code>, <code>AUTO_START_UDP_RETRANSMIT_IP</code>, and <code>AUTO_START_UDP_RETRANSMIT_PORT</code> in <code>docker/docker-compose.yml</code>; their settings are defined in <code>backend/config.py</code>.</td>
+<td>The complete heartbeat packet: <code>type</code>, <code>sim_ip</code>, <code>sim_reachable</code>, <code>receiving_udp</code>, and <code>uptime_seconds</code>.</td>
+<td><code>dashboard/backend/main.py</code> — <code>FleetMonitor._listen()</code> dispatches the heartbeat to <code>SimulatorState.update_heartbeat()</code>, which stamps <code>last_heartbeat</code>.</td>
+<td><code>emulator_online</code> is true only when <code>last_heartbeat</code> exists and its age is <code>&lt; 3.0</code> seconds, as defined by <code>SimulatorState.emulator_online</code>. When the first failure branch in <code>HealthChain()</code> sees <code>!emulator_online</code>, the Emulator node is red.</td>
+</tr>
+<tr>
+<td>Switch</td>
+<td>The Cisco switch between the simulator host and the flight-sim PC, identified by its management IP.</td>
+<td>The dashboard's <code>FleetMonitor._ping_switch()</code> calls <code>ping_host()</code> once per <code>SWITCH_PING_INTERVAL</code> (<code>1.0</code> second). On Linux the invocation is <code>ping -c 1 -W 1 &lt;ip&gt;</code> with a <code>2</code>-second subprocess timeout; the thread logs only when the result changes.</td>
+<td><code>SIM_N_SWITCH_IP</code> in <code>dashboard/docker/docker-compose.yml</code>, parsed by <code>dashboard/backend/config.py</code>; <code>dashboard/docker/Dockerfile</code> installs <code>iputils-ping</code>. The thread is created only when the parsed IP is non-empty.</td>
+<td>None. This is dashboard-local; the result is added to <code>/api/status</code> and <code>fleet_state</code> as <code>switch_ip</code> and <code>switch_reachable</code>, not to the emulator heartbeat.</td>
+<td><code>dashboard/backend/main.py</code> — <code>SimulatorState.update_switch()</code> records the last result; <code>dashboard/frontend/src/components/HealthChain.jsx</code> reads <code>switch_ip</code> and <code>switch_reachable</code>.</td>
+<td>The Switch node is red on <code>switchConfigured &amp;&amp; !switch_reachable &amp;&amp; !sim_reachable</code>, a true three-way conjunction. This is not merely an evaluation-order relationship. The condition is evaluated after the <code>is_online</code> and <code>emulator_online</code> gates have allowed evaluation and before the Simulator branch, so the Switch branch takes precedence when all three terms are true. <code>switchConfigured</code> is false for <code>null</code> or <code>undefined</code>, so an unset switch IP skips the check.</td>
+</tr>
+<tr>
+<td>Simulator</td>
+<td>The flight-sim computer reached from the rebroadcaster.</td>
+<td><code>RebroadcasterRunner._send_heartbeat()</code> calls <code>RebroadcasterRunner._ping_host()</code> once per heartbeat cycle when <code>_simulator_ip</code> is set. <code>_ping_host()</code> uses <code>ping -c 1 -W 1 &lt;ip&gt;</code> on non-Windows systems, a <code>2</code>-second subprocess timeout, and returns false on any exception; when the IP is unset, <code>_send_heartbeat()</code> leaves <code>sim_reachable</code> false.</td>
+<td><code>SIMULATOR_IP</code> is defined in <code>backend/config.py</code> and shown in <code>docker/docker-compose.yml</code>. <code>backend/auto_start.py:perform_auto_start()</code> passes the setting on the auto-start path, and <code>backend/api/control_routes.py:control()</code> passes it on the UI-start rebroadcaster path.</td>
+<td><code>sim_reachable</code> inside the heartbeat packet, alongside <code>sim_ip</code>.</td>
+<td><code>dashboard/backend/main.py</code> — <code>SimulatorState.update_heartbeat()</code> copies <code>sim_reachable</code>; <code>HealthChain()</code> evaluates it after the switch branch.</td>
+<td>The Simulator node is red when <code>!sim_reachable</code> reaches the simulator branch after the emulator branch and the switch failure branch have both failed to match. It is the latest heartbeat's ping result; there is no smoothing, averaging, or hysteresis in the code.</td>
+</tr>
+<tr>
+<td>GPS Data</td>
+<td>GPSConnect fixes that reach the dashboard through the rebroadcaster.</td>
+<td>No probe produces this signal. Position packets are the signal. <code>NetworkReceiver._run_udp()</code> receives them on the configured listener port, <code>_handle_packet()</code> parses them, and <code>RebroadcasterRunner._handle_packet()</code> retransmits the parsed position when UDP retransmit is enabled.</td>
+<td><code>AUTO_START_LISTEN_PORT</code> defaults to <code>12000</code> in <code>backend/config.py</code> and is set to <code>12000</code> in <code>docker/docker-compose.yml</code>; GPSConnect's external configuration is outside this repository.</td>
+<td>The position packet, normally JSON with <code>lat</code>, <code>lon</code>, <code>alt_ft</code>, <code>speed_kts</code>, <code>heading</code>, and <code>timestamp</code>; it is not a heartbeat.</td>
+<td><code>dashboard/backend/main.py</code> — <code>FleetMonitor._listen()</code> sends a non-heartbeat packet to <code>SimulatorState.update()</code>, which stamps <code>last_update</code>.</td>
+<td><code>is_online</code> is true only when <code>last_update</code> exists and its age is <code>&lt; 5.0</code> seconds, as defined by <code>SimulatorState.is_online</code>. If the earlier branches do not select Emulator, Switch, or Simulator, <code>HealthChain()</code> marks GPS Data red when <code>!is_online</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fields-that-are-easy-to-confuse">Fields that are easy to confuse<a class="headerlink" href="#fields-that-are-easy-to-confuse" title="Permanent link">&para;</a></h3>
+<p><code>receiving_udp</code> is the rebroadcaster's own source-side flag. <code>RebroadcasterRunner._send_heartbeat()</code> sets it true when <code>_last_packet_time</code> is less than <code>5.0</code> seconds old; <code>_handle_packet()</code> updates <code>_last_packet_time</code> whenever the rebroadcaster receives a parsed position packet. <code>SimulatorState.update_heartbeat()</code> copies the value, and <code>SimulatorState.to_dict()</code> exposes it through <code>/api/status</code> and <code>fleet_state</code>. The current dashboard UI does not use <code>receiving_udp</code> in <code>HealthChain.jsx</code> or <code>SimulatorCard.jsx</code>; the GPS decision uses the dashboard-side <code>is_online</code> flag instead.</p>
+<p>The heartbeat field <code>uptime_seconds</code> becomes the dashboard-side <code>emulator_uptime</code> field. <code>RebroadcasterRunner._send_heartbeat()</code> computes it as <code>int(time.time() - self._start_time)</code>, where <code>_start_time</code> is set by <code>RebroadcasterRunner.start()</code>. <code>SimulatorState.update_heartbeat()</code> copies the value and <code>SimulatorState.to_dict()</code> exposes it. It measures seconds since the current rebroadcaster run began, resets after a restart, and does not affect the health decision.</p>
+<p><code>GET /api/status</code> returns <code>{"simulators": [...], "timestamp": ...}</code> from <code>get_status()</code>. The WebSocket sends <code>{"type": "fleet_state", "simulators": [...]}</code> from <code>broadcast_state()</code> and <code>websocket_endpoint()</code>. The per-simulator objects in both paths contain <code>switch_ip</code> and <code>switch_reachable</code> in addition to the heartbeat-derived and position-derived fields.</p>
+<h2 id="decision-flow">Decision flow<a class="headerlink" href="#decision-flow" title="Permanent link">&para;</a></h2>
+<p>The flowchart below follows the assignment order in <code>dashboard/frontend/src/components/HealthChain.jsx</code>. <code>allImplicitlyOk</code> is assigned from <code>is_online</code>, and <code>switchConfigured</code> is true only when <code>switch_reachable</code> is neither <code>null</code> nor <code>undefined</code>.</p>
+<pre class="mermaid"><code>flowchart TD
+    Start["HealthChain(simulator)"] --&gt; Vars["Set allImplicitlyOk and switchConfigured"]
+    Vars --&gt; Gate{"!allImplicitlyOk?"}
+    Gate -- "false" --&gt; OK["No failurePoint&lt;br/&gt;All five nodes green"]
+    Gate -- "true" --&gt; EmulatorCheck{"!emulator_online?"}
+    EmulatorCheck -- "true" --&gt; EmulatorFail["failurePoint = emulator&lt;br/&gt;Emulator red; right side gray"]
+    EmulatorCheck -- "false" --&gt; SwitchCheck{"switchConfigured&lt;br/&gt;&amp;&amp; !switch_reachable&lt;br/&gt;&amp;&amp; !sim_reachable?"}
+    SwitchCheck -- "true" --&gt; SwitchFail["failurePoint = switch&lt;br/&gt;Switch red; right side gray"]
+    SwitchCheck -- "false" --&gt; SimulatorCheck{"!sim_reachable?"}
+    SimulatorCheck -- "true" --&gt; SimulatorFail["failurePoint = simulator&lt;br/&gt;Simulator red; right side gray"]
+    SimulatorCheck -- "false" --&gt; GPSCheck{"!is_online?"}
+    GPSCheck -- "true" --&gt; GPSFail["failurePoint = gps&lt;br/&gt;GPS Data red"]
+    GPSCheck -- "false" --&gt; OK</code></pre>
+<p>The exact footer messages assigned by <code>HealthChain()</code> are:</p>
+<table>
+<thead>
+<tr>
+<th>Branch condition</th>
+<th><code>failurePoint</code></th>
+<th>Exact message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>!emulator_online</code></td>
+<td><code>emulator</code></td>
+<td><code>Is the emulator container running?</code></td>
+</tr>
+<tr>
+<td><code>switchConfigured &amp;&amp; !switch_reachable &amp;&amp; !sim_reachable</code></td>
+<td><code>switch</code></td>
+<td><code>Switch for ${name} (${switch_ip}) is not responding. Check switch power and uplink.</code></td>
+</tr>
+<tr>
+<td><code>!sim_reachable</code> after the earlier branches</td>
+<td><code>simulator</code></td>
+<td><code>Is the simulator powered on? If yes, possible network issue.</code></td>
+</tr>
+<tr>
+<td><code>!is_online &amp;&amp; gps_system</code> after the earlier branches</td>
+<td><code>gps</code></td>
+<td><code>Not receiving GPS data. Start or Restart GPSConnect application on ${gps_system}.</code></td>
+</tr>
+<tr>
+<td><code>!is_online &amp;&amp; !gps_system</code> after the earlier branches</td>
+<td><code>gps</code></td>
+<td><code>Not receiving GPS data. Start or Restart the GPSConnect application on the simulator.</code></td>
+</tr>
+</tbody>
+</table>
+<p>When no <code>failurePoint</code> is selected, <code>allOk</code> is true and the footer is <code>All systems operational</code>. <code>NodeBox()</code> and <code>Connector()</code> then apply the red or gray downstream styling. The final <code>!is_online</code> branch is inside <code>!allImplicitlyOk</code>, so it is normally guaranteed to be true when reached; it is shown in the diagram because that is the branch present in the component.</p>
+<h2 id="configuration-mapping">Configuration mapping<a class="headerlink" href="#configuration-mapping" title="Permanent link">&para;</a></h2>
+<h3 id="emulator-side">Emulator side<a class="headerlink" href="#emulator-side" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Role</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUTO_START_LISTEN_PORT</code></td>
+<td>Port on which the rebroadcaster's <code>NetworkReceiver</code> listens for GPSConnect data; current example is <code>12000</code>.</td>
+<td><code>backend/config.py</code> default and <code>docker/docker-compose.yml</code> example.</td>
+</tr>
+<tr>
+<td><code>AUTO_START_UDP_RETRANSMIT</code></td>
+<td>Enables the UDP retransmit socket and the heartbeat thread when true.</td>
+<td><code>backend/config.py</code> and <code>docker/docker-compose.yml</code>.</td>
+</tr>
+<tr>
+<td><code>AUTO_START_UDP_RETRANSMIT_IP</code></td>
+<td>Dashboard host IP receiving the retransmitted position and heartbeat packets.</td>
+<td><code>docker/docker-compose.yml</code>; passed through <code>backend/auto_start.py</code>.</td>
+</tr>
+<tr>
+<td><code>AUTO_START_UDP_RETRANSMIT_PORT</code></td>
+<td>Dashboard per-simulator UDP port; must match <code>SIM_N_PORT</code>.</td>
+<td><code>backend/config.py</code>, <code>docker/docker-compose.yml</code>, and the rebroadcaster <code>start()</code> arguments.</td>
+</tr>
+<tr>
+<td><code>SIMULATOR_IP</code></td>
+<td>Flight-sim computer IP used by the rebroadcaster's health ping.</td>
+<td><code>backend/config.py</code>, <code>docker/docker-compose.yml</code>, <code>backend/auto_start.py</code>, and <code>backend/api/control_routes.py</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dashboard-side">Dashboard side<a class="headerlink" href="#dashboard-side" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Role</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SIM_N_NAME</code></td>
+<td>Name shown on the dashboard card.</td>
+<td><code>dashboard/backend/config.py</code> and <code>dashboard/docker/docker-compose.yml</code>.</td>
+</tr>
+<tr>
+<td><code>SIM_N_PORT</code></td>
+<td>UDP port bound by that card's <code>FleetMonitor._listen()</code> thread. The arrival port selects the card.</td>
+<td><code>dashboard/backend/config.py</code> and <code>dashboard/docker/docker-compose.yml</code>.</td>
+</tr>
+<tr>
+<td><code>SIM_N_GPS_SYSTEM</code></td>
+<td>Label inserted into the configured GPS Data failure message.</td>
+<td><code>dashboard/backend/config.py</code>, <code>dashboard/docker/docker-compose.yml</code>, and <code>HealthChain.jsx</code>.</td>
+</tr>
+<tr>
+<td><code>SIM_N_SWITCH_IP</code></td>
+<td>Optional switch management IP pinged by the dashboard host. Empty means no switch thread and <code>switch_reachable: null</code>.</td>
+<td><code>dashboard/backend/config.py</code>, <code>dashboard/backend/main.py</code>, and <code>dashboard/docker/docker-compose.yml</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>The current fleet mapping in <code>dashboard/docker/docker-compose.yml</code> is:</p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Sim name</th>
+<th>GPS system</th>
+<th>Switch IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>12001</code></td>
+<td><code>CJ3</code></td>
+<td><code>Avionics</code></td>
+<td><code>10.200.10.6</code></td>
+</tr>
+<tr>
+<td><code>12002</code></td>
+<td><code>Ultra</code></td>
+<td><code>Avionics 2</code></td>
+<td><code>10.200.10.27</code></td>
+</tr>
+<tr>
+<td><code>12003</code></td>
+<td><code>CJ1</code></td>
+<td><code>Avionics</code></td>
+<td><code>10.200.10.8</code></td>
+</tr>
+<tr>
+<td><code>12004</code></td>
+<td><code>CE560XL</code></td>
+<td><code>Avionics 2</code></td>
+<td><code>10.200.10.18</code></td>
+</tr>
+<tr>
+<td><code>12005</code></td>
+<td><code>Classic CJ1</code></td>
+<td><code>Avionics</code></td>
+<td><code>10.200.10.4</code></td>
+</tr>
+<tr>
+<td><code>12006</code></td>
+<td><code>CL350</code></td>
+<td><code>rehost</code></td>
+<td><code>172.16.24.1</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-each-red-node-can-and-cannot-tell-you">What each red node can and cannot tell you<a class="headerlink" href="#what-each-red-node-can-and-cannot-tell-you" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>What red establishes</th>
+<th>What it cannot distinguish</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Emulator</td>
+<td>The dashboard has received no heartbeat in the last 3.0 seconds (or none ever); <code>emulator_online</code> is false.</td>
+<td>The rebroadcaster container may be stopped, the simulator host may be offline, the network between the simulator host and dashboard may be cut, or retransmit IP/port settings may be wrong. These all look like missing heartbeats from the dashboard's point of view.</td>
+</tr>
+<tr>
+<td>Switch</td>
+<td><code>switchConfigured &amp;&amp; !switch_reachable &amp;&amp; !sim_reachable</code>: a configured management-IP ping from the dashboard is false and the rebroadcaster's simulator ping is also false, with no earlier failure taking precedence.</td>
+<td>It cannot identify whether the switch is powered off, its uplink is down, its management IP is wrong, or ICMP to the management plane is filtered. A failed management-IP ping also does not prove the switch has stopped forwarding simulator or avionics traffic: management-plane and data-plane reachability are physically separate concerns on some switches. However, a failed management-IP ping alone does not turn this node red - if the rebroadcaster can still reach the simulator through the switch (<code>sim_reachable == true</code>), the alarm is suppressed and the Switch node stays green (evaluation moves to the Simulator/GPS branches instead).</td>
+</tr>
+<tr>
+<td>Simulator</td>
+<td>The rebroadcaster's latest <code>SIMULATOR_IP</code> ping is false after the Switch branch did not match.</td>
+<td>The simulator PC may be off, or anything between the simulator host and simulator PC may be down. The Switch node separates one specific configured switch-management failure from this broader path ambiguity, but it does not test every device or link.</td>
+</tr>
+<tr>
+<td>GPS Data</td>
+<td>No position packet has reached the dashboard in the last five seconds after the preceding branches have passed.</td>
+<td>GPSConnect may have stopped, the simulator may not be producing data, or the link between the avionics workstation and the simulator host may be broken. <code>receiving_udp</code> could distinguish whether the rebroadcaster itself is still receiving source packets, but that field is not surfaced in the current health UI decision.</td>
+</tr>
+</tbody>
+</table>
+<p>The Dashboard node has no red branch in <code>HealthChain.jsx</code>. A browser-to-dashboard WebSocket failure instead changes the separate connection badge and freezes the browser's last received state.</p>
+<h2 id="cadence-and-staleness">Cadence and staleness<a class="headerlink" href="#cadence-and-staleness" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Cadence or window</th>
+<th>Origin and rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heartbeat</td>
+<td>Approximately 1 Hz</td>
+<td><code>RebroadcasterRunner._send_heartbeat()</code> sleeps <code>1.0</code> second between sends when retransmit is configured.</td>
+</tr>
+<tr>
+<td>Position packet</td>
+<td>Approximately 1 Hz while GPSConnect is producing fixes</td>
+<td><code>NetworkReceiver</code> is event-driven; it forwards each valid source packet as it arrives, and the source's usual cadence supplies the approximately 1 Hz rate.</td>
+</tr>
+<tr>
+<td>Rebroadcaster-to-simulator ping</td>
+<td>Approximately 1 Hz</td>
+<td>One <code>_ping_host()</code> call per heartbeat cycle in <code>_send_heartbeat()</code>.</td>
+</tr>
+<tr>
+<td>Dashboard-to-switch ping</td>
+<td>1 Hz per configured switch</td>
+<td><code>SWITCH_PING_INTERVAL</code> is <code>1.0</code> second and <code>FleetMonitor._ping_switch()</code> adjusts its sleep for the time spent pinging.</td>
+</tr>
+<tr>
+<td>WebSocket broadcast</td>
+<td>1 Hz, plus an immediate snapshot on connect</td>
+<td><code>broadcast_state()</code> sleeps <code>1.0</code> second between broadcasts; <code>websocket_endpoint()</code> sends the initial state.</td>
+</tr>
+<tr>
+<td><code>emulator_online</code> staleness</td>
+<td>False when heartbeat age is <code>3.0</code> seconds or more</td>
+<td><code>SimulatorState.emulator_online</code> checks <code>&lt; 3.0</code>.</td>
+</tr>
+<tr>
+<td><code>is_online</code> staleness</td>
+<td>False when position age is <code>5.0</code> seconds or more</td>
+<td><code>SimulatorState.is_online</code> checks <code>&lt; 5.0</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>UDP is fire-and-forget: <code>sendto()</code> has no application acknowledgement from the dashboard. The several-second staleness windows allow a packet or heartbeat to be lost without immediately declaring the path dead; they are deliberately wider than a single one-second interval.</p>
+<p>Nothing about simulator state is persisted. <code>FleetMonitor.configure()</code> creates fresh <code>SimulatorState</code> objects when the dashboard starts, so a dashboard restart shows every simulator as offline until the next heartbeat and position packet arrive for each configured port.</p>
+<h2 id="reading-the-raw-fields">Reading the raw fields<a class="headerlink" href="#reading-the-raw-fields" title="Permanent link">&para;</a></h2>
+<p>Run <code>curl http://&lt;dashboard-host&gt;/api/status</code> to retrieve a JSON object whose <code>simulators</code> array contains the per-simulator objects. Among other fields, each object includes <code>emulator_online</code>, <code>switch_reachable</code>, <code>sim_reachable</code>, <code>is_online</code>, and <code>receiving_udp</code>, matching the names exposed by <code>SimulatorState.to_dict()</code>.</p>
+<p><code>receiving_udp</code> distinguishes two failure causes that the health chain collapses into the single <code>GPS Data</code> red state. When <code>receiving_udp</code> is false, GPSConnect itself is not sending to the rebroadcaster, so nothing is arriving on the emulator side. When <code>receiving_udp</code> is true but <code>is_online</code> is false, the rebroadcaster is receiving fixes from GPSConnect but they are not reaching the dashboard: the problem is on the rebroadcaster-to-dashboard leg, not the GPSConnect-to-rebroadcaster leg. The current UI (<code>HealthChain.jsx</code>) does not make this distinction; it only looks at <code>is_online</code> for the GPS Data branch. Operators who need this finer-grained answer must query <code>/api/status</code> directly instead of relying on the health-chain UI.</p>
+<p><code>docker logs fleet-dashboard | grep -i switch</code> prints the switch monitor's startup lines and reachability transitions. <code>fleet-dashboard</code> is the dashboard container name; the startup line is <code>Started switch monitor ...</code>, and <code>_ping_switch()</code> logs <code>reachable</code> or <code>UNREACHABLE</code> when the result changes.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Richard J. Sears
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/rjsears" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "toc.integrate", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

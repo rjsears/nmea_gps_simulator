@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://rjsears.github.io/nmea_gps_simulator/dashboard-manual/flight-data/">
       
       
-        <link rel="prev" href="../health-chain/">
+        <link rel="prev" href="../health-data-sources/">
       
       
         <link rel="next" href="../configuration/">
@@ -1112,6 +1112,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1995,11 +2023,12 @@
 <p>A simulator that is offline (Classic CJ1 above) shows no badge, because nothing is being received or recorded for it.</p>
 <p>Below the switches the panel shows the time span currently stored, the database size and the retention setting.</p>
 <h3 id="export">Export<a class="headerlink" href="#export" title="Permanent link">&para;</a></h3>
+<p>Exports are one simulator at a time, since they're normally used to map an individual flight.</p>
 <ol>
+<li>Pick the <strong>Simulator</strong>.</li>
 <li>Pick a <strong>From</strong> and <strong>To</strong> date/time, or click a preset (last hour, 4 hours, 24 hours, 7 days, 30 days). Times are entered in your browser's local time zone; the <strong>To</strong> minute is included in full.</li>
-<li>Tick the simulators to include.</li>
 <li>Choose a format. The panel shows how many positions the export will contain.</li>
-<li>Click <strong>Export</strong> to download the file.</li>
+<li>Click <strong>Export</strong> to download the file. It is named after the simulator and start time, e.g. <code>CJ3_20260928T1645Z.kml</code>.</li>
 </ol>
 <p>Exported timestamps are always UTC (e.g. <code>2026-04-11T15:30:45.123Z</code>).</p>
 <p>The panel follows the dashboard's light/dark theme:</p>
@@ -2041,7 +2070,7 @@
 </tr>
 </tbody>
 </table>
-<p>Rows are grouped by simulator, then ordered by time.</p>
+<p>Rows are ordered by time. (When the API is asked for several simulators, rows are grouped by simulator first, and GPX/KML get one track per simulator.)</p>
 <h2 id="retention">Retention<a class="headerlink" href="#retention" title="Permanent link">&para;</a></h2>
 <p>Data older than <code>RECORDING_RETENTION_DAYS</code> (default <strong>30</strong>) is deleted automatically. The check runs at startup and then every hour. Set it to <code>0</code> to keep data forever.</p>
 <h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">&para;</a></h2>
@@ -2132,7 +2161,7 @@
 </tr>
 <tr>
 <td><code>GET /api/recording/export?start=&amp;end=&amp;format=&amp;sims=</code></td>
-<td>Download a range. <code>format</code> is <code>csv</code>, <code>json</code>, <code>xml</code>, <code>gpx</code> or <code>kml</code>; <code>sims</code> is an optional comma-separated list (all simulators when omitted)</td>
+<td>Download a range. <code>format</code> is <code>csv</code>, <code>json</code>, <code>xml</code>, <code>gpx</code> or <code>kml</code>; <code>sims</code> is a simulator name, or a comma-separated list for scripts (all simulators when omitted). A single-simulator export is named <code>&lt;sim&gt;_&lt;start&gt;.&lt;ext&gt;</code>, otherwise <code>flight_data_&lt;start&gt;.&lt;ext&gt;</code></td>
 </tr>
 </tbody>
 </table>

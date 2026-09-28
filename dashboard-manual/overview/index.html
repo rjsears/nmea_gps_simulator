@@ -1289,6 +1289,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../flight-data/" class="md-nav__link">
         
   
@@ -1965,28 +1993,28 @@
 
 <h1 id="dashboard-overview">Dashboard Overview<a class="headerlink" href="#dashboard-overview" title="Permanent link">&para;</a></h1>
 <p>The Fleet Dashboard is a single-screen, grid-of-cards UI. There is no login, no mode selector, no per-card configuration. The only operator controls in the entire app are the <strong>health view toggle</strong>, the <strong>theme toggle</strong>, and the <strong>connection-status badge</strong> in the header.</p>
-<!-- SCREENSHOT-PENDING: dashboard-overview-01-grid.png - dashboard with 6 cards in 3-column grid, header visible. -->
-
+<p><img alt="The Fleet Dashboard grid with online and offline simulator cards." src="../../images/screenshots/dashboard-overview-01-grid.png" /></p>
+<p><em>The Fleet Dashboard grid with online and offline simulator cards.</em></p>
 <h2 id="the-layout">The layout<a class="headerlink" href="#the-layout" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>+--------------------------------------------------------------------------+
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>|  HEADER                                                                  |
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>|  [Logo] Fleet Dashboard                          [Health] [Theme]        |
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>|         Real-time simulator monitoring                    [Connected]    |
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>+--------------------------------------------------------------------------+
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>|                                                                          |
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>|  +-------SIM CARD-------+  +-------SIM CARD-------+  +-------SIM CARD--+ |
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>|  | CJ3        ONLINE    |  | Ultra      ONLINE    |  | CL350   OFFLINE| |
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>|  | Lat / Lon            |  | Lat / Lon            |  |  ---            | |
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>|  | Alt / Speed / Heading|  | Alt / Speed / Heading|  |  ---            | |
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>|  | Nearest airport      |  | Nearest airport      |  |  ---            | |
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>|  | Port / Packets       |  | Port / Packets       |  | Port / Packets  | |
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>|  +----------------------+  +----------------------+  +-----------------+ |
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>|                                                                          |
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>|  ...more cards if more simulators are configured...                      |
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>|                                                                          |
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>+--------------------------------------------------------------------------+
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>| LOFT Fleet Dashboard v1.0.0 • Richard J. Sears ©2026 • N simulators      |
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>+--------------------------------------------------------------------------+
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>+------------------------------------------------------------------------------------+
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>|  HEADER                                                                            |
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>|  [Logo] Fleet Dashboard                                    [Health] [Theme]        |
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>|         Real-time Simulator Telemetry Monitoring                    [Connected]    |
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>+------------------------------------------------------------------------------------+
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>|                                                                                    |
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>|  +-------SIM CARD-------+  +-------SIM CARD-------+  +-------SIM CARD--+           |
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>|  | CJ3        ONLINE    |  | Ultra      ONLINE    |  | CL350   OFFLINE|            |
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>|  | Lat / Lon            |  | Lat / Lon            |  |  ---            |           |
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>|  | Alt / Speed / Heading|  | Alt / Speed / Heading|  |  ---            |           |
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>|  | Nearest airport      |  | Nearest airport      |  |  ---            |           |
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>|  | Port / Packets       |  | Port / Packets       |  | Port / Packets  |           |
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>|  +----------------------+  +----------------------+  +-----------------+           |
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>|                                                                                    |
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>|  ...more cards if more simulators are configured...                                |
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>|                                                                                    |
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>+------------------------------------------------------------------------------------+
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>| LOFT Fleet Dashboard v1.0.1 • Richard J. Sears ©2026 • N simulators                |
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>+------------------------------------------------------------------------------------+
 </span></code></pre></div>
 <p>Cards lay out in a responsive 3-column grid on a desktop, 2 columns on tablets, single column on phones. The grid scales to however many simulators you've configured - 1, 6, 20 (the maximum the env-var parser supports).</p>
 <h2 id="header">Header<a class="headerlink" href="#header" title="Permanent link">&para;</a></h2>
@@ -2000,7 +2028,7 @@
 <tbody>
 <tr>
 <td><strong>LOFT logo + "Fleet Dashboard" title + subtitle</strong></td>
-<td>Branding. The subtitle reads "Real-time simulator monitoring". Static.</td>
+<td>Branding. The title renders with <strong>Fleet</strong> in black (the default dark/foreground text color) and <strong>Dashboard</strong> in LOFT orange. The subtitle reads "Real-time Simulator Telemetry Monitoring". Static.</td>
 </tr>
 <tr>
 <td><strong>Health toggle</strong> (stethoscope icon)</td>
@@ -2036,7 +2064,7 @@
 </tr>
 <tr>
 <td>Health toggle <strong>on</strong></td>
-<td><strong>Health view</strong>: the four-node diagnostic chain (Dashboard -&gt; Emulator -&gt; Simulator -&gt; GPS Data) with the failing-segment message. Cards are not clickable.</td>
+<td><strong>Health view</strong>: the five-node diagnostic chain (Dashboard -&gt; Emulator -&gt; Switch -&gt; Simulator -&gt; GPS Data) with the failing-segment message. Cards are not clickable.</td>
 </tr>
 </tbody>
 </table>
@@ -2061,7 +2089,7 @@
 </tr>
 <tr>
 <td>Health view, all OK</td>
-<td>Green border, green ALL OK pill, four green nodes in the chain.</td>
+<td>Green border, green ALL OK pill, five green nodes in the chain.</td>
 </tr>
 <tr>
 <td>Health view, issue</td>
@@ -2177,6 +2205,7 @@
 <ul>
 <li><a href="../simulator-card/">Simulator Card</a> - per-card field reference.</li>
 <li><a href="../health-chain/">Health Chain</a> - the diagnostic view.</li>
+<li><a href="../health-data-sources/">Health Data Sources</a> - the source and decision rule for each node.</li>
 <li><a href="../configuration/">Configuration</a> - env vars that drive the card list.</li>
 </ul>
 

@@ -1317,6 +1317,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dashboard-manual/health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dashboard-manual/flight-data/" class="md-nav__link">
         
   
@@ -2169,6 +2197,7 @@
     participant Dashboard as Fleet Dashboard
     participant Browser as Instructor browser
     participant SimulatorHost as Connected simulator host
+    participant Switch as Cisco switch
 
     Rebroadcaster-&gt;&gt;SimulatorHost: ICMP ping (1 Hz)
     SimulatorHost--&gt;&gt;Rebroadcaster: reply / timeout
@@ -2179,6 +2208,8 @@
     end
 
     loop every 1s
+        Dashboard-&gt;&gt;Switch: ICMP ping (SIM_N_SWITCH_IP)
+        Switch--&gt;&gt;Dashboard: reply / timeout
         Dashboard-&gt;&gt;Browser: WebSocket /ws&lt;br/&gt;{type: "fleet_state", simulators: [...]}
     end</code></pre>
 <p>The dashboard listens on a separate UDP port per simulator (configured via <code>SIM_1_PORT</code>, <code>SIM_2_PORT</code>, etc.). The port number is how the dashboard knows which row in the UI to update — the dashboard does not introspect the packet payload to identify the source.</p>

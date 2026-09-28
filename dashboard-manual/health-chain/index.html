@@ -18,7 +18,7 @@
         <link rel="prev" href="../simulator-card/">
       
       
-        <link rel="next" href="../flight-data/">
+        <link rel="next" href="../health-data-sources/">
       
       
         
@@ -1203,10 +1203,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-simulator-unreachable" class="md-nav__link">
+  <a href="#3-switch-not-responding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Simulator unreachable
+        3. Switch not responding
       
     </span>
   </a>
@@ -1214,10 +1214,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-gps-data-not-arriving" class="md-nav__link">
+  <a href="#4-simulator-unreachable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. GPS data not arriving
+        4. Simulator unreachable
       
     </span>
   </a>
@@ -1225,10 +1225,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-loading-first-paint-before-any-packets" class="md-nav__link">
+  <a href="#5-gps-data-not-arriving" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Loading - first paint before any packets
+        5. GPS data not arriving
       
     </span>
   </a>
@@ -1236,10 +1236,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-disconnected-the-dashboard-itself-is-offline-from-your-browser" class="md-nav__link">
+  <a href="#no-packets-after-startup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Disconnected (the dashboard itself is offline from your browser)
+        No packets after startup
       
     </span>
   </a>
@@ -1248,6 +1248,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#browser-disconnected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Browser disconnected
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1310,6 +1321,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1997,17 +2036,18 @@
 
 
 <h1 id="health-chain">Health Chain<a class="headerlink" href="#health-chain" title="Permanent link">&para;</a></h1>
-<p>When the <strong>health toggle</strong> in the dashboard header is on, every simulator card replaces its position view with a four-node diagnostic chain. The chain shows where, in the dashboard -&gt; emulator -&gt; simulator -&gt; GPS-data pipeline, things are healthy and where they are not.</p>
+<p>When the <strong>health toggle</strong> in the dashboard header is on, every simulator card replaces its position view with a five-node diagnostic chain. The chain shows where, in the dashboard -&gt; emulator -&gt; switch -&gt; simulator -&gt; GPS-data pipeline, things are healthy and where they are not.</p>
 <p>This view is the difference between "I have no idea why this card is gray" and "the emulator is fine but the simulator's GPS application crashed." It's worth knowing exactly what each segment means.</p>
-<!-- SCREENSHOT-PENDING: health-chain-01-all-ok.png - card in health view, all four nodes green, "All systems operational" footer. -->
-<!-- SCREENSHOT-PENDING: health-chain-02-gps-failure.png - card with the GPS node red, "Not receiving GPS data. Start or Restart GPSConnect application on Avionics 2." footer. -->
-
+<p><img alt="A card in health view with all five nodes green." src="../../images/screenshots/health-chain-01-all-ok.png" /></p>
+<p><em>A card in health view with all five nodes green.</em>
+<img alt="A card whose GPS Data segment has failed." src="../../images/screenshots/health-chain-02-gps-failure.png" /></p>
+<p><em>A card whose GPS Data segment has failed.</em></p>
 <h2 id="the-chain">The chain<a class="headerlink" href="#the-chain" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[Dashboard] -- [Emulator] -- [Simulator] -- [GPS Data]
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>   |              |              |              |
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>   icon: bar      icon: PC       icon: plane    icon: satellite
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[Dashboard] -- [Emulator] -- [Switch] -- [Simulator] -- [GPS Data]
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>   |              |             |             |              |
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>   icon: bar      icon: PC      icon: switch   icon: plane    icon: satellite
 </span></code></pre></div>
-<p>Four nodes, three connectors. Each connector is colored to indicate the health of the <strong>segment</strong> between two nodes; each node is colored based on whether that node itself has detected a failure or is "downstream of a failure."</p>
+<p>Five nodes, four connectors. Each connector is colored to indicate the health of the <strong>segment</strong> between two nodes; each node is colored based on whether that node itself has detected a failure or is "downstream of a failure."</p>
 <h2 id="what-each-segment-checks">What each segment checks<a class="headerlink" href="#what-each-segment-checks" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2024,8 +2064,13 @@
 <td><code>emulator_online</code> (derived from <code>last_heartbeat</code>)</td>
 </tr>
 <tr>
-<td><strong>Emulator -&gt; Simulator</strong></td>
-<td>The rebroadcaster's last ICMP ping to <code>SIMULATOR_IP</code> succeeded.</td>
+<td><strong>Emulator -&gt; Switch</strong></td>
+<td>The dashboard's per-simulator ICMP check of the configured switch management IP. This check is skipped when no switch IP is configured and is bypassed when the simulator ping succeeds.</td>
+<td><code>switch_reachable</code> (dashboard-local)</td>
+</tr>
+<tr>
+<td><strong>Switch -&gt; Simulator</strong></td>
+<td>The rebroadcaster's last ICMP ping to <code>SIMULATOR_IP</code> succeeded, after the switch gate has passed.</td>
 <td><code>sim_reachable</code> (from the heartbeat payload)</td>
 </tr>
 <tr>
@@ -2037,9 +2082,9 @@
 </table>
 <p>The leftmost node (Dashboard) is always green - if you're rendering the chain at all, the dashboard is up.</p>
 <h2 id="states-the-chain-can-be-in">States the chain can be in<a class="headerlink" href="#states-the-chain-can-be-in" title="Permanent link">&para;</a></h2>
-<p>The chain has six distinct visual states.</p>
+<p>The chain has five distinct visual states: one all-green state and one for each possible failure point.</p>
 <h3 id="1-all-implicitly-ok">1. All implicitly OK<a class="headerlink" href="#1-all-implicitly-ok" title="Permanent link">&para;</a></h3>
-<p>When GPS data is flowing (<code>is_online == true</code>), everything upstream is implicitly working. The chain shows four green nodes and three green connectors. Footer message: <strong>"All systems operational"</strong> on a green background.</p>
+<p>When GPS data is flowing (<code>is_online == true</code>), everything upstream is implicitly working. The chain shows five green nodes and four green connectors. Footer message: <strong>"All systems operational"</strong> on a green background.</p>
 <p>This is the only "happy path" state. Every other state has at least one red element.</p>
 <h3 id="2-emulator-down">2. Emulator down<a class="headerlink" href="#2-emulator-down" title="Permanent link">&para;</a></h3>
 <p><code>emulator_online == false</code>. No heartbeat in 3 s.</p>
@@ -2064,7 +2109,15 @@
 <td>Red border, gray interior, red icon</td>
 </tr>
 <tr>
-<td>Emulator -&gt; Simulator connector</td>
+<td>Emulator -&gt; Switch connector</td>
+<td>Gray (after-failure)</td>
+</tr>
+<tr>
+<td>Switch node</td>
+<td>Gray (after-failure)</td>
+</tr>
+<tr>
+<td>Switch -&gt; Simulator connector</td>
 <td>Gray (after-failure)</td>
 </tr>
 <tr>
@@ -2089,8 +2142,8 @@
 <li>The rebroadcaster is running with the right IP but the port is wrong - same effect.</li>
 <li>Network outage between the rebroadcaster host and the dashboard host.</li>
 </ul>
-<h3 id="3-simulator-unreachable">3. Simulator unreachable<a class="headerlink" href="#3-simulator-unreachable" title="Permanent link">&para;</a></h3>
-<p><code>emulator_online == true</code> (heartbeats arriving) but <code>sim_reachable == false</code> (the ping to <code>SIMULATOR_IP</code> is failing from inside the container).</p>
+<h3 id="3-switch-not-responding">3. Switch not responding<a class="headerlink" href="#3-switch-not-responding" title="Permanent link">&para;</a></h3>
+<p><code>emulator_online == true</code>, the switch check is configured, <code>switch_reachable == false</code>, and <code>sim_reachable == false</code>. This branch is evaluated only when position data is not already flowing.</p>
 <table>
 <thead>
 <tr>
@@ -2112,7 +2165,71 @@
 <td>Green</td>
 </tr>
 <tr>
-<td>Emulator -&gt; Simulator connector</td>
+<td>Emulator -&gt; Switch connector</td>
+<td>Red</td>
+</tr>
+<tr>
+<td>Switch node</td>
+<td>Red border, gray interior, red icon</td>
+</tr>
+<tr>
+<td>Switch -&gt; Simulator connector</td>
+<td>Gray (after-failure)</td>
+</tr>
+<tr>
+<td>Simulator node</td>
+<td>Gray (after-failure)</td>
+</tr>
+<tr>
+<td>Simulator -&gt; GPS connector</td>
+<td>Gray</td>
+</tr>
+<tr>
+<td>GPS Data node</td>
+<td>Gray</td>
+</tr>
+</tbody>
+</table>
+<p>Footer message: <strong>"Switch for {name} ({switch_ip}) is not responding. Check switch power and uplink."</strong> on a yellow background. <code>{name}</code> and <code>{switch_ip}</code> are replaced with the card's <code>SIM_N_NAME</code> and <code>SIM_N_SWITCH_IP</code> values.</p>
+<p>The second smart gate is that a failed management-IP ping does not make the Switch node red by itself. If the rebroadcaster can still ping the simulator through that switch (<code>sim_reachable == true</code>), the switch is treated as forwarding traffic, and evaluation continues to the Simulator/GPS branches instead. A wrong or filtered management IP therefore does not by itself misdirect an operator toward inspecting the switch when it is actually fine from a data-forwarding perspective. The trade-off is that a dead switch that is not on the emulator-to-simulator ping path (for example, one that only feeds the avionics/GPSConnect side) will not turn this node red: it will surface as Simulator red if <code>SIMULATOR_IP</code> also cannot be reached through it, or GPS Data red if <code>SIMULATOR_IP</code> can still be reached, not Switch red. If <code>switch_reachable</code> is <code>null</code> because no switch IP is configured, the switch check is skipped and evaluation also continues.</p>
+<p>Likely fixes:</p>
+<ul>
+<li>Check that the Cisco switch is powered and its uplink is connected.</li>
+<li>Verify <code>SIM_N_SWITCH_IP</code> is the switch's management IP for this simulator.</li>
+<li>Check whether ICMP is filtered to the management IP. A management-plane/ICMP failure to the switch is not enough by itself to produce this state - it also requires the rebroadcaster's simulator ping to be failing (<code>sim_reachable == false</code>). If the simulator ping still succeeds through the switch, check the Simulator/GPS branches instead of assuming the switch itself is broken.</li>
+</ul>
+<h3 id="4-simulator-unreachable">4. Simulator unreachable<a class="headerlink" href="#4-simulator-unreachable" title="Permanent link">&para;</a></h3>
+<p><code>emulator_online == true</code> (heartbeats arriving), the Switch failure branch did not match, and <code>sim_reachable == false</code> (the ping to <code>SIMULATOR_IP</code> is failing from inside the container).</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dashboard node</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>Dashboard -&gt; Emulator connector</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>Emulator node</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>Emulator -&gt; Switch connector</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>Switch node</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>Switch -&gt; Simulator connector</td>
 <td>Red</td>
 </tr>
 <tr>
@@ -2120,8 +2237,12 @@
 <td>Red border, gray interior, red icon</td>
 </tr>
 <tr>
-<td>Remaining elements</td>
-<td>Gray</td>
+<td>Simulator -&gt; GPS connector</td>
+<td>Gray (after-failure)</td>
+</tr>
+<tr>
+<td>GPS Data node</td>
+<td>Gray (after-failure)</td>
 </tr>
 </tbody>
 </table>
@@ -2134,10 +2255,10 @@
 </ul>
 <div class="admonition info">
 <p class="admonition-title">If <code>SIMULATOR_IP</code> is empty</p>
-<p>The rebroadcaster sends <code>sim_reachable: false</code> by convention when no <code>SIMULATOR_IP</code> is configured. So the Simulator segment will show red even if the upstream sim is fine. Either set <code>SIMULATOR_IP</code> or accept that this segment is always red for deployments that aren't ping-able.</p>
+<p>When <code>SIMULATOR_IP</code> is unset, the rebroadcaster reports <code>sim_reachable: false</code> by convention, so the Simulator node goes red whenever GPS data isn't flowing - unless a configured switch is also unreachable, in which case the Switch branch takes precedence and Switch shows red instead (same evaluation-order precedence as always). Configuring a switch IP that is reachable does not change the outcome: the Simulator node still goes red. Either set <code>SIMULATOR_IP</code>, or accept that this node (or the Switch node, if a failing switch is also configured) will be red whenever GPS data isn't flowing.</p>
 </div>
-<h3 id="4-gps-data-not-arriving">4. GPS data not arriving<a class="headerlink" href="#4-gps-data-not-arriving" title="Permanent link">&para;</a></h3>
-<p>Heartbeats are arriving (<code>emulator_online == true</code>), the upstream simulator is reachable (<code>sim_reachable == true</code>), but no position packet has reached the dashboard in the last 5 seconds (<code>is_online == false</code> and the heartbeat says <code>receiving_udp == false</code>).</p>
+<h3 id="5-gps-data-not-arriving">5. GPS data not arriving<a class="headerlink" href="#5-gps-data-not-arriving" title="Permanent link">&para;</a></h3>
+<p>Heartbeats are arriving (<code>emulator_online == true</code>), the Switch failure branch did not match, the upstream simulator is reachable (<code>sim_reachable</code> reports true), but no position packet has reached the dashboard in the last 5 seconds (<code>is_online == false</code>). The UI does not use the heartbeat's <code>receiving_udp</code> field to choose this branch.</p>
 <table>
 <thead>
 <tr>
@@ -2159,7 +2280,15 @@
 <td>Green</td>
 </tr>
 <tr>
-<td>Emulator -&gt; Simulator connector</td>
+<td>Emulator -&gt; Switch connector</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>Switch node</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>Switch -&gt; Simulator connector</td>
 <td>Green</td>
 </tr>
 <tr>
@@ -2179,28 +2308,33 @@
 <p>Footer message: <strong>"Not receiving GPS data. Start or Restart GPSConnect application on {gps_system}."</strong> on a yellow background.</p>
 <p>The <code>{gps_system}</code> is replaced with the simulator's <code>SIM_N_GPS_SYSTEM</code> env-var value (e.g., <code>Avionics</code>, <code>Avionics 2</code>, <code>rehost</code>). If <code>SIM_N_GPS_SYSTEM</code> is unset, the message falls back to the generic "Not receiving GPS data. Start or Restart the GPSConnect application on the simulator."</p>
 <p>This is the most common red state in normal operation - it means the GPS-producing software on the upstream simulator host has crashed or hasn't been started yet. The tech-friendly wording is deliberate: a sim tech sees "go restart GPSConnect on Avionics 2" and knows exactly which physical system to walk over to.</p>
-<h3 id="5-loading-first-paint-before-any-packets">5. Loading - first paint before any packets<a class="headerlink" href="#5-loading-first-paint-before-any-packets" title="Permanent link">&para;</a></h3>
-<p>If the dashboard starts but no card has yet had a packet, the cards in health view show the dashboard node green and everything downstream gray (no specific failure - just no data yet). The footer message is "All systems operational" because the smart-gating logic treats "no failure detected" as OK by default.</p>
-<p>This usually only lasts a couple of seconds. If it persists, you're in state 2 ("Emulator down") - the dashboard simply hasn't logged that yet.</p>
-<h3 id="6-disconnected-the-dashboard-itself-is-offline-from-your-browser">6. Disconnected (the dashboard itself is offline from your browser)<a class="headerlink" href="#6-disconnected-the-dashboard-itself-is-offline-from-your-browser" title="Permanent link">&para;</a></h3>
+<h3 id="no-packets-after-startup">No packets after startup<a class="headerlink" href="#no-packets-after-startup" title="Permanent link">&para;</a></h3>
+<p>If the dashboard starts but no card has yet received a heartbeat or position packet, <code>emulator_online</code> is false and the health component selects the Emulator failure branch. There is no separate all-green loading state in the current health component; the footer message is <strong>"Is the emulator container running?"</strong> until a heartbeat arrives.</p>
+<p>This usually only lasts a couple of seconds. If it persists, check the rebroadcaster's UDP retransmit target and port as described in state 2 ("Emulator down").</p>
+<h2 id="browser-disconnected">Browser disconnected<a class="headerlink" href="#browser-disconnected" title="Permanent link">&para;</a></h2>
 <p>If the WebSocket from your browser to the dashboard drops, the cards don't update at all. The connection badge in the header goes red. Health chain remains in whatever state it was last in - it doesn't crash, it just freezes.</p>
 <p>This is <strong>not</strong> a state of the chain - it's a state of your browser's connection to the dashboard. The chain only diagnoses the simulator side.</p>
 <h2 id="the-smart-gating-detail">The "smart gating" detail<a class="headerlink" href="#the-smart-gating-detail" title="Permanent link">&para;</a></h2>
-<p>The health chain has a small but important optimization: if GPS data is flowing, everything upstream is implicitly OK and the chain renders all-green even if individual flags are stale.</p>
-<p>Why this matters: heartbeats are 1 Hz, but the emulator-&gt;simulator ping is one shot per second with a 1-second timeout. The ping can fail intermittently (network jitter) without anything actually being broken. Without the gating, you'd see the Simulator segment flicker red even while position is flowing fine.</p>
-<p>With the gating, the chain is <strong>green when it doesn't matter</strong> - and <strong>red only when something is actually wrong from the operator's perspective</strong>.</p>
+<p>The health chain has two smart gates. First, the outer gate is <code>allImplicitlyOk = is_online</code>: if GPS data is flowing, everything upstream is implicitly OK and the chain renders all five nodes green even if individual flags are stale. This remains unchanged from before.</p>
+<p>The second smart gate is the switch gate. Its <code>switchOk</code> expression is exactly <code>switchOk = allImplicitlyOk || !switchConfigured || switch_reachable || sim_reachable</code>, and its failure branch is <code>switchConfigured &amp;&amp; !switch_reachable &amp;&amp; !sim_reachable</code>. Once the outer gate and emulator branch allow evaluation, a failed management-IP ping does not make the Switch node red while the emulator can still ping the simulator through that switch (<code>sim_reachable == true</code>), because the switch is evidently forwarding traffic. A wrong or filtered management IP therefore does not misdirect a tech toward the switch; evaluation continues to the Simulator/GPS branches instead. The trade-off is that a dead switch that is not on the emulator-to-simulator ping path shows up as GPS Data red (or Simulator red) rather than Switch red. If <code>switch_reachable</code> is <code>null</code> or <code>undefined</code> because no switch IP is configured, <code>switchConfigured</code> is false and the switch check is skipped.</p>
+<p>Why this matters: heartbeats are 1 Hz, but the emulator-to-simulator ping is one shot per second with a 1-second timeout, and the dashboard-to-switch ping is also one shot per second. Either ping can fail intermittently without everything upstream being broken. Without the outer gate, you'd see a node flicker red even while position is flowing fine.</p>
+<p>With those two gates, the chain is <strong>green when it doesn't matter</strong> - and <strong>red when a failure is relevant from the operator's perspective</strong>.</p>
 <h2 id="how-the-chain-reads-the-data">How the chain reads the data<a class="headerlink" href="#how-the-chain-reads-the-data" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
     Heartbeat["Heartbeat&lt;br/&gt;(every 1s from rebroadcaster)"]
     Position["Position packet&lt;br/&gt;(every 1s when GPS flowing)"]
+    SwitchPing["Switch ping&lt;br/&gt;(dashboard-local)"]
     Dashboard["Dashboard backend"]
     HealthChainComp["HealthChain.jsx&lt;br/&gt;(in browser)"]
+    Chain["Dashboard -&gt; Emulator -&gt; Switch -&gt; Simulator -&gt; GPS Data"]
 
     Heartbeat --&gt;|sim_reachable, receiving_udp, uptime| Dashboard
     Position --&gt;|lat, lon, alt, speed, heading| Dashboard
+    SwitchPing --&gt;|switch_reachable| Dashboard
     Dashboard --&gt;|fleet_state over WebSocket| HealthChainComp
-    HealthChainComp --&gt;|render four nodes + connectors| User["Operator browser"]</code></pre>
-<p>The dashboard does no per-second polling - it's all push from the rebroadcasters (heartbeat + position) and then pushed onward to browsers (WebSocket fleet_state).</p>
+    HealthChainComp --&gt;|render five nodes + connectors| Chain
+    Chain --&gt; User["Operator browser"]</code></pre>
+<p>The dashboard does not poll any emulator or simulator. Heartbeat and position packets are pushed from the rebroadcaster, while the dashboard independently runs its per-simulator switch ping. The dashboard then pushes the assembled state onward to browsers over the WebSocket; <code>GET /api/status</code> returns an on-demand snapshot of the same per-simulator state.</p>
 <h2 id="when-the-message-is-misleading">When the message is misleading<a class="headerlink" href="#when-the-message-is-misleading" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2211,6 +2345,10 @@
 </thead>
 <tbody>
 <tr>
+<td>"Switch for {name} ({switch_ip}) is not responding."</td>
+<td>The switch management IP is wrong or filtered, the switch is powered off, or its uplink/path is down; the message appears only when the rebroadcaster's simulator ping is also failing (<code>switchConfigured &amp;&amp; !switch_reachable &amp;&amp; !sim_reachable</code>) - it requires both the switch ping and the simulator ping to be failing, not the switch ping alone. Check <code>SIM_N_SWITCH_IP</code>, switch power, and the uplink.</td>
+</tr>
+<tr>
 <td>"Is the simulator powered on?"</td>
 <td><code>SIMULATOR_IP</code> is set to an unreachable IP even though the simulator itself is fine. Check the env var.</td>
 </tr>
@@ -2220,7 +2358,7 @@
 </tr>
 <tr>
 <td>"Not receiving GPS data"</td>
-<td>GPS application is running but the rebroadcaster isn't listening on the right port - so packets are arriving on the host but never the dashboard. Check <code>tcpdump -i any 'udp port &lt;SIM_N_PORT&gt;'</code> on the dashboard host.</td>
+<td>GPSConnect may be running, but packets can be lost on either leg. On the emulator/simulator host where the rebroadcaster runs, check the GPSConnect-to-rebroadcaster leg with <code>tcpdump -n udp port 12000</code>; <code>12000</code> is the <code>AUTO_START_LISTEN_PORT</code> default and compose example. On the dashboard host, check the rebroadcaster-to-dashboard leg with <code>tcpdump -n udp port &lt;SIM_N_PORT&gt;</code>; use the per-simulator port (for example, one of the <code>1200N</code> ports). The first capture shows whether packets reach the rebroadcaster; the second shows whether retransmitted packets reach the dashboard.</td>
 </tr>
 <tr>
 <td>"Is the emulator container running?"</td>
@@ -2228,13 +2366,15 @@
 </tr>
 </tbody>
 </table>
+<p>To query <code>/api/status</code> or grep dashboard logs directly instead of relying on the UI, see <a href="../health-data-sources/#reading-the-raw-fields">Reading the raw fields</a>.</p>
 <h2 id="persistent-state">Persistent state<a class="headerlink" href="#persistent-state" title="Permanent link">&para;</a></h2>
 <p>The health view itself is not persisted - it's an in-memory React state in <code>App.jsx</code>. Every fresh page load starts in position view (health toggle off).</p>
-<p>The data that the chain reads (<code>emulator_online</code>, <code>sim_reachable</code>, <code>is_online</code>) comes entirely from the WebSocket and is not persisted server-side either.</p>
+<p>The data that the chain reads (<code>emulator_online</code>, <code>sim_reachable</code>, <code>is_online</code>, <code>switch_ip</code>, <code>switch_reachable</code>) comes from the WebSocket and is not persisted server-side either. <code>switch_ip</code> and <code>switch_reachable</code> are dashboard-local fields; they are not part of the emulator heartbeat.</p>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../simulator-card/">Simulator Card</a> - the position view that the chain replaces.</li>
 <li><a href="../configuration/">Configuration</a> - how <code>SIM_N_GPS_SYSTEM</code> controls the GPS failure message.</li>
+<li><a href="../health-data-sources/">Health Data Sources</a> - where each signal originates and how each red node is decided.</li>
 <li><a href="../../user-guides/fleet-monitoring/">Fleet Monitoring</a> - end-to-end multi-simulator setup, including how <code>SIMULATOR_IP</code> and <code>AUTO_START_UDP_RETRANSMIT_*</code> line up with the dashboard side.</li>
 </ul>
 

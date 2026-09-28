@@ -1032,6 +1032,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Security flag index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#captured-screenshots-flagged-for-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Captured screenshots flagged for review
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1319,6 +1336,34 @@
     
   
     Health Chain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dashboard-manual/health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
   
 
     
@@ -2161,6 +2206,45 @@
 </tr>
 </tbody>
 </table>
+<h3 id="captured-screenshots-flagged-for-review">Captured screenshots flagged for review<a class="headerlink" href="#captured-screenshots-flagged-for-review" title="Permanent link">&para;</a></h3>
+<p>The current screenshot set was captured from the live deployment. These specific images contain data worth reviewing before the docs are made public:</p>
+<table>
+<thead>
+<tr>
+<th>Screenshot</th>
+<th>Page</th>
+<th>Contains</th>
+<th>Suggested action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mode-sender-01-overview.png</code></td>
+<td><a href="../mode-sender/">Sender Mode</a></td>
+<td>Internal target IP <code>10.200.40.20</code> typed into the NMEA-output field</td>
+<td>Low risk (RFC 1918). Blur or replace with a placeholder if publishing externally.</td>
+</tr>
+<tr>
+<td><code>dashboard-overview-01-grid.png</code>, <code>dashboard-welcome-01-grid.png</code></td>
+<td><a href="../../dashboard-manual/overview/">Dashboard Overview</a>, <a href="../../dashboard-manual/welcome/">Welcome</a></td>
+<td>Live fleet roster (aircraft-type names), simulated positions near KJFK, per-card packet counts</td>
+<td>Aircraft-type names and simulated positions are low sensitivity. Review if the fleet roster itself is considered private.</td>
+</tr>
+<tr>
+<td><code>simulator-card-01-online.png</code></td>
+<td><a href="../../dashboard-manual/simulator-card/">Simulator Card</a></td>
+<td>One live card's simulated position + nearest airport (KJFK)</td>
+<td>Low risk - position is simulated, not a real aircraft.</td>
+</tr>
+<tr>
+<td><code>health-chain-01-all-ok.png</code>, <code>health-chain-02-gps-failure.png</code></td>
+<td><a href="../../dashboard-manual/health-chain/">Health Chain</a></td>
+<td>Aircraft-type name + GPS-system label (<code>Avionics 2</code>)</td>
+<td>Low risk. Review if internal system labels are sensitive.</td>
+</tr>
+</tbody>
+</table>
+<p>All other screenshots are UI panels with example values only and need no redaction.</p>
 <p>The capture playbook itself is in <code>project_docs/screen_capture.md</code> (operator-only, not published).</p>
 <h2 id="environment-variables-summary">Environment variables (summary)<a class="headerlink" href="#environment-variables-summary" title="Permanent link">&para;</a></h2>
 <p>The simulator reads these env vars at container start. For the authoritative reference with defaults, ranges, and side-effects, see <a href="../../reference/env-vars/">Environment Variables</a>.</p>

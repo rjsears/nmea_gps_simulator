@@ -1113,6 +1113,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dashboard-manual/health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dashboard-manual/flight-data/" class="md-nav__link">
         
   
@@ -2172,9 +2200,14 @@
 <td>Each rebroadcaster must use a unique <code>AUTO_START_UDP_RETRANSMIT_PORT</code>.</td>
 </tr>
 <tr>
+<td>Health Chain shows Switch segment red</td>
+<td><code>switch_reachable: false</code> and <code>sim_reachable: false</code> while <code>SIM_N_SWITCH_IP</code> is configured.</td>
+<td>Check <code>SIM_N_SWITCH_IP</code>, switch power, and the uplink; the Switch node requires both the switch ping and the rebroadcaster's simulator ping to fail. A successful <code>sim_reachable</code> ping bypasses/suppresses the failed switch management-IP check, so confirm the switch only after considering the Simulator/GPS branches.</td>
+</tr>
+<tr>
 <td>Health Chain shows Simulator segment red but the sim is on</td>
-<td><code>SIMULATOR_IP</code> is wrong, or ICMP is filtered.</td>
-<td>Set the right IP; allow ICMP echo.</td>
+<td><code>SIMULATOR_IP</code> is wrong, ICMP is filtered, or no switch check is configured to separate a path failure.</td>
+<td>Set the right IP; allow ICMP echo; configure <code>SIM_N_SWITCH_IP</code> when the switch should be monitored.</td>
 </tr>
 <tr>
 <td>Health Chain says "Restart GPSConnect application on the simulator" with no system name</td>

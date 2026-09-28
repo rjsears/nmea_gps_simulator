@@ -1115,6 +1115,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../dashboard-manual/health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../dashboard-manual/flight-data/" class="md-nav__link">
         
   
@@ -2344,11 +2372,43 @@
 </tr>
 </tbody>
 </table>
-<p>The dashboard uses these fields to drive the <a href="../../dashboard-manual/health-chain/">Health Chain</a> view.</p>
+<p>The dashboard uses the heartbeat's <code>sim_reachable</code> field, together with its own derived <code>emulator_online</code> and <code>is_online</code> values, in the <a href="../../dashboard-manual/health-chain/">Health Chain</a> view. <code>receiving_udp</code> and <code>uptime_seconds</code> are carried and exposed but do not drive a current Health Chain branch.</p>
+<p>The switch check is dashboard-local only. When <code>SIM_N_SWITCH_IP</code> is configured, the dashboard pings that address from the dashboard host and adds <code>switch_ip</code> and <code>switch_reachable</code> to each simulator object returned by <code>/api/status</code> and sent in <code>fleet_state</code>. Neither field is part of the heartbeat, and this check does not change the heartbeat or position wire format between the emulator and dashboard.</p>
+<table>
+<thead>
+<tr>
+<th>Dashboard-local field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>switch_ip</code></td>
+<td>string</td>
+<td>The configured switch management IP for the dashboard card.</td>
+</tr>
+<tr>
+<td><code>switch_reachable</code></td>
+<td>bool or null</td>
+<td>The latest dashboard-to-switch ping result; <code>null</code> when no switch IP is configured.</td>
+</tr>
+<tr>
+<td><code>generated_at</code></td>
+<td>string or null</td>
+<td>UTC instant the dashboard last re-evaluated fleet data (1 Hz tick); advances even when every simulator is offline and does not advance on request. Use this, not <code>timestamp</code>, to detect a frozen dashboard.</td>
+</tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>string</td>
+<td>Response time — new on every <code>/api/status</code> call. Kept for backward compatibility; prefer <code>generated_at</code> to detect a frozen/stalled dashboard.</td>
+</tr>
+</tbody>
+</table>
 <h3 id="cadence_1">Cadence<a class="headerlink" href="#cadence_1" title="Permanent link">&para;</a></h3>
 <p>Strictly once per second. The heartbeat thread (<code>backend/rebroadcaster_runner.py:_send_heartbeat</code>) runs an internal <code>time.sleep(1.0)</code> loop and is independent of incoming position packets - so the dashboard sees a heartbeat even when the upstream sender is silent.</p>
 <h3 id="position-packets-sharing-the-same-udp-port">Position packets sharing the same UDP port<a class="headerlink" href="#position-packets-sharing-the-same-udp-port" title="Permanent link">&para;</a></h3>
-<p>In addition to the heartbeat, the rebroadcaster also retransmits the <strong>original incoming position packet</strong> to the same UDP port. These packets are the JSON or CYGNUS format originally received - the rebroadcaster does <strong>not</strong> re-encode or canonicalize.</p>
+<p>In addition to the heartbeat, the rebroadcaster retransmits a JSON serialization of the parsed position dictionary to the same UDP port. JSON input retains the standard position fields; CYGNUS input is normalized by <code>parse_cygnus_packet()</code> before retransmit, so it is not forwarded byte-for-byte.</p>
 <p>The dashboard distinguishes them at parse time:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">udp_payload</span><span class="p">)</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"heartbeat"</span><span class="p">:</span>

@@ -1206,6 +1206,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../health-data-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Data Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../flight-data/" class="md-nav__link">
         
   
@@ -1883,8 +1911,8 @@
 <h1 id="welcome-to-the-fleet-dashboard-manual">Welcome to the Fleet Dashboard Manual<a class="headerlink" href="#welcome-to-the-fleet-dashboard-manual" title="Permanent link">&para;</a></h1>
 <p>The <strong>Fleet Dashboard</strong> is the companion container to the NMEA GPS Simulator. It aggregates per-simulator position telemetry and heartbeats from many rebroadcasters into a single screen, with click-through to Google Maps for any online aircraft and an optional health view that distinguishes "emulator is down" from "the simulator behind the emulator is unreachable."</p>
 <p>This manual is organized per-feature, just like the simulator manual. If you've already read <a href="../../manual/welcome/">User Manual (Simulator)</a>, the format will be familiar.</p>
-<!-- SCREENSHOT-PENDING: dashboard-welcome-01-grid.png - dashboard with 6 cards in a grid, 5 online, 1 offline. -->
-
+<p><img alt="The Fleet Dashboard showing a mix of online and offline simulators." src="../../images/screenshots/dashboard-welcome-01-grid.png" /></p>
+<p><em>The Fleet Dashboard showing a mix of online and offline simulators.</em></p>
 <h2 id="how-this-manual-is-organized">How this manual is organized<a class="headerlink" href="#how-this-manual-is-organized" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1904,11 +1932,15 @@
 </tr>
 <tr>
 <td><strong><a href="../health-chain/">Health Chain</a></strong></td>
-<td>The four-node diagnostic chain that appears when you toggle the health view on.</td>
+<td>The five-node diagnostic chain that appears when you toggle the health view on.</td>
+</tr>
+<tr>
+<td><strong><a href="../health-data-sources/">Health Data Sources</a></strong></td>
+<td>The source, transport, cadence, and exact decision rule for every health signal.</td>
 </tr>
 <tr>
 <td><strong><a href="../configuration/">Configuration</a></strong></td>
-<td>Env vars (<code>SIM_N_NAME</code>, <code>SIM_N_PORT</code>, <code>SIM_N_GPS_SYSTEM</code>), compose-file setup, and how to wire emulators to the dashboard.</td>
+<td>Env vars (<code>SIM_N_NAME</code>, <code>SIM_N_PORT</code>, <code>SIM_N_GPS_SYSTEM</code>, <code>SIM_N_SWITCH_IP</code>), compose-file setup, and how to wire emulators to the dashboard.</td>
 </tr>
 <tr>
 <td><strong><a href="../appendix/">Appendix</a></strong></td>
@@ -1957,6 +1989,7 @@
 <li><a href="../overview/">Overview</a> - the layout at a glance.</li>
 <li><a href="../simulator-card/">Simulator Card</a> - field-by-field reference.</li>
 <li><a href="../health-chain/">Health Chain</a> - the diagnostic view.</li>
+<li><a href="../health-data-sources/">Health Data Sources</a> - where each signal originates.</li>
 </ul>
 
 
