@@ -7,9 +7,9 @@ This is the canonical mode for a "central hub" station: one rebroadcaster fans o
 !!! info "Where this fits"
     Rebroadcaster is the **most-configured** of the four modes. If you only need to drive a single output - just an EFB, or just a serial device, with no upstream source - use [Stand-Alone Mode](mode-standalone.md) instead. If you have an upstream source but only one downstream consumer, plain [Receiver Mode](mode-receiver.md) is simpler.
 
-<!-- SCREENSHOT-PENDING: mode-rebroadcaster-01-overview.png - overview shot of the
-     Rebroadcaster Settings panel with EFB + UDP retransmit + USB blocks visible.
-     Captured during Phase H per docs project_docs/screen_capture.md. -->
+![The Rebroadcaster Settings panel: EFB, UDP retransmit, and USB output blocks.](../images/screenshots/mode-rebroadcaster-01-overview.png)
+
+*The Rebroadcaster Settings panel: EFB, UDP retransmit, and USB output blocks.*
 
 ## What Rebroadcaster Mode does
 
@@ -185,7 +185,7 @@ If the rebroadcaster's role is to feed a specific flight simulator (an X-Plane h
 
 1. Ping that IP once per second from inside the container.
 2. Include the result (`sim_reachable: true | false`) in every heartbeat.
-3. The Fleet Dashboard's per-card **Health Chain** uses this to distinguish a "dashboard <-> emulator" failure from an "emulator <-> simulator" failure.
+3. The Fleet Dashboard's per-card **Health Chain** combines this with its dashboard-local switch check to distinguish a "dashboard <-> emulator" failure, a switch failure, and a simulator reachability failure.
 
 `SIMULATOR_IP` is **only** read at container start. Changing it requires a restart. See [Health Chain](../dashboard-manual/health-chain.md) for what the dashboard does with the value.
 

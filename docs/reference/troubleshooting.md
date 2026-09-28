@@ -62,7 +62,8 @@ The project-wide symptom -> cause -> fix matrix. Organized by subsystem. For per
 | All cards stay gray | No rebroadcaster is sending, **or** port mismatches between dashboard and rebroadcasters. | Cross-check `SIM_N_PORT` vs `AUTO_START_UDP_RETRANSMIT_PORT`. |
 | Some cards online, some gray | Specific rebroadcasters aren't running or aren't pointing at the dashboard. | Check each rebroadcaster's container status and env vars. |
 | Card shows wrong simulator's data | Two rebroadcasters using the same dashboard port. | Each rebroadcaster must use a unique `AUTO_START_UDP_RETRANSMIT_PORT`. |
-| Health Chain shows Simulator segment red but the sim is on | `SIMULATOR_IP` is wrong, or ICMP is filtered. | Set the right IP; allow ICMP echo. |
+| Health Chain shows Switch segment red | `switch_reachable: false` and `sim_reachable: false` while `SIM_N_SWITCH_IP` is configured. | Check `SIM_N_SWITCH_IP`, switch power, and the uplink; the Switch node requires both the switch ping and the rebroadcaster's simulator ping to fail. A successful `sim_reachable` ping bypasses/suppresses the failed switch management-IP check, so confirm the switch only after considering the Simulator/GPS branches. |
+| Health Chain shows Simulator segment red but the sim is on | `SIMULATOR_IP` is wrong, ICMP is filtered, or no switch check is configured to separate a path failure. | Set the right IP; allow ICMP echo; configure `SIM_N_SWITCH_IP` when the switch should be monitored. |
 | Health Chain says "Restart GPSConnect application on the simulator" with no system name | `SIM_N_GPS_SYSTEM` unset for that card. | Set it. |
 | Connection badge stays red | Dashboard is down, or browser->dashboard network broken. | `docker compose ps` on dashboard host. |
 

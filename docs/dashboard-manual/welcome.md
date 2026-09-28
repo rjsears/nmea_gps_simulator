@@ -4,7 +4,9 @@ The **Fleet Dashboard** is the companion container to the NMEA GPS Simulator. It
 
 This manual is organized per-feature, just like the simulator manual. If you've already read [User Manual (Simulator)](../manual/welcome.md), the format will be familiar.
 
-<!-- SCREENSHOT-PENDING: dashboard-welcome-01-grid.png - dashboard with 6 cards in a grid, 5 online, 1 offline. -->
+![The Fleet Dashboard showing a mix of online and offline simulators.](../images/screenshots/dashboard-welcome-01-grid.png)
+
+*The Fleet Dashboard showing a mix of online and offline simulators.*
 
 ## How this manual is organized
 
@@ -12,8 +14,9 @@ This manual is organized per-feature, just like the simulator manual. If you've 
 |---------|-----------------|
 | **[Overview](overview.md)** | Layout orientation - header, theme toggle, health toggle, the grid of simulator cards. |
 | **[Simulator Card](simulator-card.md)** | Per-card reference - every field shown, when it's populated, what each color means. |
-| **[Health Chain](health-chain.md)** | The four-node diagnostic chain that appears when you toggle the health view on. |
-| **[Configuration](configuration.md)** | Env vars (`SIM_N_NAME`, `SIM_N_PORT`, `SIM_N_GPS_SYSTEM`), compose-file setup, and how to wire emulators to the dashboard. |
+| **[Health Chain](health-chain.md)** | The five-node diagnostic chain that appears when you toggle the health view on. |
+| **[Health Data Sources](health-data-sources.md)** | The source, transport, cadence, and exact decision rule for every health signal. |
+| **[Configuration](configuration.md)** | Env vars (`SIM_N_NAME`, `SIM_N_PORT`, `SIM_N_GPS_SYSTEM`, `SIM_N_SWITCH_IP`), compose-file setup, and how to wire emulators to the dashboard. |
 | **[Appendix](appendix.md)** | Troubleshooting, glossary, env-var reference for the dashboard side. |
 
 ## How the dashboard fits with the simulator
@@ -41,3 +44,4 @@ See [Fleet Monitoring](../user-guides/fleet-monitoring.md) for the end-to-end se
 - [Overview](overview.md) - the layout at a glance.
 - [Simulator Card](simulator-card.md) - field-by-field reference.
 - [Health Chain](health-chain.md) - the diagnostic view.
+- [Health Data Sources](health-data-sources.md) - where each signal originates.

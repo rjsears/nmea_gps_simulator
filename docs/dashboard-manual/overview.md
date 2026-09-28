@@ -2,30 +2,32 @@
 
 The Fleet Dashboard is a single-screen, grid-of-cards UI. There is no login, no mode selector, no per-card configuration. The only operator controls in the entire app are the **health view toggle**, the **theme toggle**, and the **connection-status badge** in the header.
 
-<!-- SCREENSHOT-PENDING: dashboard-overview-01-grid.png - dashboard with 6 cards in 3-column grid, header visible. -->
+![The Fleet Dashboard grid with online and offline simulator cards.](../images/screenshots/dashboard-overview-01-grid.png)
+
+*The Fleet Dashboard grid with online and offline simulator cards.*
 
 ## The layout
 
 ```
-+--------------------------------------------------------------------------+
-|  HEADER                                                                  |
-|  [Logo] Fleet Dashboard                          [Health] [Theme]        |
-|         Real-time simulator monitoring                    [Connected]    |
-+--------------------------------------------------------------------------+
-|                                                                          |
-|  +-------SIM CARD-------+  +-------SIM CARD-------+  +-------SIM CARD--+ |
-|  | CJ3        ONLINE    |  | Ultra      ONLINE    |  | CL350   OFFLINE| |
-|  | Lat / Lon            |  | Lat / Lon            |  |  ---            | |
-|  | Alt / Speed / Heading|  | Alt / Speed / Heading|  |  ---            | |
-|  | Nearest airport      |  | Nearest airport      |  |  ---            | |
-|  | Port / Packets       |  | Port / Packets       |  | Port / Packets  | |
-|  +----------------------+  +----------------------+  +-----------------+ |
-|                                                                          |
-|  ...more cards if more simulators are configured...                      |
-|                                                                          |
-+--------------------------------------------------------------------------+
-| LOFT Fleet Dashboard v1.0.0 • Richard J. Sears ©2026 • N simulators      |
-+--------------------------------------------------------------------------+
++------------------------------------------------------------------------------------+
+|  HEADER                                                                            |
+|  [Logo] Fleet Dashboard                                    [Health] [Theme]        |
+|         Real-time Simulator Telemetry Monitoring                    [Connected]    |
++------------------------------------------------------------------------------------+
+|                                                                                    |
+|  +-------SIM CARD-------+  +-------SIM CARD-------+  +-------SIM CARD--+           |
+|  | CJ3        ONLINE    |  | Ultra      ONLINE    |  | CL350   OFFLINE|            |
+|  | Lat / Lon            |  | Lat / Lon            |  |  ---            |           |
+|  | Alt / Speed / Heading|  | Alt / Speed / Heading|  |  ---            |           |
+|  | Nearest airport      |  | Nearest airport      |  |  ---            |           |
+|  | Port / Packets       |  | Port / Packets       |  | Port / Packets  |           |
+|  +----------------------+  +----------------------+  +-----------------+           |
+|                                                                                    |
+|  ...more cards if more simulators are configured...                                |
+|                                                                                    |
++------------------------------------------------------------------------------------+
+| LOFT Fleet Dashboard v1.0.1 • Richard J. Sears ©2026 • N simulators                |
++------------------------------------------------------------------------------------+
 ```
 
 Cards lay out in a responsive 3-column grid on a desktop, 2 columns on tablets, single column on phones. The grid scales to however many simulators you've configured - 1, 6, 20 (the maximum the env-var parser supports).
@@ -34,7 +36,7 @@ Cards lay out in a responsive 3-column grid on a desktop, 2 columns on tablets, 
 
 | Element | What it does |
 |---------|--------------|
-| **LOFT logo + "Fleet Dashboard" title + subtitle** | Branding. The subtitle reads "Real-time simulator monitoring". Static. |
+| **LOFT logo + "Fleet Dashboard" title + subtitle** | Branding. The title renders with **Fleet** in black (the default dark/foreground text color) and **Dashboard** in LOFT orange. The subtitle reads "Real-time Simulator Telemetry Monitoring". Static. |
 | **Health toggle** (stethoscope icon) | Switches every card between **position view** and **health view**. See [Health Chain](health-chain.md). |
 | **Flight Data** (download icon) | Opens the [Flight Data](flight-data.md) panel: per-simulator recording switches and date/time-range export. |
 | **Theme toggle** (sun/moon icon) | Toggles light <-> dark. Stored in `localStorage` as `dashboard-theme` (distinct from the simulator's `theme` key so the two apps' themes can differ). |
@@ -47,7 +49,7 @@ The connection badge is the most important diagnostic on the header. If it's red
 | State | Cards show |
 |-------|------------|
 | Health toggle **off** (default) | **Position view**: lat/lon, altitude, airspeed, heading, nearest airport, packet count. Online cards are clickable - clicking opens Google Maps centered on the aircraft. |
-| Health toggle **on** | **Health view**: the four-node diagnostic chain (Dashboard -> Emulator -> Simulator -> GPS Data) with the failing-segment message. Cards are not clickable. |
+| Health toggle **on** | **Health view**: the five-node diagnostic chain (Dashboard -> Emulator -> Switch -> Simulator -> GPS Data) with the failing-segment message. Cards are not clickable. |
 
 The toggle is global - flipping it changes every card at once. There is no per-card health view.
 
@@ -59,7 +61,7 @@ The grid renders one card per configured simulator. Cards stay in the order they
 |-------|-----------------|
 | Online | Green border, green ONLINE pill, all fields populated, cursor changes to pointer on hover, hover slightly raises the card. |
 | Offline | Gray border, gray OFFLINE pill, position/altitude/speed/heading/airport all show "---", not clickable. |
-| Health view, all OK | Green border, green ALL OK pill, four green nodes in the chain. |
+| Health view, all OK | Green border, green ALL OK pill, five green nodes in the chain. |
 | Health view, issue | Red border, red ISSUE pill, failing node shown in red. |
 
 See [Simulator Card](simulator-card.md) for per-field detail.
@@ -120,4 +122,5 @@ Like the simulator, the dashboard fans out updates over a single WebSocket per b
 
 - [Simulator Card](simulator-card.md) - per-card field reference.
 - [Health Chain](health-chain.md) - the diagnostic view.
+- [Health Data Sources](health-data-sources.md) - the source and decision rule for each node.
 - [Configuration](configuration.md) - env vars that drive the card list.

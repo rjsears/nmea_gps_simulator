@@ -4,7 +4,9 @@ The Dashboard is the single screen the simulator UI lives on. It's a three-colum
 
 This page is orientation; each panel has its own page in this manual for the per-control reference.
 
-<!-- SCREENSHOT-PENDING: dashboard-01-overview.png - full dashboard with Rebroadcaster mode active, all panels visible. -->
+![The full dashboard in Rebroadcaster mode with every panel visible.](../images/screenshots/dashboard-01-overview.png)
+
+*The full dashboard in Rebroadcaster mode with every panel visible.*
 
 ## The layout at a glance
 

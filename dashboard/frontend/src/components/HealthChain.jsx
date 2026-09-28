@@ -1,13 +1,16 @@
 function HealthChain({ simulator }) {
-  const { emulator_online, sim_reachable, is_online, gps_system } = simulator
+  const { name, emulator_online, sim_reachable, is_online, gps_system, switch_ip, switch_reachable } = simulator
 
   // Smart gating: if GPS data is flowing, everything is implicitly OK
   const allImplicitlyOk = is_online
+  const switchConfigured = switch_reachable !== null && switch_reachable !== undefined
 
-  // Determine status of each node
   const dashboardOk = true // Always true if we're rendering
   const emulatorOk = allImplicitlyOk || emulator_online
-  const simulatorOk = allImplicitlyOk || (emulatorOk && sim_reachable)
+  // Second smart gate: if the emulator can still ping the simulator THROUGH the switch,
+  // the switch is forwarding traffic even if its management IP does not answer.
+  const switchOk = allImplicitlyOk || !switchConfigured || switch_reachable || sim_reachable
+  const simulatorOk = allImplicitlyOk || (emulatorOk && switchOk && sim_reachable)
   const gpsDataOk = is_online
 
   // Find first failure point (only if not implicitly OK)
@@ -17,6 +20,9 @@ function HealthChain({ simulator }) {
     if (!emulator_online) {
       failurePoint = 'emulator'
       failureMessage = 'Is the emulator container running?'
+    } else if (switchConfigured && !switch_reachable && !sim_reachable) {
+      failurePoint = 'switch'
+      failureMessage = `Switch for ${name} (${switch_ip}) is not responding. Check switch power and uplink.`
     } else if (!sim_reachable) {
       failurePoint = 'simulator'
       failureMessage = 'Is the simulator powered on? If yes, possible network issue.'
@@ -51,10 +57,10 @@ function HealthChain({ simulator }) {
 
     return (
       <div className="flex flex-col items-center">
-        <div className={`w-12 h-12 ${bgColor} border-2 ${borderColor} rounded-lg flex items-center justify-center text-2xl`}>
-          {icon}
+        <div className={`w-16 h-16 ${bgColor} border-2 ${borderColor} rounded-lg flex items-center justify-center text-3xl ${isFailed ? 'ring-4 ring-red-500/30 shadow-[0_0_14px_4px_rgba(239,68,68,0.55)]' : ''}`}>
+          <span className={isAfterFailure ? 'grayscale opacity-50' : ''}>{icon}</span>
         </div>
-        <div className={`text-xs mt-1 font-medium ${textColor}`}>
+        <div className={`text-sm mt-1 font-medium ${textColor}`}>
           {label}
         </div>
       </div>
@@ -68,27 +74,29 @@ function HealthChain({ simulator }) {
     } else if (!ok) {
       bgColor = 'bg-red-500'
     }
-    // mt-6 positions line at center of h-12 box, mb-5 matches label height below
+    // mt-8 positions line at center of h-16 box, h-6 matches text-sm label height plus mt-1 below
     return (
       <div className="flex flex-col">
-        <div className={`h-0.5 w-6 mt-6 ${bgColor}`} />
-        <div className="h-5" />
+        <div className={`h-0.5 w-5 mt-8 ${bgColor}`} />
+        <div className="h-6" />
       </div>
     )
   }
 
   const afterEmulator = failurePoint === 'emulator'
-  const afterSimulator = failurePoint === 'emulator' || failurePoint === 'simulator'
-  const afterGps = failurePoint !== null
+  const afterSwitch = failurePoint === 'emulator' || failurePoint === 'switch'
+  const afterSimulator = afterSwitch || failurePoint === 'simulator'
 
   return (
-    <div className="p-4">
+    <div className="px-2 py-4">
       <div className="flex items-start justify-between">
         <NodeBox icon="📊" label="Dashboard" isFailed={false} isAfterFailure={false} />
         <Connector ok={emulatorOk} isAfterFailure={false} />
         <NodeBox icon="🖥️" label="Emulator" isFailed={failurePoint === 'emulator'} isAfterFailure={false} />
-        <Connector ok={simulatorOk} isAfterFailure={afterEmulator} />
-        <NodeBox icon="✈️" label="Simulator" isFailed={failurePoint === 'simulator'} isAfterFailure={afterEmulator} />
+        <Connector ok={switchOk} isAfterFailure={afterEmulator} />
+        <NodeBox icon="🔀" label="Switch" isFailed={failurePoint === 'switch'} isAfterFailure={afterEmulator} />
+        <Connector ok={simulatorOk} isAfterFailure={afterSwitch} />
+        <NodeBox icon="✈️" label="Simulator" isFailed={failurePoint === 'simulator'} isAfterFailure={afterSwitch} />
         <Connector ok={gpsDataOk} isAfterFailure={afterSimulator} />
         <NodeBox icon="🛰️" label="GPS Data" isFailed={failurePoint === 'gps'} isAfterFailure={afterSimulator} />
       </div>

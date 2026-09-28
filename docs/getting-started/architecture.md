@@ -117,6 +117,7 @@ sequenceDiagram
     participant Dashboard as Fleet Dashboard
     participant Browser as Instructor browser
     participant SimulatorHost as Connected simulator host
+    participant Switch as Cisco switch
 
     Rebroadcaster->>SimulatorHost: ICMP ping (1 Hz)
     SimulatorHost-->>Rebroadcaster: reply / timeout
@@ -127,6 +128,8 @@ sequenceDiagram
     end
 
     loop every 1s
+        Dashboard->>Switch: ICMP ping (SIM_N_SWITCH_IP)
+        Switch-->>Dashboard: reply / timeout
         Dashboard->>Browser: WebSocket /ws<br/>{type: "fleet_state", simulators: [...]}
     end
 ```

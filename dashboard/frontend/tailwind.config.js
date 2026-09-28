@@ -11,6 +11,7 @@ export default {
         loft: {
           red: '#DC2626',
           blue: '#2563EB',
+          orange: '#FE5000',
         },
         primary: {
           50: '#eff6ff',

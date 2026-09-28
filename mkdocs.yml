@@ -128,6 +128,7 @@ nav:
       - Overview: dashboard-manual/overview.md
       - Simulator Card: dashboard-manual/simulator-card.md
       - Health Chain: dashboard-manual/health-chain.md
+      - Health Data Sources: dashboard-manual/health-data-sources.md
       - Flight Data: dashboard-manual/flight-data.md
       - Configuration: dashboard-manual/configuration.md
       - Appendix: dashboard-manual/appendix.md

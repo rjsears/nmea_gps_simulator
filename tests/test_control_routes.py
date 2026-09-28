@@ -293,6 +293,49 @@ class TestRebroadcasterMode:
     @patch("backend.api.control_routes.get_rebroadcaster_runner")
     @patch("backend.api.control_routes.get_emulator")
     @patch("backend.api.control_routes.get_receiver_runner")
+    @patch("backend.api.control_routes.get_settings")
+    def test_start_rebroadcaster_mode_passes_simulator_ip(
+        self,
+        mock_get_settings,
+        mock_receiver,
+        mock_emulator,
+        mock_rebroadcaster,
+        auth_client,
+        reset_state,
+    ):
+        """Should pass the simulator IP when starting rebroadcaster mode."""
+        mock_settings = Mock()
+        mock_settings.simulator_ip = "10.0.0.5"
+        mock_get_settings.return_value = mock_settings
+
+        mock_emu = Mock()
+        mock_emu.is_running = False
+        mock_emulator.return_value = mock_emu
+
+        mock_recv = Mock()
+        mock_recv.is_running = False
+        mock_receiver.return_value = mock_recv
+
+        mock_rebroad = Mock()
+        mock_rebroad.is_running = False
+        mock_rebroadcaster.return_value = mock_rebroad
+
+        state = get_app_state()
+        state.modes.rebroadcaster = True
+        state.modes.receiver = True
+
+        response = auth_client.post("/api/control", json={"action": "start"})
+        assert response.status_code == 200
+        assert response.json()["success"] is True
+        call_kwargs = mock_rebroad.start.call_args.kwargs
+        assert call_kwargs["simulator_ip"] == "10.0.0.5"
+        assert "rebroadcast_udp" in call_kwargs
+        assert "rebroadcast_udp_ip" in call_kwargs
+        assert "rebroadcast_udp_port" in call_kwargs
+
+    @patch("backend.api.control_routes.get_rebroadcaster_runner")
+    @patch("backend.api.control_routes.get_emulator")
+    @patch("backend.api.control_routes.get_receiver_runner")
     def test_stop_rebroadcaster(
         self, mock_receiver, mock_emulator, mock_rebroadcaster, auth_client, reset_state
     ):

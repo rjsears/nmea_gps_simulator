@@ -13,7 +13,10 @@
 import asyncio
 import json
 import logging
+import platform
+import re
 import socket
+import subprocess
 import threading
 import time
 from contextlib import asynccontextmanager
@@ -34,12 +37,27 @@ from .recorder import EXPORT_FORMATS, FlightRecorder
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+SWITCH_PING_INTERVAL: float = 1.0  # seconds between switch pings per simulator
+
+
+def ping_host(ip: str) -> bool:
+    """Send one ICMP echo to ip. Returns True iff ping exits 0. Never raises."""
+    try:
+        param = "-n" if platform.system().lower() == "windows" else "-c"
+        result = subprocess.run(
+            ["ping", param, "1", "-W", "1", ip],
+            capture_output=True,
+            timeout=2,
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
 
 
 class SimulatorState:
     """State for a single simulator."""
 
-    def __init__(self, name: str, port: int, gps_system: str = ""):
+    def __init__(self, name: str, port: int, gps_system: str = "", switch_ip: str = ""):
         self.name = name
         self.port = port
         self.gps_system = gps_system  # Which system runs the GPS software
@@ -54,6 +72,9 @@ class SimulatorState:
         self.airport_distance_nm: Optional[float] = None
         self._lock = threading.Lock()
         # Health monitoring
+        self.switch_ip: str = switch_ip
+        self.switch_reachable: Optional[bool] = None  # None = not configured/checked
+        self.last_switch_check: Optional[float] = None
         self.emulator_connected: bool = False
         self.sim_reachable: bool = False
         self.receiving_udp: bool = False
@@ -100,6 +121,12 @@ class SimulatorState:
             self.emulator_uptime = data.get("uptime_seconds", 0)
             self.last_heartbeat = time.time()
 
+    def update_switch(self, reachable: bool) -> None:
+        """Record the latest switch ping result (called from the ping thread)."""
+        with self._lock:
+            self.switch_reachable = reachable
+            self.last_switch_check = time.time()
+
     def to_dict(self) -> dict:
         """Convert state to dictionary for API response."""
         with self._lock:
@@ -124,6 +151,8 @@ class SimulatorState:
                 "sim_reachable": self.sim_reachable,
                 "receiving_udp": self.receiving_udp,
                 "emulator_uptime": self.emulator_uptime,
+                "switch_ip": self.switch_ip,
+                "switch_reachable": self.switch_reachable,
             }
 
 
@@ -136,12 +165,26 @@ class FleetMonitor:
         self._running = False
         self._threads: list[threading.Thread] = []
         self.recorder: Optional[FlightRecorder] = None
+        self.last_evaluated: Optional[float] = None
+
+    def mark_evaluated(self) -> None:
+        """Record that the fleet state was just re-evaluated (called by the 1 Hz tick only)."""
+        self.last_evaluated = time.time()
+
+    @property
+    def generated_at(self) -> Optional[str]:
+        """ISO-8601 UTC 'Z' timestamp of the last evaluation tick, or None before the first tick."""
+        if self.last_evaluated is None:
+            return None
+        return datetime.fromtimestamp(self.last_evaluated, tz=timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%SZ"
+        )
 
     def configure(self, sims: list[SimConfig]) -> None:
         """Configure simulators to monitor."""
         for sim in sims:
             self.simulators[sim.port] = SimulatorState(
-                sim.name, sim.port, sim.gps_system
+                sim.name, sim.port, sim.gps_system, sim.switch_ip
             )
         logger.info(f"Configured {len(sims)} simulators: {[s.name for s in sims]}")
 
@@ -156,6 +199,32 @@ class FleetMonitor:
             thread.start()
             self._threads.append(thread)
             logger.info(f"Started listener for {sim.name} on port {port}")
+
+        for port, sim in self.simulators.items():
+            if sim.switch_ip:
+                thread = threading.Thread(
+                    target=self._ping_switch, args=(port,), daemon=True
+                )
+                thread.start()
+                self._threads.append(thread)
+                logger.info(f"Started switch monitor for {sim.name} -> {sim.switch_ip}")
+
+        self.mark_evaluated()
+
+    def _ping_switch(self, port: int) -> None:
+        """Ping this simulator's switch every SWITCH_PING_INTERVAL seconds while running."""
+        sim = self.simulators[port]
+        while self._running:
+            started = time.monotonic()
+            reachable = ping_host(sim.switch_ip)
+            previous = sim.switch_reachable
+            sim.update_switch(reachable)
+            if previous != reachable:
+                logger.info(
+                    f"{sim.name} switch {sim.switch_ip} "
+                    f"{'reachable' if reachable else 'UNREACHABLE'}"
+                )
+            time.sleep(max(0.0, SWITCH_PING_INTERVAL - (time.monotonic() - started)))
 
     def stop(self) -> None:
         """Stop all listeners."""
@@ -227,9 +296,28 @@ websocket_connections: set[WebSocket] = set()
 async def broadcast_state():
     """Broadcast fleet state to all connected WebSocket clients."""
     while True:
+        await evaluate_and_broadcast()
+        await asyncio.sleep(1.0)  # Update every second
+
+
+async def evaluate_and_broadcast():
+    """Evaluate fleet state once and broadcast it to connected clients."""
+    try:
+        state = fleet_monitor.get_all_states()
+        fleet_monitor.mark_evaluated()
+        message = json.dumps(
+            {
+                "type": "fleet_state",
+                "generated_at": fleet_monitor.generated_at,
+                "simulators": state,
+            }
+        )
+    except Exception:
+        logger.exception("Fleet state evaluation failed; generated_at not advanced")
+        return
+
+    try:
         if websocket_connections:
-            state = fleet_monitor.get_all_states()
-            message = json.dumps({"type": "fleet_state", "simulators": state})
             disconnected = set()
             for ws in websocket_connections:
                 try:
@@ -237,7 +325,8 @@ async def broadcast_state():
                 except Exception:
                     disconnected.add(ws)
             websocket_connections.difference_update(disconnected)
-        await asyncio.sleep(1.0)  # Update every second
+    except Exception:
+        logger.exception("Fleet state broadcast failed")
 
 
 @asynccontextmanager
@@ -275,7 +364,7 @@ app = FastAPI(
         "telemetry and heartbeats from multiple NMEA GPS Simulator instances "
         "and broadcasts a combined fleet view to connected web clients."
     ),
-    version="1.0.0",
+    version="1.0.1",
     docs_url="/api/docs",
     redoc_url=None,
     openapi_url="/api/openapi.json",
@@ -296,6 +385,7 @@ async def get_status():
     """Get current fleet status."""
     return {
         "simulators": fleet_monitor.get_all_states(),
+        "generated_at": fleet_monitor.generated_at,
         "timestamp": datetime.utcnow().isoformat(),
     }
 
@@ -383,7 +473,13 @@ async def export_recorded(
     start_ms, end_ms, sim_list = _parse_range(start, end, sims)
     media_type, ext = EXPORT_FORMATS[fmt]
     stamp = datetime.fromtimestamp(start_ms / 1000, tz=timezone.utc)
-    filename = f"flight_data_{stamp:%Y%m%dT%H%MZ}.{ext}"
+    # One sim (the normal case from the UI) -> name the file after it
+    prefix = (
+        re.sub(r"[^A-Za-z0-9_-]+", "_", sim_list[0]).strip("_") or "flight_data"
+        if sim_list and len(sim_list) == 1
+        else "flight_data"
+    )
+    filename = f"{prefix}_{stamp:%Y%m%dT%H%MZ}.{ext}"
     return StreamingResponse(
         _get_recorder().export(fmt, start_ms, end_ms, sim_list),
         media_type=media_type,
@@ -417,7 +513,13 @@ async def websocket_endpoint(websocket: WebSocket):
         # Send initial state
         state = fleet_monitor.get_all_states()
         await websocket.send_text(
-            json.dumps({"type": "fleet_state", "simulators": state})
+            json.dumps(
+                {
+                    "type": "fleet_state",
+                    "generated_at": fleet_monitor.generated_at,
+                    "simulators": state,
+                }
+            )
         )
 
         # Keep connection alive

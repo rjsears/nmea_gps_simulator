@@ -11,7 +11,9 @@ The **Serial Port** panel selects a USB-serial device and the baud rate at which
 
 The underlying state is the same in every case (`backend/state.py`'s serial fields). This page documents the controls and behavior; for end-to-end hardware setup against a Bad Elf SBK-2500, see [USB Serial (Bad Elf)](../user-guides/usb-serial-bad-elf.md).
 
-<!-- SCREENSHOT-PENDING: serial-output-01-overview.png - Serial Port panel showing device picker, baud picker, 8N1 line. -->
+![The Serial Port panel with device and baud-rate pickers.](../images/screenshots/serial-output-01-overview.png)
+
+*The Serial Port panel with device and baud-rate pickers.*
 
 ## Controls
 

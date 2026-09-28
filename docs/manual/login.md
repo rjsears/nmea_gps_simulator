@@ -4,7 +4,9 @@ The login screen is the entry point to the simulator UI when authentication is e
 
 This page documents the login screen and the auth model behind it. If you're configuring a deployment, the security trade-offs live on the [Security](../reference/security.md) reference page.
 
-<!-- SCREENSHOT-PENDING: login-01-overview.png - login form, map background. -->
+![The login screen, shown when authentication is enabled.](../images/screenshots/login-01-overview.png)
+
+*The login screen, shown when authentication is enabled.*
 
 ## The screen
 

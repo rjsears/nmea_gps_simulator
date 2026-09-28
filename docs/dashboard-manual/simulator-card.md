@@ -4,8 +4,12 @@ A simulator card is the per-simulator rectangle in the dashboard grid. Each card
 
 This page documents the position view (online + offline). The health view shares the card frame but replaces the body with the chain diagram.
 
-<!-- SCREENSHOT-PENDING: simulator-card-01-online.png - single online card with all fields populated. -->
-<!-- SCREENSHOT-PENDING: simulator-card-02-offline.png - single offline card with --- placeholders. -->
+![An online simulator card with live position, flight data, and nearest airport.](../images/screenshots/simulator-card-01-online.png)
+
+*An online simulator card with live position, flight data, and nearest airport.*
+![An offline simulator card with placeholder values.](../images/screenshots/simulator-card-02-offline.png)
+
+*An offline simulator card with placeholder values.*
 
 ## Card header
 

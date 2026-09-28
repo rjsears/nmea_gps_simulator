@@ -2,7 +2,9 @@
 
 The **Output Viewer** is the full-width terminal-style panel at the bottom of the Dashboard. It shows live NMEA-0183 sentences being emitted (or, in Receiver mode, the incoming position packets being parsed). It is purely a display - you don't configure anything here, but it's the single most useful diagnostic in the UI.
 
-<!-- SCREENSHOT-PENDING: output-viewer-01-overview.png - Output Viewer scrolling NMEA, time-prefixed lines, message count. -->
+![The Output Viewer streaming live NMEA-0183 sentences.](../images/screenshots/output-viewer-01-overview.png)
+
+*The Output Viewer streaming live NMEA-0183 sentences.*
 
 ## The panel
 

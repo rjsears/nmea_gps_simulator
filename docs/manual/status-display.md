@@ -4,7 +4,9 @@ The **Status** panel in the right column gives you a single-glance summary of wh
 
 It is purely a display - no controls. Updates are pushed via WebSocket and rendered as soon as they arrive (typically once per second while running).
 
-<!-- SCREENSHOT-PENDING: status-display-01-overview.png - Status panel with all rows visible, emulator running. -->
+![The Status panel while the emulator is running.](../images/screenshots/status-display-01-overview.png)
+
+*The Status panel while the emulator is running.*
 
 ## Rows
 

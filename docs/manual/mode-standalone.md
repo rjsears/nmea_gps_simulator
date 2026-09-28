@@ -11,7 +11,9 @@ This is the mode you reach for when:
 !!! info "Stand-Alone vs Sender"
     Stand-Alone and [Sender Mode](mode-sender.md) both *generate* NMEA from manual input. The only difference: Sender additionally publishes the position to one or more network receivers. If you're not going to have a receiver downstream, Stand-Alone is the cleaner choice.
 
-<!-- SCREENSHOT-PENDING: mode-standalone-01-overview.png - overview of the Output Settings panel with both blocks visible. -->
+![The Output Settings panel for Stand-Alone mode.](../images/screenshots/mode-standalone-01-overview.png)
+
+*The Output Settings panel for Stand-Alone mode.*
 
 ## When to use Stand-Alone
 

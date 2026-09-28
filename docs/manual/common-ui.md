@@ -2,7 +2,9 @@
 
 The simulator UI has a small set of elements that show up on every screen, independent of the mode you're running. This page covers them in one place so the mode-specific pages don't have to repeat the same content.
 
-<!-- SCREENSHOT-PENDING: common-ui-01-header.png - header showing logo, theme toggle, username, logout. -->
+![The header: logo, theme toggle, username, and logout.](../images/screenshots/common-ui-01-header.png)
+
+*The header: logo, theme toggle, username, and logout.*
 
 ## The header
 

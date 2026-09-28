@@ -21,6 +21,7 @@ class SimConfig:
     name: str
     port: int
     gps_system: str = ""  # Which system runs the GPS software (e.g., "Avionics 2")
+    switch_ip: str = ""  # Switch management IP; "" disables the check
 
 
 @dataclass
@@ -42,6 +43,7 @@ def parse_simulator_config() -> list[SimConfig]:
         SIM_1_NAME=CL350
         SIM_1_PORT=12001
         SIM_1_GPS_SYSTEM=Avionics
+        SIM_1_SWITCH_IP=10.200.10.6
         SIM_2_NAME=Ultra
         SIM_2_PORT=12002
         SIM_2_GPS_SYSTEM=Avionics 2
@@ -72,10 +74,16 @@ def parse_simulator_config() -> list[SimConfig]:
             name = os.getenv(f"SIM_{i}_NAME")
             port_str = os.getenv(f"SIM_{i}_PORT")
             gps_system = os.getenv(f"SIM_{i}_GPS_SYSTEM", "")
+            switch_ip = os.getenv(f"SIM_{i}_SWITCH_IP", "").strip()
             if name and port_str:
                 try:
                     simulators.append(
-                        SimConfig(name=name, port=int(port_str), gps_system=gps_system)
+                        SimConfig(
+                            name=name,
+                            port=int(port_str),
+                            gps_system=gps_system,
+                            switch_ip=switch_ip,
+                        )
                     )
                 except ValueError:
                     pass
