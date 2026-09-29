@@ -11,6 +11,10 @@ This view is the difference between "I have no idea why this card is gray" and "
 
 *A card whose GPS Data segment has failed.*
 
+![The whole fleet in health view, showing every state the chain can be in.](../images/screenshots/health-chain-00-grid.png)
+
+*The whole fleet in health view: two cards all green, and one card for each failure point.*
+
 ## The chain
 
 ```
@@ -44,6 +48,8 @@ This is the only "happy path" state. Every other state has at least one red elem
 
 ### 2. Emulator down
 
+![A card whose Emulator node has failed.](../images/screenshots/health-chain-03-emulator-down.png)
+
 `emulator_online == false`. No heartbeat in 3 s.
 
 | Element | State |
@@ -68,6 +74,8 @@ Likely fixes:
 - Network outage between the rebroadcaster host and the dashboard host.
 
 ### 3. Switch not responding
+
+![A card whose Switch node has failed, naming the switch IP.](../images/screenshots/health-chain-04-switch-failure.png)
 
 `emulator_online == true`, the switch check is configured, `switch_reachable == false`, and `sim_reachable == false`. This branch is evaluated only when position data is not already flowing.
 
@@ -94,6 +102,8 @@ Likely fixes:
 - Check whether ICMP is filtered to the management IP. A management-plane/ICMP failure to the switch is not enough by itself to produce this state - it also requires the rebroadcaster's simulator ping to be failing (`sim_reachable == false`). If the simulator ping still succeeds through the switch, check the Simulator/GPS branches instead of assuming the switch itself is broken.
 
 ### 4. Simulator unreachable
+
+![A card whose Simulator node has failed while the switch is up.](../images/screenshots/health-chain-05-simulator-unreachable.png)
 
 `emulator_online == true` (heartbeats arriving), the Switch failure branch did not match, and `sim_reachable == false` (the ping to `SIMULATOR_IP` is failing from inside the container).
 
