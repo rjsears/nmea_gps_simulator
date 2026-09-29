@@ -2042,6 +2042,8 @@
 <p><em>A card in health view with all five nodes green.</em>
 <img alt="A card whose GPS Data segment has failed." src="../../images/screenshots/health-chain-02-gps-failure.png" /></p>
 <p><em>A card whose GPS Data segment has failed.</em></p>
+<p><img alt="The whole fleet in health view, showing every state the chain can be in." src="../../images/screenshots/health-chain-00-grid.png" /></p>
+<p><em>The whole fleet in health view: two cards all green, and one card for each failure point.</em></p>
 <h2 id="the-chain">The chain<a class="headerlink" href="#the-chain" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[Dashboard] -- [Emulator] -- [Switch] -- [Simulator] -- [GPS Data]
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>   |              |             |             |              |
@@ -2087,6 +2089,7 @@
 <p>When GPS data is flowing (<code>is_online == true</code>), everything upstream is implicitly working. The chain shows five green nodes and four green connectors. Footer message: <strong>"All systems operational"</strong> on a green background.</p>
 <p>This is the only "happy path" state. Every other state has at least one red element.</p>
 <h3 id="2-emulator-down">2. Emulator down<a class="headerlink" href="#2-emulator-down" title="Permanent link">&para;</a></h3>
+<p><img alt="A card whose Emulator node has failed." src="../../images/screenshots/health-chain-03-emulator-down.png" /></p>
 <p><code>emulator_online == false</code>. No heartbeat in 3 s.</p>
 <table>
 <thead>
@@ -2143,6 +2146,7 @@
 <li>Network outage between the rebroadcaster host and the dashboard host.</li>
 </ul>
 <h3 id="3-switch-not-responding">3. Switch not responding<a class="headerlink" href="#3-switch-not-responding" title="Permanent link">&para;</a></h3>
+<p><img alt="A card whose Switch node has failed, naming the switch IP." src="../../images/screenshots/health-chain-04-switch-failure.png" /></p>
 <p><code>emulator_online == true</code>, the switch check is configured, <code>switch_reachable == false</code>, and <code>sim_reachable == false</code>. This branch is evaluated only when position data is not already flowing.</p>
 <table>
 <thead>
@@ -2199,6 +2203,7 @@
 <li>Check whether ICMP is filtered to the management IP. A management-plane/ICMP failure to the switch is not enough by itself to produce this state - it also requires the rebroadcaster's simulator ping to be failing (<code>sim_reachable == false</code>). If the simulator ping still succeeds through the switch, check the Simulator/GPS branches instead of assuming the switch itself is broken.</li>
 </ul>
 <h3 id="4-simulator-unreachable">4. Simulator unreachable<a class="headerlink" href="#4-simulator-unreachable" title="Permanent link">&para;</a></h3>
+<p><img alt="A card whose Simulator node has failed while the switch is up." src="../../images/screenshots/health-chain-05-simulator-unreachable.png" /></p>
 <p><code>emulator_online == true</code> (heartbeats arriving), the Switch failure branch did not match, and <code>sim_reachable == false</code> (the ping to <code>SIMULATOR_IP</code> is failing from inside the container).</p>
 <table>
 <thead>
