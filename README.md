@@ -117,7 +117,7 @@ The simulator runs as a Docker container with a modern web interface, making it 
 | **Network sync** | Sender/Receiver modes for multi-instance deployments. |
 | **EFB sync** | Talk directly to Garmin Pilot or ForeFlight (XGPS over UDP 49002) without a physical GPS device. |
 | **Modern stack** | React + FastAPI + Docker for reliability and ease of deployment. |
-| **Fleet Dashboard** | Optional companion container that monitors many simulators from one screen, with end-to-end health diagnostics. |
+| **Fleet Dashboard** | Optional companion container that monitors many simulators from one screen, with end-to-end health diagnostics (including per-simulator network switch checks) and flight data recording with CSV/JSON/XML/GPX/KML export. |
 
 ---
 
@@ -1049,7 +1049,10 @@ nmea_gps_simulator/
 │   └── docker-entrypoint.sh     # Container entrypoint
 ├── dashboard/                   # Fleet Dashboard companion app
 │   ├── backend/                 # FastAPI app aggregating per-sim telemetry
+│   │   ├── main.py              # UDP listeners, switch pings, REST + WebSocket API
+│   │   └── recorder.py          # Flight data recorder (SQLite) and exporters
 │   ├── frontend/                # React + Vite + Tailwind UI
+│   ├── tests/                   # Dashboard unit tests
 │   └── docker/                  # Dashboard Dockerfile + compose
 ├── docs/                        # MkDocs Material source (published to GitHub Pages)
 │   ├── index.md
@@ -1150,7 +1153,7 @@ The **Fleet Dashboard** is a separate Docker container that provides real-time m
 ### Screenshots
 
 <p align="center">
-<strong>Simulators Online - Actively Receiving Position Data</strong><br>
+<strong>Simulators Online - Actively Receiving (and Recording) Position Data</strong><br>
 <img src="images/fleet_dashboard_online.png" alt="Fleet Dashboard - Online" width="800">
 </p>
 
@@ -1165,8 +1168,13 @@ The **Fleet Dashboard** is a separate Docker container that provides real-time m
 - **Position tracking** with latitude, longitude, altitude, airspeed, and heading
 - **Nearest airport** calculation from 4,003 airports database with distance in nautical miles
 - **Online/Offline status** indicators (green = receiving data, gray = offline)
+- **Health diagnostics** - a 5-node chain per simulator (Dashboard → Emulator → Switch → Simulator → GPS Data) that pinpoints where the data path is broken
+- **Network switch monitoring** - the dashboard pings each simulator's switch management IP (`SIM_N_SWITCH_IP`) every second and shows a failed switch as its own step in the health chain
+- **Flight data recording** - every simulator's position is recorded while it is sending data (red **REC** badge), kept for 30 days by default
+- **Flight data export** - pick a simulator and a date/time range and download it as CSV, JSON, XML, GPX, or KML (Google Earth)
 - **Click to map** - Click any online simulator card to instantly open Google Maps at that aircraft's real-time location
 - **Dark mode support** - Toggle between light and dark themes, with preference saved automatically
+- **Built-in documentation link** - the book icon in the header opens the online manual
 - **Responsive grid layout** - Cards automatically arrange based on screen size
 - **Same styling** as the main GPS emulator interface for a consistent look and feel
 
@@ -1178,7 +1186,9 @@ The Fleet Dashboard operates as a central aggregation point for all your GPS sim
 2. **Assign unique ports** - Each simulator sends to a different UDP port (e.g., 12001, 12002, 12003)
 3. **Dashboard listens** on all configured ports simultaneously and identifies each simulator by its port number
 4. **Real-time updates** - Position data is broadcast to all connected browsers via WebSocket every second
-5. **Automatic timeout** - If no packets are received from a simulator for 10 seconds, it's marked as offline
+5. **Automatic timeout** - If no position packets are received from a simulator for 5 seconds, it's marked as offline
+6. **Switch checks** - Independently, the dashboard host pings each simulator's configured switch management IP once per second
+7. **Recording** - Position packets are written to a SQLite database in `/app/data` for later export
 
 ```
 ┌─────────────────┐     UDP:12001     ┌─────────────────┐
@@ -1207,22 +1217,44 @@ services:
     container_name: fleet-dashboard
     restart: unless-stopped
     network_mode: host
+    security_opt:
+      - "apparmor:unconfined"
+    volumes:
+      - ./data:/app/data               # Flight data recordings (keep across updates)
     environment:
       - HOST=0.0.0.0
       - PORT=80
-      # Configure your simulators (SIM_N_NAME and SIM_N_PORT)
+      # Flight data recording
+      - RECORDING_DEFAULT_ENABLED=true   # Record new simulators by default
+      - RECORDING_RETENTION_DAYS=30      # Auto-delete older data (0 = keep forever)
+      # Configure your simulators
+      #   SIM_N_NAME / SIM_N_PORT  - card name and the UDP port its emulator sends to
+      #   SIM_N_GPS_SYSTEM         - named in the "restart GPSConnect" hint (optional)
+      #   SIM_N_SWITCH_IP          - switch management IP to ping (optional; empty = skip)
       - SIM_1_NAME=CJ3
       - SIM_1_PORT=12001
+      - SIM_1_GPS_SYSTEM=Avionics
+      - SIM_1_SWITCH_IP=10.200.10.6
       - SIM_2_NAME=Ultra
       - SIM_2_PORT=12002
-      - SIM_3_NAME=CL350
+      - SIM_2_GPS_SYSTEM=Avionics 2
+      - SIM_2_SWITCH_IP=10.200.10.27
+      - SIM_3_NAME=CJ1
       - SIM_3_PORT=12003
-      - SIM_4_NAME=PC12
+      - SIM_3_GPS_SYSTEM=Avionics
+      - SIM_3_SWITCH_IP=10.200.10.8
+      - SIM_4_NAME=CE560XL
       - SIM_4_PORT=12004
-      - SIM_5_NAME=King Air
+      - SIM_4_GPS_SYSTEM=Avionics 2
+      - SIM_4_SWITCH_IP=10.200.10.18
+      - SIM_5_NAME=Classic CJ1
       - SIM_5_PORT=12005
-      - SIM_6_NAME=Phenom
+      - SIM_5_GPS_SYSTEM=Avionics
+      - SIM_5_SWITCH_IP=10.200.10.4
+      - SIM_6_NAME=CL350
       - SIM_6_PORT=12006
+      - SIM_6_GPS_SYSTEM=rehost
+      - SIM_6_SWITCH_IP=172.16.24.1
 ```
 
 **2. Configure each emulator to send data to the dashboard:**
@@ -1252,12 +1284,12 @@ When a simulator is online (green status), clicking anywhere on its card will op
 The Fleet Dashboard includes built-in diagnostics to help troubleshoot connectivity issues between the dashboard, emulators, switches, and simulators.
 
 <p align="center">
-<strong>Health View - Some Simulators Operational</strong><br>
+<strong>Health View - All Simulators Operational</strong><br>
 <img src="images/fleet_dashboard_health_ok.png" alt="Fleet Dashboard - Health OK" width="800">
 </p>
 
 <p align="center">
-<strong>Health View - Issue Detected</strong><br>
+<strong>Health View - Issues Detected (GPS Data, Simulator, Switch, and Emulator failures)</strong><br>
 <img src="images/fleet_dashboard_health_issue.png" alt="Fleet Dashboard - Health Issue" width="800">
 </p>
 
@@ -1276,7 +1308,16 @@ Click the **Health** button (🩺) in the header to toggle health view. Each car
 | Switch → Simulator | ICMP ping from emulator to simulator |
 | Simulator → GPS Data | GPS packets arriving at dashboard |
 
-When an issue is detected, the failing node shows a red X and a guidance message appears with troubleshooting steps.
+When an issue is detected, the failing node turns red, everything after it grays out, and a guidance message tells the technician what to check:
+
+| Failing node | Guidance shown |
+|--------------|----------------|
+| Emulator | Is the emulator container running? |
+| Switch | Switch for *{name}* (*{switch IP}*) is not responding. Check switch power and uplink. |
+| Simulator | Is the simulator powered on? If yes, possible network issue. |
+| GPS Data | Not receiving GPS data. Start or Restart GPSConnect application on *{SIM_N_GPS_SYSTEM}*. |
+
+The Switch node only goes red when the switch ping **and** the emulator's simulator ping both fail. If the simulator can still be reached through the switch, a failed management-IP ping is ignored so a filtered or mistyped switch IP never sends a technician to the wrong box.
 
 #### Emulator Configuration
 
@@ -1306,6 +1347,23 @@ environment:
 
 Leave `SIM_N_SWITCH_IP` empty to skip the switch check. See the [Health Data Sources](docs/dashboard-manual/health-data-sources.md) deep dive for the exact gates and packet flow.
 
+### Flight Data Recording
+
+The dashboard records every simulator's position while it is sending data, so individual training flights can be pulled out later and mapped.
+
+<p align="center">
+<strong>Flight Data Panel - Recording Switches and Export</strong><br>
+<img src="images/fleet_dashboard_flight_data.png" alt="Fleet Dashboard - Flight Data" width="500">
+</p>
+
+- **Recording** - Click the download icon in the header to open the Flight Data panel. Each simulator has a recording switch (on by default); cards that are online and recording show a red **REC** badge.
+- **Export** - Pick a simulator, a date/time range (or a preset such as *Last 4 hours*), and a format: **CSV**, **JSON**, **XML**, **GPX**, or **KML** (a 3D flight path for Google Earth). Files are named after the simulator, e.g. `CJ3_20260928T1645Z.kml`. Times are picked in your local time zone; exported timestamps are UTC.
+- **Retention** - Data older than `RECORDING_RETENTION_DAYS` (default 30) is deleted automatically.
+- **Storage** - About 56 bytes per position: roughly 1.6 MB per simulator per 8-hour day at 1 Hz.
+- **Persistence** - Recordings live in a SQLite database under `/app/data`. Mount a volume there (`./data:/app/data`) or they are lost when the container is recreated.
+
+See [Flight Data Recording](docs/dashboard-manual/flight-data.md) for the full reference, including the export API.
+
 ---
 
 ## Troubleshooting
@@ -1320,6 +1378,8 @@ The full troubleshooting matrix lives at [reference/troubleshooting](https://rjs
 | USB serial output never appears on the Bad Elf | `/dev` not mounted, or device path is wrong | Make sure the compose file has `privileged: true` and `volumes: - /dev:/dev`. Inside the container, run `ls /dev/tty*` to confirm the device path. |
 | Sender→Receiver pair shows no traffic | Wrong protocol on one side, or NAT/firewall between the two hosts | Both sides must agree on UDP vs TCP. Try a quick `nc`-based smoke test (see the [Network Protocol](#network-protocol) examples). |
 | Fleet Dashboard card stays gray | The emulator isn't retransmitting to the dashboard, or the dashboard isn't listening on the matching port | Confirm `AUTO_START_UDP_RETRANSMIT=true` and that `AUTO_START_UDP_RETRANSMIT_PORT` matches the `SIM_N_PORT` on the dashboard side. |
+| Health view shows the Switch node red | The switch management IP isn't answering pings from the dashboard host **and** the emulator can't reach the simulator | Check switch power and uplink, and that `SIM_N_SWITCH_IP` is the switch's management IP. From the dashboard host, `ping <switch-ip>` should answer. |
+| Flight data export is empty or recordings disappear after an update | Recording switched off for that simulator, or no volume mounted on `/app/data` | Check the simulator's switch in the Flight Data panel, and add `- ./data:/app/data` under `volumes:` in the dashboard compose file. |
 | `tcpdump` shows "bad udp cksum" on the receiving host | TX checksum offload on the sending host's NIC | `sudo ethtool -K <iface> tx off`. Make it persistent in your network config or you'll lose it on reboot. |
 | `mkdocs build` fails with "Doc file ... contains a link to X, but the target X is not found" | A link target was moved or renamed | Search the doc tree for the broken target and update or remove the link. Add an `exclude_docs` entry if the source file is operator-only and shouldn't be published. |
 
